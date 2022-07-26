@@ -17,10 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Interfaces\" />
     <Folder Include="Models\" />
     <Folder Include="ViewModels\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ServiceAutomation.DataAccess\ServiceAutomation.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

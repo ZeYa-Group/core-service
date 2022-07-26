@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using ServiceAutomation.Canvas.WebApi.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,15 @@ namespace ServiceAutomation.Canvas.WebApi
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        public virtual ServiceCollectionSetup CreateSetup()
+        {
+            return new WebApiServiceCollectionSetup();
+        }
+
         public void ConfigureServices(IServiceCollection services)
         {
+            var setup = CreateSetup();
+            setup.Configure(Configuration, services);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -34,7 +41,7 @@ namespace ServiceAutomation.Canvas.WebApi
             });
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())

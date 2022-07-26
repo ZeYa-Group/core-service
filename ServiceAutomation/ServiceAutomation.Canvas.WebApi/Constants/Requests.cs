@@ -6,5 +6,10 @@
         {
             public const string GetAction = "Get";
         }
+
+        public static class User
+        {
+            
+        }
     }
 }
