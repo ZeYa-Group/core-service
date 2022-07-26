@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32526.322
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Canvas", "Canvas", "{0B4A3CCC-C57F-47FB-9927-3236ABF85B96}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{19013F5A-9B4D-4EFF-8369-1134C2F28628}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{BBF892A0-30DE-4FEA-9596-C066546CDEBD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceAutomation.Canvas.WebApi", "ServiceAutomation.Canvas.WebApi\ServiceAutomation.Canvas.WebApi.csproj", "{B202C9B9-48F1-4FF4-9E4F-07F537C54507}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceAutomation.DataAccess", "ServiceAutomation.DataAccess\ServiceAutomation.DataAccess.csproj", "{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B202C9B9-48F1-4FF4-9E4F-07F537C54507}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B202C9B9-48F1-4FF4-9E4F-07F537C54507}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B202C9B9-48F1-4FF4-9E4F-07F537C54507}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B202C9B9-48F1-4FF4-9E4F-07F537C54507}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B202C9B9-48F1-4FF4-9E4F-07F537C54507} = {0B4A3CCC-C57F-47FB-9927-3236ABF85B96}
+		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7} = {BBF892A0-30DE-4FEA-9596-C066546CDEBD}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C56622B7-C01B-4321-958A-3DD52A8FD5FF}
+	EndGlobalSection
+EndGlobal
