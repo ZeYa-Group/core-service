@@ -1,10 +1,8 @@
 ﻿using System;
 namespace ServiceAutomation.Canvas.WebApi.Models.ResponseModels
 {
-    public class LoginSuccessResponse
+    public class AuthSuccessResponse
     {
-        public LoginSuccessResponse()
-        {
-        }
+        public string Token { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models;
@@ -17,26 +18,29 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class AuthProvider : IAuthProvider
     {
-        private readonly PotgreSqlContext dbContext;
-        public AuthProvider(PotgreSqlContext dbContext)
+        private readonly IUserManager userManager;
+
+        public AuthProvider(IUserManager userManager)
         {
-            this.dbContext = dbContext;
+            this.userManager = userManager;
         }
 
         public async Task<UserModel> Authenticate(LoginRequestModel requestModel)
         {
-            var user = await dbContext.Users.FirstOrDefaultAsync(x =>
-            x.Email == requestModel.Email); //&& x.Password == requestModel.Password);
+            //var user = await dbContext.Users.FirstOrDefaultAsync(x =>
+            //x.Email == requestModel.Email); //&& x.Password == requestModel.Password);
 
-            var res = new UserModel()
-            {
-                Name = user.Name,
-                Email = user.Email,
-                //Password = user.Password,
-                Surname = user.Surname
-            };
+            //var res = new UserModel()
+            //{
+            //    Name = user.Name,
+            //    Email = user.Email,
+            //    //Password = user.Password,
+            //    Surname = user.Surname
+            //};
 
-            return res;
+            //return res;
+
+            return null;
         }
 
         public string Generate(UserModel user)
@@ -61,18 +65,36 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        public async Task<UserModel> Register(RegisterRequestModel requestModel)
+        public async Task<AuthenticationResult> Register(RegisterRequestModel requestModel)
         {
-            var user = new UserModel();
-            var userHashPassword = CreatePasswordHash(requestModel.Password);
+            var existingUserByEmail = await userManager.GetByEmail(requestModel.Email);
 
-            user.Name = requestModel.Name;
-            user.Surname = requestModel.Surname;
-            user.Email = requestModel.Email;
-            user.PasswordHash = userHashPassword.PasswordHash;
-            user.PasswordSalt = userHashPassword.PasswordSalt;
+            if(existingUserByEmail != null)
+            {
+                return new AuthenticationResult
+                {
+                    Errors = new[] { "User already exist." }
+                };
+            }
 
-            return user;
+            var hashModel = CreatePasswordHash(requestModel.Password);
+
+            var user = new UserModel()
+            {
+                Name = requestModel.Name,
+                Surname = requestModel.Surname,
+                Email = requestModel.Email,
+                PasswordHash = hashModel.PasswordHash,
+                PasswordSalt = hashModel.PasswordSalt
+            };
+
+            var responseUser = await userManager.AddUser(user);
+
+            return new AuthenticationResult
+            {
+                Success = true,
+                Token = Generate(responseUser)
+            };
         }
 
         private PasswordHashModel CreatePasswordHash(string password)

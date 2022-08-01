@@ -23,6 +23,7 @@
     <Folder Include="ViewModels\" />
     <Folder Include="Models\RequestsModels\" />
     <Folder Include="Models\ResponseModels\" />
+    <Folder Include="Installers\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,5 +35,6 @@
     <None Remove="System.IdentityModel.Tokens.Jwt" />
     <None Remove="Models\RequestsModels\" />
     <None Remove="Models\ResponseModels\" />
+    <None Remove="Installers\" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace ServiceAutomation.Canvas.WebApi.Models.RequestsModels
 {
     public class RegisterRequestModel
@@ -7,5 +9,6 @@ namespace ServiceAutomation.Canvas.WebApi.Models.RequestsModels
         public string Surname { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        public string ConfirmPassword { get; set; }
     }
 }

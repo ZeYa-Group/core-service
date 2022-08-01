@@ -55,6 +55,8 @@ namespace ServiceAutomation.Canvas.WebApi
                 });
 
             services.AddScoped<IAuthProvider, AuthProvider>();
+            services.AddScoped<IUserManager, UserManager>();
+
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
