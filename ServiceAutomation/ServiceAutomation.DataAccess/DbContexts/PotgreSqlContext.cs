@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using ServiceAutomation.DataAccess.DbSets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,22 +9,9 @@ namespace ServiceAutomation.DataAccess.DbContexts
 {
     public class PotgreSqlContext : ServiceDbContext
     {
-        //public PotgreSqlContext()
-        //{
-
-        //}
-
         public PotgreSqlContext(DbContextOptions<PotgreSqlContext> options) : base(options)
         {
 
-        }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            //OnPostgreModelCreatingMxtr(modelBuilder);
-            //OnPostgreModelCreatingIntegrations(modelBuilder);
-            //OnPostgreModelCreatingMessagesGears(modelBuilder);
-            //OnPostgreModelCreatingCanvas(modelBuilder);
         }
     }
 }

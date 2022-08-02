@@ -11,12 +11,14 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         private readonly IAuthProvider authProvider;
-        public UserController(IAuthProvider authProvider)
+        private readonly IUserManager userManager;
+        public AuthenticationController(IAuthProvider authProvider, IUserManager userManager)
         {
             this.authProvider = authProvider;
+            this.userManager = userManager;
         }
 
         //[AllowAnonymous]
@@ -47,14 +49,9 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpPost(Requests.User.Register)]
         public async Task<IActionResult> Register(RegisterRequestModel requestModel)
         {
-            if (!ModelState.IsValid)
+            if (await userManager.IsUserAlreadyExists(requestModel.Email))
             {
-                return BadRequest();
-            }
-
-            if(requestModel.Password != requestModel.ConfirmPassword)
-            {
-                return BadRequest();
+                return BadRequest("User already exists");
             }
 
             var response = await authProvider.Register(requestModel);

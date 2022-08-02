@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceAutomation.DataAccess.DbContexts;
-using ServiceAutomation.DataAccess.DbSets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +17,7 @@ namespace ServiceAutomation.DataAccess.Extensions
             Action<DataAccessOptions> optionsSetter = default)
         {
             services.AddSingleton(databaseSecret);
-            services.AddDbContext<PotgreSqlContext>(options =>
+            services.AddDbContext<ServiceDbContext>(options =>
             {
                 var dataAccessOptions = new DataAccessOptions();
 
