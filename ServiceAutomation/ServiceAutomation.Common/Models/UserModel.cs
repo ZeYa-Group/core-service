@@ -15,7 +15,7 @@ namespace ServiceAutomation.Common.Models
 
         //public List<Role> Roles { get; set; }
 
-        public RefreshToken RefreshToken { get; set; }
+        //public RefreshToken RefreshToken { get; set; }
 
     }
 }

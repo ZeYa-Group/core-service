@@ -10,6 +10,5 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
         Task<UserModel> GetByEmail(string email);
         Task<UserModel> AddUser(UserModel user);
         Task<bool> IsUserAlreadyExists(string email);
-        Task UpdateUser(Guid id, UserModel item);
     }
 }

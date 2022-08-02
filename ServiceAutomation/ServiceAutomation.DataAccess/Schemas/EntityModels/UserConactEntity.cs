@@ -19,6 +19,6 @@ namespace ServiceAutomation.DataAccess.Schemas.EntityModels
 
         //public List<Role> Roles { get; set; }
 
-        public RefreshToken RefreshToken { get; set; }
+        //public RefreshToken RefreshToken { get; set; }
     }
 }

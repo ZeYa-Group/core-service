@@ -21,21 +21,14 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.userManager = userManager;
         }
 
-        //[AllowAnonymous]
-        //[HttpPost(Requests.User.Login)]
-        //public async Task<IActionResult> Login([FromBody] LoginRequestModel requestModel)
-        //{
-        //    var user = await authProvider.Authenticate(requestModel);
-
-        //    if(user != null)
-        //    {
-        //        var token = authProvider.Generate(user);
-
-        //        return Ok(token);
-        //    }
-
-        //    return NotFound("User not found.");
-        //}
+        [AllowAnonymous]
+        [HttpPost(Requests.User.Login)]
+        public async Task<IActionResult> Login([FromBody] LoginRequestModel requestModel)
+        {
+            var response = await authProvider.Authenticate(requestModel);
+            
+            return Ok(response);
+        }
 
         [Authorize]
         [HttpPost(Requests.User.Logout)]

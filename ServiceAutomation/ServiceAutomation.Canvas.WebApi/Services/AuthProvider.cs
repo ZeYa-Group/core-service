@@ -30,20 +30,33 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<AuthenticationResult> Authenticate(LoginRequestModel requestModel)
         {
-            //var user = await dbContext.Users.FirstOrDefaultAsync(x =>
-            //x.Email == requestModel.Email); //&& x.Password == requestModel.Password);
+            var user = await userManager.GetByEmail(requestModel.Email);
 
-            //var res = new UserModel()
-            //{
-            //    Name = user.Name,
-            //    Email = user.Email,
-            //    //Password = user.Password,
-            //    Surname = user.Surname
-            //};
+            if (user == null)
+            {
+                return new AuthenticationResult()
+                {
+                    Success = false
+                };
+            }
 
-            //return res;
+            var isPasswordCorrecrt = VerifyPasswordhash(requestModel.Password, user.PasswordHash, user.PasswordSalt);
 
-            return null;
+            if (!isPasswordCorrecrt)
+            {
+                return new AuthenticationResult()
+                {
+                    Success = false
+                };
+            }
+
+            var token = Generate(user);
+
+            return new AuthenticationResult()
+            {
+                Success = true,
+                Token = token.AccessToken
+            };
         }
 
         public Token Generate(UserModel user)
@@ -77,15 +90,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task<AuthenticationResult> Register(RegisterRequestModel requestModel)
         {
             var hashModel = CreatePasswordHash(requestModel.Password);
-
-            //var user = new UserModel()
-            //{
-            //    Name = requestModel.Name,
-            //    Surname = requestModel.Surname,
-            //    Email = requestModel.Email,
-            //    PasswordHash = hashModel.PasswordHash,
-            //    PasswordSalt = hashModel.PasswordSalt
-            //};
 
             var user = mapper.Map<UserModel>(requestModel);
 

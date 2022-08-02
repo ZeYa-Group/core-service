@@ -35,7 +35,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
                 //Roles = user.Roles,
-                RefreshToken = user.RefreshToken,
+                //RefreshToken = user.RefreshToken,
             };
 
             await dbContext.UserContacts.AddAsync(addedUser);
@@ -66,15 +66,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             }
 
             return false;
-        }
-
-        public async Task UpdateUser(Guid id, UserModel item)
-        {
-            var user = await dbContext.UserContacts.FirstOrDefaultAsync(uce => uce.Id == id);
-
-            user.RefreshToken = item.RefreshToken;
-
-            await dbContext.SaveChangesAsync();
         }
     }
 }
