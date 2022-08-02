@@ -35,7 +35,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
                 //Roles = user.Roles,
-                //RefreshToken = user.RefreshToken,
             };
 
             await dbContext.UserContacts.AddAsync(addedUser);
@@ -46,7 +45,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<UserModel> GetByEmail(string email)
         {
-            var user = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.Email == email);
+            var user = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.Email == email.ToLower());
 
             if(user == null)
             {
@@ -58,7 +57,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<bool> IsUserAlreadyExists(string email)
         {
-            var user = await dbContext.UserContacts.Where(x => x.Email == email).ToListAsync();
+            var user = await dbContext.UserContacts.Where(x => x.Email == email.ToLower()).ToListAsync();
 
             if(user.Count > 0)
             {

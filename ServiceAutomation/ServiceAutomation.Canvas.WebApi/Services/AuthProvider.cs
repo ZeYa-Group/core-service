@@ -36,7 +36,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 return new AuthenticationResult()
                 {
-                    Success = false
+                    Success = false,
+                    Errors = new[] {"Invalid email adress"}
                 };
             }
 
@@ -46,7 +47,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 return new AuthenticationResult()
                 {
-                    Success = false
+                    Success = false,
+                    Errors = new[] { "Invalid password" }
                 };
             }
 
@@ -59,7 +61,27 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             };
         }
 
-        public Token Generate(UserModel user)
+        public async Task<AuthenticationResult> Register(RegisterRequestModel requestModel)
+        {
+            var hashModel = CreatePasswordHash(requestModel.Password);
+
+            var user = mapper.Map<UserModel>(requestModel);
+
+            user.PasswordSalt = hashModel.PasswordSalt;
+            user.PasswordHash = hashModel.PasswordHash;
+
+            var responseUser = await userManager.AddUser(user);
+
+            var token = Generate(responseUser);
+
+            return new AuthenticationResult
+            {
+                Success = true,
+                Token = token.AccessToken
+            };
+        }
+
+        private Token Generate(UserModel user)
         {
             var securityKey = AuthOptions.GetSymmetricSecurityKey();
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -75,7 +97,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 AuthOptions.ISSUER,
                 AuthOptions.AUDIENCE,
                 claims,
-                expires: DateTime.Now.AddMinutes(15),
+                expires: DateTime.Now.AddMinutes(1),
                 signingCredentials: credentials);
 
             return new Token
@@ -84,26 +106,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 AccessTokenExpiryTime = token.ValidTo,
                 RefreshToken = GenerateRefreshToken(),
                 RefreshTokenExpiryTime = DateTime.UtcNow.Add(TimeSpan.FromMinutes(AuthOptions.REFRESHTOKENLIFETIME))
-            };
-        }
-
-        public async Task<AuthenticationResult> Register(RegisterRequestModel requestModel)
-        {
-            var hashModel = CreatePasswordHash(requestModel.Password);
-
-            var user = mapper.Map<UserModel>(requestModel);
-
-            user.PasswordSalt = hashModel.PasswordSalt;
-            user.PasswordHash = hashModel.PasswordHash;
-
-            var responseUser = await userManager.AddUser(user);
-
-            var token = Generate(user);
-
-            return new AuthenticationResult
-            {
-                Success = true,
-                Token = token.AccessToken
             };
         }
 
@@ -129,7 +131,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             }
         }
 
-        public string GenerateRefreshToken()
+        private string GenerateRefreshToken()
         {
             var randomNumber = new byte[32];
             using (var rng = RandomNumberGenerator.Create())

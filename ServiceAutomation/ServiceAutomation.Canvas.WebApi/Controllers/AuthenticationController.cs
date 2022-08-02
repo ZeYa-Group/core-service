@@ -15,6 +15,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
     {
         private readonly IAuthProvider authProvider;
         private readonly IUserManager userManager;
+
         public AuthenticationController(IAuthProvider authProvider, IUserManager userManager)
         {
             this.authProvider = authProvider;

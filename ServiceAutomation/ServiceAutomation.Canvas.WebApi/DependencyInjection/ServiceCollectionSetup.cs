@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using ServiceAutomaion.Services.Interfaces;
 using ServiceAutomaion.Services.Services;
 using ServiceAutomation.Canvas.AutoMapping;
+using ServiceAutomation.Canvas.WebApi.Interfaces;
+using ServiceAutomation.Canvas.WebApi.Services;
 using ServiceAutomation.DataAccess;
 using ServiceAutomation.DataAccess.Extensions;
 
@@ -36,6 +38,8 @@ namespace ServiceAutomation.Canvas.WebApi.DependencyInjection
         public virtual void SetupServices(IServiceCollection services)
         {
             services.AddScoped<IIdentityGenerator,IdentityGenerator>();
+            services.AddScoped<IAuthProvider, AuthProvider>();
+            services.AddScoped<IUserManager, UserManager>();
         }
     }
 

@@ -7,10 +7,7 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
     public interface IAuthProvider
     {
-        Token Generate(UserModel user);
-        string GenerateRefreshToken();
         Task<AuthenticationResult> Authenticate(LoginRequestModel requestModel);
         Task<AuthenticationResult> Register(RegisterRequestModel requestModel);
-
     }
 }

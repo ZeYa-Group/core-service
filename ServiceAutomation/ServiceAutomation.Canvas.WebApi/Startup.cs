@@ -50,13 +50,9 @@ namespace ServiceAutomation.Canvas.WebApi
                         ValidateLifetime = true,
                         IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
                         ValidateIssuerSigningKey = true,
-                        ClockSkew = TimeSpan.FromMinutes(1)
+                        ClockSkew = TimeSpan.FromMinutes(0)
                     };
                 });
-
-            services.AddScoped<IAuthProvider, AuthProvider>();
-            services.AddScoped<IUserManager, UserManager>();
-
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
