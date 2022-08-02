@@ -68,7 +68,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return new Token
             {
                 AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
-                //AccessTokenExpiryTime = token.ValidTo,
+                AccessTokenExpiryTime = token.ValidTo,
                 RefreshToken = GenerateRefreshToken(),
                 RefreshTokenExpiryTime = DateTime.UtcNow.Add(TimeSpan.FromMinutes(AuthOptions.REFRESHTOKENLIFETIME))
             };
