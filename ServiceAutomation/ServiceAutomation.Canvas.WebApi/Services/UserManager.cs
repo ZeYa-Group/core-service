@@ -13,11 +13,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class UserManager : IUserManager
     {
-        private readonly ServiceDbContext dbContext;
+        private readonly AppDbContext dbContext;
         private readonly IMapper mapper;
         private readonly IIdentityGenerator identityGenerator;
 
-        public UserManager(ServiceDbContext dbContext, IMapper mapper, IIdentityGenerator identityGenerator)
+        public UserManager(AppDbContext dbContext, IMapper mapper, IIdentityGenerator identityGenerator)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
@@ -34,7 +34,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 Email = user.Email,
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
-                Roles = user.Roles,
+                //Roles = user.Roles,
                 RefreshToken = user.RefreshToken,
             };
 

@@ -55,6 +55,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             }
 
             var response = await authProvider.Register(requestModel);
+
             return Ok(response);
         }
 

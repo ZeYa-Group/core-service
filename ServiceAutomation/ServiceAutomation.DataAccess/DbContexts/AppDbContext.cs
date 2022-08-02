@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ServiceAutomation.DataAccess.DbContexts
 {
-    public class PotgreSqlContext : ServiceDbContext
+    public class AppDbContext : ServiceDbContext
     {
-        public PotgreSqlContext(DbContextOptions<PotgreSqlContext> options) : base(options)
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
 
         }

@@ -15,8 +15,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
         public MappingProfile()
         {
             CreateMap<UserContactEntity, UserModel>();
-            CreateMap<RegisterRequestModel, UserModel>()
-                .ForMember(mem => mem.Roles, opt => opt.Ignore());
+            CreateMap<RegisterRequestModel, UserModel>();
         }
     }
 }

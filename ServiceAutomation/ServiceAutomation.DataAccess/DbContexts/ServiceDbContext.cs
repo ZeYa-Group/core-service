@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ServiceAutomation.DataAccess.DbContexts
 {
-    public abstract partial class ServiceDbContext : DbContext
+    public abstract class ServiceDbContext : DbContext
     {
         public virtual DbSet<UserContactEntity> UserContacts { get; set; }
 

@@ -13,7 +13,7 @@ namespace ServiceAutomation.Common.Models
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
 
-        public List<Role> Roles { get; set; }
+        //public List<Role> Roles { get; set; }
 
         public RefreshToken RefreshToken { get; set; }
 

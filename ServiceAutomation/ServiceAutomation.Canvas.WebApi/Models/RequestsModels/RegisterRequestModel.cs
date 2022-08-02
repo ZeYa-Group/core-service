@@ -11,6 +11,6 @@ namespace ServiceAutomation.Canvas.WebApi.Models.RequestsModels
         public string Email { get; set; }
         public string Password { get; set; }
 
-        public List<string> Roles { get; set; }
+        //public List<string> Roles { get; set; }
     }
 }

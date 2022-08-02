@@ -16,7 +16,7 @@ namespace ServiceAutomation.DataAccess
         private string host = "localhost";
         private string username = "postgres";
         private string password = "652431";
-        private string database = "Prumpumpum";
+        private string database = "DEV-WORK";
         private string minPool = "1";
 
         public string GetConnectionString()
