@@ -6,6 +6,7 @@ namespace ServiceAutomation.Common.Models
 {
     public class UserModel
     {
+        public Guid Id { get; set; }
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
@@ -15,7 +16,6 @@ namespace ServiceAutomation.Common.Models
 
         //public List<Role> Roles { get; set; }
 
-        //public RefreshToken RefreshToken { get; set; }
-
+        //public RefreshToken RefreshToken { get; set;}
     }
 }

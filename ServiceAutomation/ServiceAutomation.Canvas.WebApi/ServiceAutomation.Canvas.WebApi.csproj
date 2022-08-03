@@ -28,8 +28,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\RequestsModels\" />
     <Folder Include="Models\ResponseModels\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
 
   <ItemGroup>

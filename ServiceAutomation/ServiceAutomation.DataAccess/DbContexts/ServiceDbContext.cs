@@ -11,6 +11,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
     public abstract class ServiceDbContext : DbContext
     {
         public virtual DbSet<UserContactEntity> UserContacts { get; set; }
+        public virtual DbSet<RefreshTokenEntity> RefresTokens { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {

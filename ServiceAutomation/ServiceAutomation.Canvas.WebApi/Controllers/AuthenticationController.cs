@@ -26,6 +26,11 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpPost(Requests.User.Login)]
         public async Task<IActionResult> Login([FromBody] LoginRequestModel requestModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Model is not valid");
+            }
+
             var response = await authProvider.Authenticate(requestModel);
             
             return Ok(response);
@@ -37,6 +42,18 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         {
             string rawUserId = HttpContext.User.FindFirstValue("id");
             return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpPost(Requests.User.Refresh)]
+        public async Task<IActionResult> Refresh([FromBody] RefreshRequestModel requestModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            return Ok(await authProvider.Refresh(requestModel));
         }
 
         [AllowAnonymous]
@@ -52,6 +69,5 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
             return Ok(response);
         }
-
     }
 }

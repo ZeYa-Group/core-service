@@ -1,31 +1,81 @@
-﻿using ServiceAutomation.Canvas.WebApi.Interfaces;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using ServiceAutomaion.Services.Interfaces;
+using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.Common.Models;
+using ServiceAutomation.DataAccess.DbContexts;
+using ServiceAutomation.DataAccess.Schemas.EntityModels;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class TokenService : ITokenService
     {
-        public Token Create(UserModel user)
+        private readonly AppDbContext dbContext;
+        private readonly IIdentityGenerator generator;
+        private readonly IMapper mapper;
+
+        public TokenService(AppDbContext dbContext, IIdentityGenerator generator, IMapper mapper)
         {
-            throw new System.NotImplementedException();
+            this.dbContext = dbContext;
+            this.generator = generator;
+            this.mapper = mapper;
+        }
+        public async Task<Guid> Create(RefreshToken token)
+        {
+            var refreshToken = new RefreshTokenEntity()
+            {
+                Id = generator.Generate(),
+                Token = token.Token,
+                UserId = token.UserId
+            };
+
+            await dbContext.RefresTokens.AddAsync(refreshToken);
+            await dbContext.SaveChangesAsync();
+
+            return refreshToken.Id;
         }
 
-        public Token Create(List<Claim> claims)
+        public async Task DeleteRefreshToken(Guid id)
         {
-            throw new System.NotImplementedException();
+            var refreshToken = await dbContext.RefresTokens.FirstOrDefaultAsync(tkn => tkn.Id == id);
+
+            if(refreshToken == null)
+            {
+                return;
+            }
+
+            dbContext.RefresTokens.Remove(refreshToken);
+            await dbContext.SaveChangesAsync();
         }
 
-        public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
+        public async Task<RefreshToken> GetRefreshToken(string token)
         {
-            throw new System.NotImplementedException();
+            var tokenModel = await dbContext.RefresTokens.FirstOrDefaultAsync(tkn => tkn.Token == token);
+
+            if(tokenModel == null)
+            {
+                return null;
+            }
+
+            return mapper.Map<RefreshToken>(tokenModel);
         }
 
-        public bool VerifyRefreshToken(RefreshToken user, Token tokenData)
+        public async Task<RefreshToken> GetRefreshToken(Guid userId)
         {
-            throw new System.NotImplementedException();
+            var tokenModel = await dbContext.RefresTokens.FirstOrDefaultAsync(tkn => tkn.UserId == userId);
+
+            if (tokenModel == null)
+            {
+                return null;
+            }
+
+            return mapper.Map<RefreshToken>(tokenModel);
         }
     }
 }

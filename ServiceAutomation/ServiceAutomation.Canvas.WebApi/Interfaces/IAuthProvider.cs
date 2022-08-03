@@ -9,5 +9,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
     {
         Task<AuthenticationResult> Authenticate(LoginRequestModel requestModel);
         Task<AuthenticationResult> Register(RegisterRequestModel requestModel);
+        Task<AuthenticationResult> Refresh(RefreshRequestModel requestModel);
     }
 }

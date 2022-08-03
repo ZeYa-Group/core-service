@@ -13,6 +13,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public const int REFRESHTOKENLIFETIME = 1;
 
         public static SymmetricSecurityKey GetSymmetricSecurityKey() =>
-            new SymmetricSecurityKey(Encoding.ASCII.GetBytes(KEY));
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(KEY));
     }
 }

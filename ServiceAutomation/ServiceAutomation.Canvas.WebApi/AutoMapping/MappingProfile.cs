@@ -16,6 +16,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
         {
             CreateMap<UserContactEntity, UserModel>();
             CreateMap<RegisterRequestModel, UserModel>();
+            CreateMap<RefreshTokenEntity, RefreshToken>();
         }
     }
 }

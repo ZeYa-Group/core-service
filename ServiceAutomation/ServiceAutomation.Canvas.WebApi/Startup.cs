@@ -50,7 +50,7 @@ namespace ServiceAutomation.Canvas.WebApi
                         ValidateLifetime = true,
                         IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
                         ValidateIssuerSigningKey = true,
-                        ClockSkew = TimeSpan.FromMinutes(0)
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
 

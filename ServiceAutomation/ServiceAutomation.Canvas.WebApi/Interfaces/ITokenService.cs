@@ -1,15 +1,17 @@
 ﻿using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.Common.Models;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
     public interface ITokenService
     {
-        Token Create(UserModel user);
-        ClaimsPrincipal GetPrincipalFromExpiredToken(string token);
-        Token Create(List<Claim> claims);
-        bool VerifyRefreshToken(RefreshToken user, Token tokenData);
+        Task<Guid> Create(RefreshToken token);
+        Task<RefreshToken> GetRefreshToken(string token);
+        Task<RefreshToken> GetRefreshToken(Guid userId);
+        Task DeleteRefreshToken(Guid id);
     }
 }

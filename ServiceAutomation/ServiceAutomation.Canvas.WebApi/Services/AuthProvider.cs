@@ -21,11 +21,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     {
         private readonly IUserManager userManager;
         private readonly IMapper mapper;
+        private readonly ITokenService tokenService;
 
-        public AuthProvider(IUserManager userManager, IMapper mapper)
+        public AuthProvider(IUserManager userManager, IMapper mapper, ITokenService tokenService)
         {
             this.userManager = userManager;
             this.mapper = mapper;
+            this.tokenService = tokenService;
         }
 
         public async Task<AuthenticationResult> Authenticate(LoginRequestModel requestModel)
@@ -52,12 +54,19 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 };
             }
 
-            var token = Generate(user);
+            var expiredToken = await tokenService.GetRefreshToken(user.Id);
+            await tokenService.DeleteRefreshToken(expiredToken.Id);
+
+            var accessToken = GenerateAccessToken(user);
+            var refreshToken = GenerateRefreshToken();
+
+            await tokenService.Create(new RefreshToken { UserId = user.Id, Token = refreshToken });
 
             return new AuthenticationResult()
             {
                 Success = true,
-                Token = token.AccessToken
+                AccessToken = accessToken,
+                RefreshToken = refreshToken,
             };
         }
 
@@ -72,23 +81,92 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var responseUser = await userManager.AddUser(user);
 
-            var token = Generate(responseUser);
+            var accessToken = GenerateAccessToken(responseUser);
+            var refreshToken = GenerateRefreshToken();
+
+            await tokenService.Create(new RefreshToken { Token = refreshToken, UserId = responseUser.Id });
 
             return new AuthenticationResult
             {
                 Success = true,
-                Token = token.AccessToken
+                AccessToken = accessToken,
+                RefreshToken = refreshToken,
             };
         }
 
-        private Token Generate(UserModel user)
+        public async Task<AuthenticationResult> Refresh(RefreshRequestModel requestModel)
+        {
+            JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
+            TokenValidationParameters parameters = new TokenValidationParameters
+            {
+                ValidateIssuer = true,
+                ValidIssuer = AuthOptions.ISSUER,
+                ValidateAudience = true,
+                ValidAudience = AuthOptions.AUDIENCE,
+                ValidateLifetime = true,
+                IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
+                ValidateIssuerSigningKey = true,
+                ClockSkew = TimeSpan.Zero
+            };
+
+            try
+            {
+                handler.ValidateToken(requestModel.RefreshToken, parameters, out SecurityToken validatedToken);
+            }
+            catch (Exception ex)
+            {
+                return new AuthenticationResult()
+                {
+                    Success = false,
+                    Errors = new[] { $"{ex.Message}" }
+                };
+            }
+
+            var refreshToken = await tokenService.GetRefreshToken(requestModel.RefreshToken);
+
+            if(refreshToken == null)
+            {
+                return new AuthenticationResult()
+                {
+                    Success = false,
+                    Errors = new[] { "Invalid refresh token" }
+                };
+            }
+
+            await tokenService.DeleteRefreshToken(refreshToken.Id);
+
+            var currentUser = await userManager.GetById(refreshToken.UserId);
+
+            if(currentUser == null)
+            {
+                return new AuthenticationResult()
+                {
+                    Success = false,
+                    Errors = new[] { "User not found" }
+                };
+            }
+
+            var currentAccessToken = GenerateAccessToken(currentUser);
+            var currentRefreshToken = GenerateRefreshToken();
+
+            await tokenService.Create(new RefreshToken { Token = currentRefreshToken, UserId = currentUser.Id });
+
+            return new AuthenticationResult()
+            {
+                Success = true,
+                RefreshToken = currentRefreshToken,
+                AccessToken = currentAccessToken
+            };
+        }
+
+        private string GenerateAccessToken(UserModel user)
         {
             var securityKey = AuthOptions.GetSymmetricSecurityKey();
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Name),
+                new Claim(ClaimTypes.Name, user.Name),
                 new Claim(ClaimTypes.Surname, user.Surname),
                 new Claim(ClaimTypes.Email, user.Email),
             };
@@ -100,13 +178,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 expires: DateTime.Now.AddMinutes(1),
                 signingCredentials: credentials);
 
-            return new Token
-            {
-                AccessToken = new JwtSecurityTokenHandler().WriteToken(token),
-                AccessTokenExpiryTime = token.ValidTo,
-                RefreshToken = GenerateRefreshToken(),
-                RefreshTokenExpiryTime = DateTime.UtcNow.Add(TimeSpan.FromMinutes(AuthOptions.REFRESHTOKENLIFETIME))
-            };
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
         private PasswordHashModel CreatePasswordHash(string password)
@@ -133,12 +205,16 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         private string GenerateRefreshToken()
         {
-            var randomNumber = new byte[32];
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(randomNumber);
-                return Convert.ToBase64String(randomNumber);
-            }
+            var securityKey = AuthOptions.GetSymmetricSecurityKey();
+            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                AuthOptions.ISSUER,
+                AuthOptions.AUDIENCE,
+                expires: DateTime.Now.AddMinutes(100),
+                signingCredentials: credentials);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
 }

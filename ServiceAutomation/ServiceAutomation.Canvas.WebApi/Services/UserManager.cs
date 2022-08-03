@@ -34,13 +34,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 Email = user.Email,
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
-                //Roles = user.Roles,
             };
 
             await dbContext.UserContacts.AddAsync(addedUser);
             await dbContext.SaveChangesAsync();
 
-            return user;
+            return mapper.Map<UserModel>(addedUser);
         }
 
         public async Task<UserModel> GetByEmail(string email)
@@ -48,6 +47,18 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var user = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.Email == email.ToLower());
 
             if(user == null)
+            {
+                return null;
+            }
+
+            return mapper.Map<UserModel>(user);
+        }
+
+        public async Task<UserModel> GetById(Guid id)
+        {
+            var user = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.Id == id);
+
+            if (user == null)
             {
                 return null;
             }
