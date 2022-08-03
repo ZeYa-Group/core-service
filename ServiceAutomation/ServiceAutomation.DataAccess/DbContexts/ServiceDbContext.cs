@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ServiceAutomation.DataAccess.Schemas.EntityModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,23 +8,14 @@ using System.Threading.Tasks;
 
 namespace ServiceAutomation.DataAccess.DbContexts
 {
-    public abstract partial class ServiceDbContext : DbContext
+    public abstract class ServiceDbContext : DbContext
     {
-        //тут будет связь с бд + класс для датасетов
-
-        public ServiceDbContext()
-        {
-
-        }
+        public virtual DbSet<UserContactEntity> UserContacts { get; set; }
+        public virtual DbSet<RefreshTokenEntity> RefresTokens { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
             Database.EnsureCreated();
         }
-
-        //public ServiceDbContext()
-        //{
-
-        //}
     }
 }

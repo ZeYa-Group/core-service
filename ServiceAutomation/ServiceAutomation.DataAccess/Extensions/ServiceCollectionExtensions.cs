@@ -17,7 +17,7 @@ namespace ServiceAutomation.DataAccess.Extensions
             Action<DataAccessOptions> optionsSetter = default)
         {
             services.AddSingleton(databaseSecret);
-            services.AddDbContext<PotgreSqlContext>(options =>
+            services.AddDbContext<AppDbContext>(options =>
             {
                 var dataAccessOptions = new DataAccessOptions();
 
@@ -32,7 +32,7 @@ namespace ServiceAutomation.DataAccess.Extensions
                 
             });
 
-            services.AddScoped<ServiceDbContext, PotgreSqlContext>();
+            services.AddScoped<ServiceDbContext, AppDbContext>();
         }
     }
 

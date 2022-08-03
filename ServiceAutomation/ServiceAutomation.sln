@@ -5,13 +5,19 @@ VisualStudioVersion = 17.2.32526.322
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Canvas", "Canvas", "{0B4A3CCC-C57F-47FB-9927-3236ABF85B96}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{19013F5A-9B4D-4EFF-8369-1134C2F28628}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{BBF892A0-30DE-4FEA-9596-C066546CDEBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceAutomation.Canvas.WebApi", "ServiceAutomation.Canvas.WebApi\ServiceAutomation.Canvas.WebApi.csproj", "{B202C9B9-48F1-4FF4-9E4F-07F537C54507}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceAutomation.Canvas.WebApi", "ServiceAutomation.Canvas.WebApi\ServiceAutomation.Canvas.WebApi.csproj", "{B202C9B9-48F1-4FF4-9E4F-07F537C54507}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceAutomation.DataAccess", "ServiceAutomation.DataAccess\ServiceAutomation.DataAccess.csproj", "{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceAutomation.DataAccess", "ServiceAutomation.DataAccess\ServiceAutomation.DataAccess.csproj", "{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{B1B02A04-EAFD-4DE2-B418-A8A322BDDE5E}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceAutomaion.Services", "ServiceAutomaion.Services\ServiceAutomaion.Services.csproj", "{0C3203F9-47D9-4503-8085-F74496F3FE07}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{43A5236D-723F-4D0E-8281-0DA0C0A8760D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceAutomation.Common", "ServiceAutomation.Common\ServiceAutomation.Common.csproj", "{8A574B8C-5DB8-43E0-A4F2-A4BF1437D42B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +33,14 @@ Global
 		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C3203F9-47D9-4503-8085-F74496F3FE07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C3203F9-47D9-4503-8085-F74496F3FE07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C3203F9-47D9-4503-8085-F74496F3FE07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C3203F9-47D9-4503-8085-F74496F3FE07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A574B8C-5DB8-43E0-A4F2-A4BF1437D42B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A574B8C-5DB8-43E0-A4F2-A4BF1437D42B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A574B8C-5DB8-43E0-A4F2-A4BF1437D42B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A574B8C-5DB8-43E0-A4F2-A4BF1437D42B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -34,6 +48,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B202C9B9-48F1-4FF4-9E4F-07F537C54507} = {0B4A3CCC-C57F-47FB-9927-3236ABF85B96}
 		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7} = {BBF892A0-30DE-4FEA-9596-C066546CDEBD}
+		{0C3203F9-47D9-4503-8085-F74496F3FE07} = {B1B02A04-EAFD-4DE2-B418-A8A322BDDE5E}
+		{8A574B8C-5DB8-43E0-A4F2-A4BF1437D42B} = {43A5236D-723F-4D0E-8281-0DA0C0A8760D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C56622B7-C01B-4321-958A-3DD52A8FD5FF}
