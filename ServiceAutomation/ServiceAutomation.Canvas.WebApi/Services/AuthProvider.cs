@@ -30,9 +30,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             this.tokenService = tokenService;
         }
 
-        public async Task<AuthenticationResult> Authenticate(LoginRequestModel requestModel)
+        public async Task<AuthenticationResult> AuthenticateAsync(LoginRequestModel requestModel)
         {
-            var user = await userManager.GetByEmail(requestModel.Email);
+            var user = await userManager.GetByEmailAsync(requestModel.Email);
 
             if (user == null)
             {
@@ -54,13 +54,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 };
             }
 
-            var expiredToken = await tokenService.GetRefreshToken(user.Id);
-            await tokenService.DeleteRefreshToken(expiredToken.Id);
+            var expiredToken = await tokenService.GetRefreshTokenAsync(user.Id);
+            await tokenService.DeleteRefreshTokenAsync(expiredToken.Id);
 
             var accessToken = GenerateAccessToken(user);
             var refreshToken = GenerateRefreshToken();
 
-            await tokenService.Create(new RefreshToken { UserId = user.Id, Token = refreshToken });
+            await tokenService.CreateAsync(new RefreshToken { UserId = user.Id, Token = refreshToken });
 
             return new AuthenticationResult()
             {
@@ -70,7 +70,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             };
         }
 
-        public async Task<AuthenticationResult> Register(RegisterRequestModel requestModel)
+        public async Task<AuthenticationResult> RegisterAsync(RegisterRequestModel requestModel)
         {
             var hashModel = CreatePasswordHash(requestModel.Password);
 
@@ -79,12 +79,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             user.PasswordSalt = hashModel.PasswordSalt;
             user.PasswordHash = hashModel.PasswordHash;
 
-            var responseUser = await userManager.AddUser(user);
+            var responseUser = await userManager.AddUserAsync(user);
 
             var accessToken = GenerateAccessToken(responseUser);
             var refreshToken = GenerateRefreshToken();
 
-            await tokenService.Create(new RefreshToken { Token = refreshToken, UserId = responseUser.Id });
+            await tokenService.CreateAsync(new RefreshToken { Token = refreshToken, UserId = responseUser.Id });
 
             return new AuthenticationResult
             {
@@ -94,7 +94,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             };
         }
 
-        public async Task<AuthenticationResult> Refresh(RefreshRequestModel requestModel)
+        public async Task<AuthenticationResult> RefreshAsync(RefreshRequestModel requestModel)
         {
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
             TokenValidationParameters parameters = new TokenValidationParameters
@@ -122,7 +122,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 };
             }
 
-            var refreshToken = await tokenService.GetRefreshToken(requestModel.RefreshToken);
+            var refreshToken = await tokenService.GetRefreshTokenAsync(requestModel.RefreshToken);
 
             if(refreshToken == null)
             {
@@ -133,9 +133,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 };
             }
 
-            await tokenService.DeleteRefreshToken(refreshToken.Id);
+            await tokenService.DeleteRefreshTokenAsync(refreshToken.Id);
 
-            var currentUser = await userManager.GetById(refreshToken.UserId);
+            var currentUser = await userManager.GetByIdAsync(refreshToken.UserId);
 
             if(currentUser == null)
             {
@@ -149,7 +149,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var currentAccessToken = GenerateAccessToken(currentUser);
             var currentRefreshToken = GenerateRefreshToken();
 
-            await tokenService.Create(new RefreshToken { Token = currentRefreshToken, UserId = currentUser.Id });
+            await tokenService.CreateAsync(new RefreshToken { Token = currentRefreshToken, UserId = currentUser.Id });
 
             return new AuthenticationResult()
             {

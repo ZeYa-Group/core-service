@@ -7,8 +7,8 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
     public interface IAuthProvider
     {
-        Task<AuthenticationResult> Authenticate(LoginRequestModel requestModel);
-        Task<AuthenticationResult> Register(RegisterRequestModel requestModel);
-        Task<AuthenticationResult> Refresh(RefreshRequestModel requestModel);
+        Task<AuthenticationResult> AuthenticateAsync(LoginRequestModel requestModel);
+        Task<AuthenticationResult> RegisterAsync(RegisterRequestModel requestModel);
+        Task<AuthenticationResult> RefreshAsync(RefreshRequestModel requestModel);
     }
 }

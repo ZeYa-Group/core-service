@@ -9,9 +9,9 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
     public interface ITokenService
     {
-        Task<Guid> Create(RefreshToken token);
-        Task<RefreshToken> GetRefreshToken(string token);
-        Task<RefreshToken> GetRefreshToken(Guid userId);
-        Task DeleteRefreshToken(Guid id);
+        Task<Guid> CreateAsync(RefreshToken token);
+        Task<RefreshToken> GetRefreshTokenAsync(string token);
+        Task<RefreshToken> GetRefreshTokenAsync(Guid userId);
+        Task DeleteRefreshTokenAsync(Guid id);
     }
 }

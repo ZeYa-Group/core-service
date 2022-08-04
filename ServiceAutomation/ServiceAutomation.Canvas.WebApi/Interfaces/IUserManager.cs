@@ -7,9 +7,9 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
     public interface IUserManager
     {
-        Task<UserModel> GetByEmail(string email);
-        Task<UserModel> GetById(Guid id);
-        Task<UserModel> AddUser(UserModel user);
-        Task<bool> IsUserAlreadyExists(string email);
+        Task<UserModel> GetByEmailAsync(string email);
+        Task<UserModel> GetByIdAsync(Guid id);
+        Task<UserModel> AddUserAsync(UserModel user);
+        Task<bool> IsUserAlreadyExistsAsync(string email);
     }
 }

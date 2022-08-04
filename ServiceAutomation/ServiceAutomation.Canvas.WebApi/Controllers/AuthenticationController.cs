@@ -31,7 +31,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
                 return BadRequest("Model is not valid");
             }
 
-            var response = await authProvider.Authenticate(requestModel);
+            var response = await authProvider.AuthenticateAsync(requestModel);
             
             return Ok(response);
         }
@@ -40,7 +40,6 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpPost(Requests.User.Logout)]
         public async Task<IActionResult> Logout()
         {
-            string rawUserId = HttpContext.User.FindFirstValue("id");
             return Ok();
         }
 
@@ -53,19 +52,19 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
                 return BadRequest();
             }
 
-            return Ok(await authProvider.Refresh(requestModel));
+            return Ok(await authProvider.RefreshAsync(requestModel));
         }
 
         [AllowAnonymous]
         [HttpPost(Requests.User.Register)]
         public async Task<IActionResult> Register(RegisterRequestModel requestModel)
         {
-            if (await userManager.IsUserAlreadyExists(requestModel.Email))
+            if (await userManager.IsUserAlreadyExistsAsync(requestModel.Email))
             {
                 return BadRequest("User already exists");
             }
 
-            var response = await authProvider.Register(requestModel);
+            var response = await authProvider.RegisterAsync(requestModel);
 
             return Ok(response);
         }
