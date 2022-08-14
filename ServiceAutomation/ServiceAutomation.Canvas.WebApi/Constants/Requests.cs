@@ -15,5 +15,10 @@
             public const string Register = "Register";
             public const string Refresh = "Refresh";
         }
+
+        public static class Info
+        {
+            public const string GetThumbnails = "GetThumbnails";
+        }
     }
 }

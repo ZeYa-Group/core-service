@@ -82,6 +82,14 @@ namespace ServiceAutomation.Canvas.WebApi
                     }           
                 });
             });
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: "MyPolicy", builder =>
+                {
+                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+                });
+            });
         }
 
         
@@ -93,6 +101,8 @@ namespace ServiceAutomation.Canvas.WebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ServiceAutomation.Canvas.WebApi v1"));
             }
+
+            app.UseCors("MyPolicy");
 
             app.UseHttpsRedirection();
 

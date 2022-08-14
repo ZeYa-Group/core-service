@@ -41,6 +41,7 @@ namespace ServiceAutomation.Canvas.WebApi.DependencyInjection
             services.AddScoped<IAuthProvider, AuthProvider>();
             services.AddScoped<IUserManager, UserManager>();
             services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IInfoService, InfoService>();
         }
     }
 
