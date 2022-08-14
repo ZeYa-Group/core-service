@@ -26,7 +26,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             this.generator = generator;
             this.mapper = mapper;
         }
-        public async Task<Guid> Create(RefreshToken token)
+
+        public async Task<Guid> CreateAsync(RefreshToken token)
         {
             var refreshToken = new RefreshTokenEntity()
             {
@@ -41,7 +42,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return refreshToken.Id;
         }
 
-        public async Task DeleteRefreshToken(Guid id)
+        public async Task DeleteRefreshTokenAsync(Guid id)
         {
             var refreshToken = await dbContext.RefresTokens.FirstOrDefaultAsync(tkn => tkn.Id == id);
 
@@ -54,7 +55,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public async Task<RefreshToken> GetRefreshToken(string token)
+        public async Task<RefreshToken> GetRefreshTokenAsync(string token)
         {
             var tokenModel = await dbContext.RefresTokens.FirstOrDefaultAsync(tkn => tkn.Token == token);
 
@@ -66,7 +67,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return mapper.Map<RefreshToken>(tokenModel);
         }
 
-        public async Task<RefreshToken> GetRefreshToken(Guid userId)
+        public async Task<RefreshToken> GetRefreshTokenAsync(Guid userId)
         {
             var tokenModel = await dbContext.RefresTokens.FirstOrDefaultAsync(tkn => tkn.UserId == userId);
 

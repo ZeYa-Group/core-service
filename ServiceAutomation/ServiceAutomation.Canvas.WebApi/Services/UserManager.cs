@@ -24,7 +24,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             this.identityGenerator = identityGenerator;
         }
 
-        public async Task<UserModel> AddUser(UserModel user)
+        public async Task<UserModel> AddUserAsync(UserModel user)
         {
             var addedUser = new UserContactEntity()
             {
@@ -42,7 +42,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return mapper.Map<UserModel>(addedUser);
         }
 
-        public async Task<UserModel> GetByEmail(string email)
+        public async Task<UserModel> GetByEmailAsync(string email)
         {
             var user = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.Email == email.ToLower());
 
@@ -54,7 +54,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return mapper.Map<UserModel>(user);
         }
 
-        public async Task<UserModel> GetById(Guid id)
+        public async Task<UserModel> GetByIdAsync(Guid id)
         {
             var user = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.Id == id);
 
@@ -66,7 +66,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return mapper.Map<UserModel>(user);
         }
 
-        public async Task<bool> IsUserAlreadyExists(string email)
+        public async Task<bool> IsUserAlreadyExistsAsync(string email)
         {
             var user = await dbContext.UserContacts.Where(x => x.Email == email.ToLower()).ToListAsync();
 
