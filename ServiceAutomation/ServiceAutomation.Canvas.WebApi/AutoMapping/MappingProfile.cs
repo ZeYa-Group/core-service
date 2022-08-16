@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
+using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.Common.Models;
 using ServiceAutomation.DataAccess.Schemas.EntityModels;
 using System;
@@ -17,6 +18,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<UserContactEntity, UserModel>();
             CreateMap<RegisterRequestModel, UserModel>();
             CreateMap<RefreshTokenEntity, RefreshToken>();
+            CreateMap<ThumbnailTemplateEntity, ThumbnailResponseModel>();
         }
     }
 }

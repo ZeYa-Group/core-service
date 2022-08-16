@@ -87,7 +87,7 @@ namespace ServiceAutomation.Canvas.WebApi
             {
                 options.AddPolicy(name: "MyPolicy", builder =>
                 {
-                    builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+                    builder.WithOrigins().AllowAnyMethod().AllowAnyHeader().AllowCredentials();
                 });
             });
         }

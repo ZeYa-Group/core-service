@@ -14,19 +14,6 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
         }
 
-        [AllowAnonymous]
-        [HttpGet(Requests.Home.GetAction)]
-        public IActionResult GetAction()
-        {
-            return Ok("Hello from WebApi");
-        }
-
-        [Authorize]
-        [HttpGet(Requests.Home.GetAuthAction)]
-        public IActionResult GetAuthAction()
-        {
-            var user = User.Identity.Name;
-            return Ok($"Hello {user}");
-        }
+        
     }
 }

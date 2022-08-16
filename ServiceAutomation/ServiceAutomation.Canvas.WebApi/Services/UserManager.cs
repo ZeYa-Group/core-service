@@ -37,6 +37,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             };
 
             await dbContext.UserContacts.AddAsync(addedUser);
+            await dbContext.Referrals.AddAsync(new ReferralEntity
+            {
+                ReferralCode = user.ReferralCode,
+                UserId = addedUser.Id
+            });
             await dbContext.SaveChangesAsync();
 
             return mapper.Map<UserModel>(addedUser);

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 
+
 namespace ServiceAutomation.Common.Models
 {
     public class UserModel
@@ -10,12 +11,10 @@ namespace ServiceAutomation.Common.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
+        public string ReferralCode { get; set; }
+        //public Country country { get; set; }
 
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
-
-        //public List<Role> Roles { get; set; }
-
-        //public RefreshToken RefreshToken { get; set;}
     }
 }

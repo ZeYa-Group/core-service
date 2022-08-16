@@ -24,7 +24,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpGet(Requests.Info.GetThumbnails)]
         public async Task<IEnumerable<ThumbnailResponseModel>> GetThumbnails()
         {
-            return null;
+            return await infoService.GetThumbnails();
         }
     }
 }

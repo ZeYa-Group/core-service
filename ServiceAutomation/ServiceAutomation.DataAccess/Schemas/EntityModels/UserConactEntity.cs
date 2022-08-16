@@ -1,4 +1,5 @@
 ﻿using ServiceAutomation.Common.Models;
+using ServiceAutomation.DataAccess.Schemas.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace ServiceAutomation.DataAccess.Schemas.EntityModels
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
+        public Country country { get; set; }
 
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
