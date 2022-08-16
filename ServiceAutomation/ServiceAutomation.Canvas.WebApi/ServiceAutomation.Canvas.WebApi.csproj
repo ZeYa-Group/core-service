@@ -33,7 +33,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ServiceAutomaion.Services\ServiceAutomaion.Services.csproj" />
     <ProjectReference Include="..\ServiceAutomation.DataAccess\ServiceAutomation.DataAccess.csproj" />
   </ItemGroup>
 

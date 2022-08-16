@@ -32,6 +32,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 Name = user.Name,
                 Surname = user.Surname,
                 Email = user.Email,
+                Country = user.Country,
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
             };

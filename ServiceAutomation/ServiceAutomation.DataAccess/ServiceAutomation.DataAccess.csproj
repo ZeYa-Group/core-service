@@ -22,8 +22,4 @@
   <ItemGroup>
     <None Remove="Microsoft.AspNetCore.Authentication.JwtBearer" />
   </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\ServiceAutomation.Common\ServiceAutomation.Common.csproj" />
-  </ItemGroup>
 </Project>
