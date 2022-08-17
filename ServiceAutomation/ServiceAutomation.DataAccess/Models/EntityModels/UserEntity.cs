@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ServiceAutomation.DataAccess.Schemas.EntityModels
 {
-    public class UserContactEntity
+    public class UserEntity
     {
         public Guid Id { get; set; }
         public string Name { get; set; }

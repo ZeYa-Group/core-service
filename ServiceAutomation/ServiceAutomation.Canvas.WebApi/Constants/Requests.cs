@@ -19,6 +19,18 @@
         public static class Info
         {
             public const string GetThumbnails = "GetThumbnails";
+            public const string GetThumbnailById = "GetThumbnailById";
+        }
+
+        public static class PackageTemplate
+        {
+            public const string GetPackTemplates = "GetPackTemplates";
+            public const string BuyPackTemplate = "BuyPackTemplate";
+        }
+
+        public static class Withdraw
+        {
+            public const string GetWithdrawHistory = "GetWithdrawHistory";
         }
     }
 }

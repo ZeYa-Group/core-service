@@ -24,20 +24,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task<IEnumerable<ThumbnailResponseModel>> GetThumbnails()
         {
             var thumbnails = await context.Thumbnails.ToListAsync();
-            var response = thumbnails.Select(x => mapper.Map<ThumbnailResponseModel>(x));
-
-            return response;
+            return thumbnails.Select(x => mapper.Map<ThumbnailResponseModel>(x));
         }
 
         public async Task<ThumbnailResponseModel> GetThumbnail(Guid id)
         {
             var thumbnail = await context.Thumbnails.FirstOrDefaultAsync(x => x.Id == id);
-
-            if(thumbnail == null)
-            {
-                return null;
-            }
-
             return mapper.Map<ThumbnailResponseModel>(thumbnail);
         }
     }

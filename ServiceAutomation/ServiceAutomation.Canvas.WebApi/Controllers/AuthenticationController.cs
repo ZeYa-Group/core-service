@@ -40,7 +40,8 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpPost(Requests.User.Logout)]
         public async Task<IActionResult> Logout()
         {
-            return Ok();
+            string userId = HttpContext.User.FindFirstValue("id");
+            return Ok(userId);
         }
 
         [AllowAnonymous]

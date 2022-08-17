@@ -26,7 +26,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<UserModel> AddUserAsync(UserModel user)
         {
-            var addedUser = new UserContactEntity()
+            var addedUser = new UserEntity()
             {
                 Id = identityGenerator.Generate(),
                 Name = user.Name,
@@ -37,7 +37,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 PasswordSalt = user.PasswordSalt,
             };
 
-            await dbContext.UserContacts.AddAsync(addedUser);
+            await dbContext.Users.AddAsync(addedUser);
             await dbContext.Referrals.AddAsync(new ReferralEntity
             {
                 ReferralCode = user.ReferralCode,
@@ -50,7 +50,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<UserModel> GetByEmailAsync(string email)
         {
-            var user = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.Email == email.ToLower());
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Email == email.ToLower());
 
             if(user == null)
             {
@@ -62,7 +62,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<UserModel> GetByIdAsync(Guid id)
         {
-            var user = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.Id == id);
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             if (user == null)
             {
@@ -74,7 +74,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<bool> IsUserAlreadyExistsAsync(string email)
         {
-            var user = await dbContext.UserContacts.Where(x => x.Email == email.ToLower()).ToListAsync();
+            var user = await dbContext.Users.Where(x => x.Email == email.ToLower()).ToListAsync();
 
             if(user.Count > 0)
             {

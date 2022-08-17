@@ -10,7 +10,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
 {
     public abstract class ServiceDbContext : DbContext
     {
-        public virtual DbSet<UserContactEntity> UserContacts { get; set; }
+        public virtual DbSet<UserEntity> Users { get; set; }
         public virtual DbSet<RefreshTokenEntity> RefresTokens { get; set; }
         public virtual DbSet<ThumbnailTemplateEntity> Thumbnails { get; set; }
         public virtual DbSet<ReferralEntity> Referrals { get; set; }

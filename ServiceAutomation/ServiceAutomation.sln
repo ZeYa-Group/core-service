@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceAutomation.Canvas.We
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServiceAutomation.DataAccess", "ServiceAutomation.DataAccess\ServiceAutomation.DataAccess.csproj", "{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceAutomation.DataAccess.Migrations", "ServiceAutomation.Migrations\ServiceAutomation.DataAccess.Migrations.csproj", "{3CE2EB80-9086-4B75-98EF-1F87A62589DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +27,10 @@ Global
 		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3CE2EB80-9086-4B75-98EF-1F87A62589DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3CE2EB80-9086-4B75-98EF-1F87A62589DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3CE2EB80-9086-4B75-98EF-1F87A62589DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3CE2EB80-9086-4B75-98EF-1F87A62589DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +38,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{B202C9B9-48F1-4FF4-9E4F-07F537C54507} = {0B4A3CCC-C57F-47FB-9927-3236ABF85B96}
 		{9667AA77-883C-4CEB-8F2C-865B2F5B07A7} = {BBF892A0-30DE-4FEA-9596-C066546CDEBD}
+		{3CE2EB80-9086-4B75-98EF-1F87A62589DC} = {BBF892A0-30DE-4FEA-9596-C066546CDEBD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C56622B7-C01B-4321-958A-3DD52A8FD5FF}
