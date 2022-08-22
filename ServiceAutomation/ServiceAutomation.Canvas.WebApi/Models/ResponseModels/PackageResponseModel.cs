@@ -2,5 +2,6 @@
 {
     public class PackageResponseModel
     {
+        //ХЗ что тут будет 
     }
 }

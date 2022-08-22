@@ -13,5 +13,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
         Task<RefreshToken> GetRefreshTokenAsync(string token);
         Task<RefreshToken> GetRefreshTokenAsync(Guid userId);
         Task DeleteRefreshTokenAsync(Guid id);
+        Task DeleteAllAsync(Guid userId);
     }
 }

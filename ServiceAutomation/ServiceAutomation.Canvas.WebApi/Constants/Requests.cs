@@ -31,6 +31,13 @@
         public static class Withdraw
         {
             public const string GetWithdrawHistory = "GetWithdrawHistory";
+            public const string MakeWithdraw = "Withdraw";
+        }
+
+        public static class Group
+        {
+            public const string GetTree = "GetTree";
+            public const string AddUser = "AddUser";
         }
     }
 }

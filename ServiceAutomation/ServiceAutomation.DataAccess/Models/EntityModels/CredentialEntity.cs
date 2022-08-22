@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public class PackageTemplateEntity
+    public class CredentialEntity
     {
         public long Id { get; set; }
+        public string IBAN { get; set; }
     }
 }

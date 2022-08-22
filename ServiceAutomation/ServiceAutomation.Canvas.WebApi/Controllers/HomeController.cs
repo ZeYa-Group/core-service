@@ -14,6 +14,10 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
         }
 
-        
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok("Hello web API");
+        }
     }
 }

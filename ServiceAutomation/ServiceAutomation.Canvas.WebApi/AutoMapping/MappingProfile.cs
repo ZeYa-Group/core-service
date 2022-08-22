@@ -2,6 +2,7 @@
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.Common.Models;
+using ServiceAutomation.DataAccess.Models.EntityModels;
 using ServiceAutomation.DataAccess.Schemas.EntityModels;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<RegisterRequestModel, UserModel>();
             CreateMap<RefreshTokenEntity, RefreshToken>();
             CreateMap<ThumbnailTemplateEntity, ThumbnailResponseModel>();
+            CreateMap<WithdrawTransactionEntity, WithdrawResponseModel>();
         }
     }
 }

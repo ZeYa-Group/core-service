@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ServiceAutomation.Canvas.WebApi.Constants;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
+using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -41,6 +42,10 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         public async Task<IActionResult> Logout()
         {
             string userId = HttpContext.User.FindFirstValue("id");
+            if(!Guid.TryParse(userId, out Guid currentUserId))
+            {
+                return Unauthorized();
+            }
             return Ok(userId);
         }
 

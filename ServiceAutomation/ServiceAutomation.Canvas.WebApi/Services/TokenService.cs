@@ -44,9 +44,14 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task DeleteRefreshTokenAsync(Guid id)
         {
-            var refreshToken = await dbContext.RefresTokens.FirstOrDefaultAsync(tkn => tkn.Id == id);
+            await dbContext.SaveChangesAsync();
+        }
 
-            if(refreshToken == null)
+        public async Task DeleteAllAsync(Guid userId)
+        {
+            var refreshToken = await dbContext.RefresTokens.FirstOrDefaultAsync(tkn => tkn.Id == userId);
+
+            if (refreshToken == null)
             {
                 return;
             }
