@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceAutomation.DataAccess.Models.EntityModels;
-using ServiceAutomation.DataAccess.Schemas.EntityModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

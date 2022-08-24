@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceAutomation.DataAccess.Schemas.EntityModels
-{
+namespace ServiceAutomation.DataAccess.Models.EntityModels
+{ 
     public class CanvasLeadContactEntity
     {
         public int Id { get; set; }

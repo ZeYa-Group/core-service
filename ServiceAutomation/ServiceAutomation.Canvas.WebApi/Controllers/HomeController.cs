@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAutomation.Canvas.WebApi.Constants;
+using System;
 
 namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
@@ -14,10 +15,10 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
         }
 
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet(Constants.Requests.Home.GetReferral)]
+        public IActionResult GetReferral(Guid id)
         {
-            return Ok("Hello web API");
+            return Ok(Guid.NewGuid());
         }
     }
 }

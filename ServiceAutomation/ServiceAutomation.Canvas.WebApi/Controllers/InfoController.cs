@@ -30,7 +30,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
         [Authorize]
         [HttpGet(Requests.Info.GetThumbnailById)]
-        public async Task<ThumbnailResponseModel> GetThumbnail(Guid id)
+        public async Task<ThumbnailResponseModel> GetThumbnail(long id)
         {
             return await infoService.GetThumbnail(id);
         }

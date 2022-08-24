@@ -7,7 +7,7 @@ using ServiceAutomaion.Services.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Common.Models;
 using ServiceAutomation.DataAccess.DbContexts;
-using ServiceAutomation.DataAccess.Schemas.EntityModels;
+using ServiceAutomation.DataAccess.Models.EntityModels;
 
 namespace ServiceAutomation.Canvas.WebApi.Services
 {

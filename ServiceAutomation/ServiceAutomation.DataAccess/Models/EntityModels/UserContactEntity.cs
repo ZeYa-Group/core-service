@@ -6,10 +6,14 @@ using System.Threading.Tasks;
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public class RefreshTokenEntity
+    public class UserContactEntity
     {
-        public Guid Id { get; set; }
-        public string Token { get; set; }
+        public long Id { get; set; }
         public Guid UserId { get; set; }
+        public string Name { get; set; }
+        //все данные из паспорта
+
+
+        public virtual UserEntity User { get; set; }
     }
 }

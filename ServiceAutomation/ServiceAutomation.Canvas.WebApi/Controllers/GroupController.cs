@@ -16,7 +16,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         }
 
         [HttpGet(Constants.Requests.Group.GetTree)]
-        public async Task<IEnumerable<int>> GetTree(Guid tenantGroupId)
+        public async Task<IEnumerable<int>> GetTree(Guid userId)
         {
             return null;
         }

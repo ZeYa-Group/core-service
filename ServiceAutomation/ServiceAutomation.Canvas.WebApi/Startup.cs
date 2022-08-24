@@ -127,7 +127,7 @@ namespace ServiceAutomation.Canvas.WebApi
             //        context.Database.MigrateAsync().Wait();
             //    }
             //}
-            //catch(Exception ex)
+            //catch (Exception ex)
             //{
             //    logger.LogError(ex, $"Exception occurred on database migration");
             //    throw;

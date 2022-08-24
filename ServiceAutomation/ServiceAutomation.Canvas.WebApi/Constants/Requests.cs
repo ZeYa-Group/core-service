@@ -4,7 +4,7 @@
     {
         public static class Home
         {
-            public const string GetAction = "Get";
+            public const string GetReferral = "GetReferral";
             public const string GetAuthAction = "GetAuth";
         }
 

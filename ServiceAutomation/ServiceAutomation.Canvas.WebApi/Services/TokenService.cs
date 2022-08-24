@@ -5,7 +5,7 @@ using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.Common.Models;
 using ServiceAutomation.DataAccess.DbContexts;
-using ServiceAutomation.DataAccess.Schemas.EntityModels;
+using ServiceAutomation.DataAccess.Models.EntityModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

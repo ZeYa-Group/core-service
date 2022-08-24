@@ -8,6 +8,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
     public interface IInfoService
     {
         Task<IEnumerable<ThumbnailResponseModel>> GetThumbnails();
-        Task<ThumbnailResponseModel> GetThumbnail(Guid id);
+        Task<ThumbnailResponseModel> GetThumbnail(long id);
     }
 }

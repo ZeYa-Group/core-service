@@ -27,7 +27,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return thumbnails.Select(x => mapper.Map<ThumbnailResponseModel>(x));
         }
 
-        public async Task<ThumbnailResponseModel> GetThumbnail(Guid id)
+        public async Task<ThumbnailResponseModel> GetThumbnail(long id)
         {
             var thumbnail = await context.Thumbnails.FirstOrDefaultAsync(x => x.Id == id);
             return mapper.Map<ThumbnailResponseModel>(thumbnail);
