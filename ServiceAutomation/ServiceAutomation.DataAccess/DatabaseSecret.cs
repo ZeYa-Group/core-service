@@ -13,15 +13,16 @@ namespace ServiceAutomation.DataAccess
 
     public class DatabaseSecret : IDatabaseSecret
     {
-        private string host = "localhost";
-        private string username = "postgres";
-        private string password = "652431";
-        private string database = "DEV-WORK";
+        private string host = "postgresql-86496-0.cloudclusters.net";
+        private string port = "11042";
+        private string username = "admin";
+        private string password = "652431Tim";
+        private string database = "Trifecta";
         private string minPool = "1";
 
         public string GetConnectionString()
         {
-            return $"Host={host};Username={username};Password={password};Database={database};MinPoolSize={minPool}";
+            return $"Host={host};Port={port};Username={username};Password={password};Database={database};MinPoolSize={minPool}";
         }
     }
 }
