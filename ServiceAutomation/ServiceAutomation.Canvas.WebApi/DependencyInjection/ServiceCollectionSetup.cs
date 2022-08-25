@@ -43,6 +43,8 @@ namespace ServiceAutomation.Canvas.WebApi.DependencyInjection
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IInfoService, InfoService>();
             services.AddScoped<IWithdrawService, WithdrawService>();
+            services.AddScoped<IGroupService, GroupService>();
+            services.AddScoped<IUserReferralService, UserReferralService>();
         }
     }
 

@@ -11,7 +11,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public long Id { get; set; }
         public Guid UserId { get; set; }
         public string Name { get; set; }
-        //все данные из паспорта
+        //все данные из паспорта + телефон 
 
 
         public virtual UserEntity User { get; set; }

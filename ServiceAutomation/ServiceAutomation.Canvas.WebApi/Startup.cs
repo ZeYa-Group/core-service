@@ -121,7 +121,7 @@ namespace ServiceAutomation.Canvas.WebApi
             //try
             //{
             //    using var scope = serviceProvider.CreateScope();
-            //    var context = scope.ServiceProvider.GetRequiredService<ServiceDbContext>();
+            //    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
             //    if (context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
             //    {
             //        context.Database.MigrateAsync().Wait();

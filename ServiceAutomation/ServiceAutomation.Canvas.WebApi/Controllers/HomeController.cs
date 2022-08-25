@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAutomation.Canvas.WebApi.Constants;
 using System;
+using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
@@ -16,9 +17,9 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         }
 
         [HttpGet(Constants.Requests.Home.GetReferral)]
-        public IActionResult GetReferral(Guid id)
+        public async Task<string> GetUserReferral(Guid id)
         {
-            return Ok(Guid.NewGuid());
+            return null;
         }
     }
 }

@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceAutomation.DataAccess.Schemas.Enums
+namespace ServiceAutomation.DataAccess.Models.Enums
 {
-    public enum AutoBonusEnum
+    public enum AccrualType
     {
-        //Хуй знае что тут будет 
+        Open = 1,
+        Closed = 2
     }
 }
