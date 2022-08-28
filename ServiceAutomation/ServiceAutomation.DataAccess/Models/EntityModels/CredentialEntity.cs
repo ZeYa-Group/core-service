@@ -10,5 +10,8 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
     {
         public long Id { get; set; }
         public string IBAN { get; set; }
+        public Guid UserId { get; set; }
+
+        public virtual UserEntity User { get; set; }
     }
 }

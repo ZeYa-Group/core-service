@@ -16,12 +16,14 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly AppDbContext dbContext;
         private readonly IMapper mapper;
         private readonly IIdentityGenerator identityGenerator;
+        private readonly IUserReferralService userReferralService;
 
-        public UserManager(AppDbContext dbContext, IMapper mapper, IIdentityGenerator identityGenerator)
+        public UserManager(AppDbContext dbContext, IMapper mapper, IIdentityGenerator identityGenerator, IUserReferralService userReferralService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.identityGenerator = identityGenerator;
+            this.userReferralService = userReferralService;
         }
 
         public async Task<UserModel> AddUserAsync(UserModel user)
@@ -29,20 +31,17 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var addedUser = new UserEntity()
             {
                 Id = identityGenerator.Generate(),
-                Name = user.Name,
-                Surname = user.Surname,
+                FirstName = user.Name,
+                LastName = user.Surname,
                 Email = user.Email,
                 Country = user.Country,
+                InviteReferral = user.InviteCode,
+                PersonalReferral = userReferralService.GenerateIviteCode(),
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
             };
 
             await dbContext.Users.AddAsync(addedUser);
-            await dbContext.Referrals.AddAsync(new ReferralEntity
-            {
-                ReferralCode = user.ReferralCode,
-                UserId = addedUser.Id
-            });
             await dbContext.SaveChangesAsync();
 
             return mapper.Map<UserModel>(addedUser);

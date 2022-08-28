@@ -12,7 +12,8 @@ namespace ServiceAutomation.Common.Models
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
-        public string ReferralCode { get; set; }
+        public string InviteCode { get; set; }
+        public long GroupId { get; set; }
         public Country Country { get; set; }
 
         public byte[] PasswordHash { get; set; }

@@ -12,17 +12,17 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
     [ApiController]
     public class GroupController : ControllerBase
     {
-        private readonly IGroupService groupService;
+        private readonly IReferralGroupService groupService;
 
-        public GroupController(IGroupService groupService)
+        public GroupController(IReferralGroupService groupService)
         {
             this.groupService = groupService;
         }
 
         [HttpGet(Constants.Requests.Group.GetTree)]
-        public async Task<IEnumerable<GroupResponse>> GetTree(Guid userId)
+        public async Task<IActionResult> GetTree(Guid userId)
         {
-            return await groupService.GetUserTree(userId);
+            return Ok(await groupService.GetReferralTree(userId));
         }
     }
 }

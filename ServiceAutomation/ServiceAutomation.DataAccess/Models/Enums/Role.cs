@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceAutomation.DataAccess.Models.EntityModels
+namespace ServiceAutomation.DataAccess.Models.Enums
 {
-    public class PackageTemplateEntity
+    public enum Role
     {
-        public long Id { get; set; }
+        User = 1,
+        Admin = 2
     }
 }

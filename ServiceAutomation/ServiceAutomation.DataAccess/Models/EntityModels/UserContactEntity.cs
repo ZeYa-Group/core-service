@@ -10,9 +10,14 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
     {
         public long Id { get; set; }
         public Guid UserId { get; set; }
-        public string Name { get; set; }
-        //все данные из паспорта + телефон 
-
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string EmailAddress { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Adress { get; set; }
+        public string PassportSeries { get; set; }
+        public string PassportNumber { get; set; }
+        public string IdentityCode { get; set; }
 
         public virtual UserEntity User { get; set; }
     }

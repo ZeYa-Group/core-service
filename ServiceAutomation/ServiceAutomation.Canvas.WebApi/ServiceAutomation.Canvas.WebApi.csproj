@@ -38,6 +38,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ServiceAutomation.DataAccess\ServiceAutomation.DataAccess.csproj" />
+    <ProjectReference Include="..\ServiceAutomation.Migrations\ServiceAutomation.DataAccess.Migrations.csproj" />
   </ItemGroup>
 
   <ItemGroup>
