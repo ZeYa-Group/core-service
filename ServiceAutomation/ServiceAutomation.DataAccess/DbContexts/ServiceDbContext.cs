@@ -17,6 +17,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<WithdrawTransactionEntity> WithdrawTransactions { get; set; }
         public virtual DbSet<UserContactEntity> UserContacts { get; set; }
         public virtual DbSet<TenantGroupEntity> TenantGroups { get; set; }
+        public virtual DbSet<VideoLessonTemplateEntity> VideoLessons { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {

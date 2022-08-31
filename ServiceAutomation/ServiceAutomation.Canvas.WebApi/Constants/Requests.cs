@@ -39,5 +39,11 @@
             public const string GetTree = "GetTree";
             public const string AddUser = "AddUser";
         }
+
+        public static class VideoTemplate
+        {
+            public const string GetVideos = "GetVideos";
+            public const string GetVideo = "GetVideo";
+        }
     }
 }

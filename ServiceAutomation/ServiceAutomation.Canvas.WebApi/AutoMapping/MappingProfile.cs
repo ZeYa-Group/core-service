@@ -15,6 +15,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<RefreshTokenEntity, RefreshToken>();
             CreateMap<ThumbnailTemplateEntity, ThumbnailResponseModel>();
             CreateMap<WithdrawTransactionEntity, WithdrawResponseModel>();
+            CreateMap<VideoLessonTemplateEntity, VideoLessonResponseModel>();
         }
     }
 }

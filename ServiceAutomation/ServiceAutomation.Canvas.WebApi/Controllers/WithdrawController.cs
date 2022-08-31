@@ -32,7 +32,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpPost(Constants.Requests.Withdraw.MakeWithdraw)]
         public async Task<IEnumerable<WithdrawResponseModel>> Withdraw(WithdrawRequestModel request)
         {
-            return null;
+            throw new NotImplementedException();
         }
     }
 }

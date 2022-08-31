@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Controllers
@@ -16,13 +17,13 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpGet(Constants.Requests.PackageTemplate.GetPackTemplates)]
         public async Task<int> GetPackTemplates()
         {
-            return 0;
+            throw new NotImplementedException();
         }
 
         [HttpPost(Constants.Requests.PackageTemplate.BuyPackTemplate)]
         public async Task<int> BuyPackTemplate()
         {
-            return 0;
+            throw new NotImplementedException();
         }
     }
 }

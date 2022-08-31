@@ -19,6 +19,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.userReferralService = userReferralService;
         }
 
+        [Authorize]
         [HttpGet(Constants.Requests.Home.GetReferralLink)]
         public async Task<string> GetUserReferral(Guid userId)
         {
