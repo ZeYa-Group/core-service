@@ -5,7 +5,7 @@ using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.Common.Models;
 using ServiceAutomation.DataAccess.DbContexts;
-using ServiceAutomation.DataAccess.Schemas.EntityModels;
+using ServiceAutomation.DataAccess.Models.EntityModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,9 +44,14 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task DeleteRefreshTokenAsync(Guid id)
         {
-            var refreshToken = await dbContext.RefresTokens.FirstOrDefaultAsync(tkn => tkn.Id == id);
+            await dbContext.SaveChangesAsync();
+        }
 
-            if(refreshToken == null)
+        public async Task DeleteAllAsync(Guid userId)
+        {
+            var refreshToken = await dbContext.RefresTokens.FirstOrDefaultAsync(tkn => tkn.Id == userId);
+
+            if (refreshToken == null)
             {
                 return;
             }

@@ -1,13 +1,13 @@
 ﻿using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
+using ServiceAutomation.DataAccess.Models.EntityModels;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
-    public interface IInfoService
+    public interface IReferralGroupService
     {
-        Task<IEnumerable<ThumbnailResponseModel>> GetThumbnails();
-        Task<ThumbnailResponseModel> GetThumbnail(long id);
+        Task<TenantGroupEntity> GetReferralTree(Guid userId);
     }
 }

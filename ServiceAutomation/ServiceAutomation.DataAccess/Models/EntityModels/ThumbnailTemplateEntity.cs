@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ServiceAutomation.DataAccess.Schemas.EntityModels
+namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
     public class ThumbnailTemplateEntity
     {
-        public Guid Id { get; set; }
+        public long Id { get; set; }
         public string ThumbnailName { get; set; }
         public string ThumbnailFullPath { get; set; }
     }

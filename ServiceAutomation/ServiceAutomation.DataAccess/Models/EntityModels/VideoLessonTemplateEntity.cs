@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public class RefreshTokenEntity
+    public class VideoLessonTemplateEntity
     {
-        public Guid Id { get; set; }
-        public string Token { get; set; }
-        public Guid UserId { get; set; }
+        public long Id { get; set; }
+        public string VideoName { get; set; }
+        public string VideoFullPath { get; set; }
     }
 }

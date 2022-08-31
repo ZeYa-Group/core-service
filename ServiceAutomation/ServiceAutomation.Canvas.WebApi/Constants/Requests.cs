@@ -4,7 +4,7 @@
     {
         public static class Home
         {
-            public const string GetAction = "Get";
+            public const string GetReferralLink = "GetReferralLink";
             public const string GetAuthAction = "GetAuth";
         }
 
@@ -19,6 +19,31 @@
         public static class Info
         {
             public const string GetThumbnails = "GetThumbnails";
+            public const string GetThumbnailById = "GetThumbnailById";
+        }
+
+        public static class PackageTemplate
+        {
+            public const string GetPackTemplates = "GetPackTemplates";
+            public const string BuyPackTemplate = "BuyPackTemplate";
+        }
+
+        public static class Withdraw
+        {
+            public const string GetWithdrawHistory = "GetWithdrawHistory";
+            public const string MakeWithdraw = "Withdraw";
+        }
+
+        public static class Group
+        {
+            public const string GetTree = "GetTree";
+            public const string AddUser = "AddUser";
+        }
+
+        public static class VideoTemplate
+        {
+            public const string GetVideos = "GetVideos";
+            public const string GetVideo = "GetVideo";
         }
     }
 }

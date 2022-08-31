@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
-    public interface IInfoService
+    public interface IWithdrawService
     {
-        Task<IEnumerable<ThumbnailResponseModel>> GetThumbnails();
-        Task<ThumbnailResponseModel> GetThumbnail(long id);
+        Task<IEnumerable<WithdrawResponseModel>> GetWithdrawHistory(Guid id);
     }
 }

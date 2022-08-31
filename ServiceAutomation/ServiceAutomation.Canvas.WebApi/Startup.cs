@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using ServiceAutomation.Canvas.WebApi.DependencyInjection;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Services;
+using ServiceAutomation.DataAccess.DbContexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -93,7 +95,7 @@ namespace ServiceAutomation.Canvas.WebApi
         }
 
         
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
@@ -115,6 +117,21 @@ namespace ServiceAutomation.Canvas.WebApi
             {
                 endpoints.MapControllers();
             });
+
+            //try
+            //{
+            //    using var scope = serviceProvider.CreateScope();
+            //    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            //    if (context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
+            //    {
+            //        context.Database.MigrateAsync().Wait();
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    logger.LogError(ex, $"Exception occurred on database migration");
+            //    throw;
+            //}
         }
     }
 }

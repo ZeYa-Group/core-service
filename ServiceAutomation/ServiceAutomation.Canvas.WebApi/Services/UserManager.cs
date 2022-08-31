@@ -7,7 +7,7 @@ using ServiceAutomaion.Services.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Common.Models;
 using ServiceAutomation.DataAccess.DbContexts;
-using ServiceAutomation.DataAccess.Schemas.EntityModels;
+using ServiceAutomation.DataAccess.Models.EntityModels;
 
 namespace ServiceAutomation.Canvas.WebApi.Services
 {
@@ -16,33 +16,32 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly AppDbContext dbContext;
         private readonly IMapper mapper;
         private readonly IIdentityGenerator identityGenerator;
+        private readonly IUserReferralService userReferralService;
 
-        public UserManager(AppDbContext dbContext, IMapper mapper, IIdentityGenerator identityGenerator)
+        public UserManager(AppDbContext dbContext, IMapper mapper, IIdentityGenerator identityGenerator, IUserReferralService userReferralService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.identityGenerator = identityGenerator;
+            this.userReferralService = userReferralService;
         }
 
         public async Task<UserModel> AddUserAsync(UserModel user)
         {
-            var addedUser = new UserContactEntity()
+            var addedUser = new UserEntity()
             {
                 Id = identityGenerator.Generate(),
-                Name = user.Name,
-                Surname = user.Surname,
+                FirstName = user.Name,
+                LastName = user.Surname,
                 Email = user.Email,
                 Country = user.Country,
+                InviteReferral = user.InviteCode,
+                PersonalReferral = userReferralService.GenerateIviteCode(),
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
             };
 
-            await dbContext.UserContacts.AddAsync(addedUser);
-            await dbContext.Referrals.AddAsync(new ReferralEntity
-            {
-                ReferralCode = user.ReferralCode,
-                UserId = addedUser.Id
-            });
+            await dbContext.Users.AddAsync(addedUser);
             await dbContext.SaveChangesAsync();
 
             return mapper.Map<UserModel>(addedUser);
@@ -50,7 +49,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<UserModel> GetByEmailAsync(string email)
         {
-            var user = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.Email == email.ToLower());
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Email == email.ToLower());
 
             if(user == null)
             {
@@ -62,7 +61,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<UserModel> GetByIdAsync(Guid id)
         {
-            var user = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.Id == id);
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == id);
 
             if (user == null)
             {
@@ -74,7 +73,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<bool> IsUserAlreadyExistsAsync(string email)
         {
-            var user = await dbContext.UserContacts.Where(x => x.Email == email.ToLower()).ToListAsync();
+            var user = await dbContext.Users.Where(x => x.Email == email.ToLower()).ToListAsync();
 
             if(user.Count > 0)
             {

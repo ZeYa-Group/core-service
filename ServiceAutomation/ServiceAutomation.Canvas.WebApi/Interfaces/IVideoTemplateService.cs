@@ -1,13 +1,12 @@
 ﻿using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
-    public interface IInfoService
+    public interface IVideoTemplateService
     {
-        Task<IEnumerable<ThumbnailResponseModel>> GetThumbnails();
-        Task<ThumbnailResponseModel> GetThumbnail(long id);
+        Task<IEnumerable<VideoLessonResponseModel>> GetVideos();
+        Task<VideoLessonResponseModel> GetVideo(long id);
     }
 }

@@ -28,7 +28,7 @@ namespace ServiceAutomation.DataAccess.Extensions
 
 
                 options.UseNpgsql(connectionString,
-                    b => b.MigrationsAssembly("MxtrAutomation.DataAccess.Migrations.Npgsql"));
+                    b => b.MigrationsAssembly("ServiceAutomation.DataAccess.Migrations"));
                 
             });
 

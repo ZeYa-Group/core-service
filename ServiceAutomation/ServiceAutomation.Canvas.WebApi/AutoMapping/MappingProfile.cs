@@ -2,12 +2,7 @@
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.Common.Models;
-using ServiceAutomation.DataAccess.Schemas.EntityModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ServiceAutomation.DataAccess.Models.EntityModels;
 
 namespace ServiceAutomation.Canvas.AutoMapping
 {
@@ -15,10 +10,12 @@ namespace ServiceAutomation.Canvas.AutoMapping
     {
         public MappingProfile()
         {
-            CreateMap<UserContactEntity, UserModel>();
+            CreateMap<UserEntity, UserModel>();
             CreateMap<RegisterRequestModel, UserModel>();
             CreateMap<RefreshTokenEntity, RefreshToken>();
             CreateMap<ThumbnailTemplateEntity, ThumbnailResponseModel>();
+            CreateMap<WithdrawTransactionEntity, WithdrawResponseModel>();
+            CreateMap<VideoLessonTemplateEntity, VideoLessonResponseModel>();
         }
     }
 }

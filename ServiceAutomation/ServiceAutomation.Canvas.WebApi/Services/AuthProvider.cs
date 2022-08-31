@@ -7,7 +7,6 @@ using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
 using ServiceAutomation.Common.Models;
 using ServiceAutomation.DataAccess.DbContexts;
-using ServiceAutomation.DataAccess.Schemas.EntityModels;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
