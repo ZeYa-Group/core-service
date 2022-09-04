@@ -18,7 +18,9 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public string PassportSeries { get; set; }
         public string PassportNumber { get; set; }
         public string IdentityCode { get; set; }
+        public Guid ProfilePhotoId { get; set; }
 
         public virtual UserEntity User { get; set; }
+        public virtual ProfilePhotoEntity ProfilePhoto { get; set; }
     }
 }

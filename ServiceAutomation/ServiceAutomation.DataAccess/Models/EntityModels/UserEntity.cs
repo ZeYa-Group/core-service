@@ -17,13 +17,13 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public Country Country { get; set; }
         public string PersonalReferral { get; set; }
         public string InviteReferral { get; set; }
-        //public long GroupId { get; set; }
+        public long GroupId { get; set; }
         //public Role Role { get; set; }
 
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
 
         public ICollection<CredentialEntity> Credentionals { get; set; }
-        //public virtual TenantGroupEntity Group { get; set; }
+        public virtual TenantGroupEntity Group { get; set; }
     }
 }
