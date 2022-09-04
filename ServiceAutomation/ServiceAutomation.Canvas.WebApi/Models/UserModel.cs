@@ -1,8 +1,5 @@
-﻿using ServiceAutomation.Common.Models;
-using ServiceAutomation.DataAccess.Schemas.Enums;
+﻿using ServiceAutomation.DataAccess.Schemas.Enums;
 using System;
-using System.Collections.Generic;
-
 
 namespace ServiceAutomation.Common.Models
 {
@@ -13,7 +10,7 @@ namespace ServiceAutomation.Common.Models
         public string Surname { get; set; }
         public string Email { get; set; }
         public string InviteCode { get; set; }
-        public long GroupId { get; set; }
+        public Guid GroupId { get; set; }
         public Country Country { get; set; }
 
         public byte[] PasswordHash { get; set; }

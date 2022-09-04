@@ -2,7 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceAutomation.DataAccess.DbContexts;
 
@@ -21,10 +21,10 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
 
                     b.Property<string>("IBAN")
                         .HasColumnType("text");
@@ -39,11 +39,33 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.ToTable("Credentials");
                 });
 
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.ProfilePhotoEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
+
+                    b.Property<byte[]>("Data")
+                        .HasColumnType("bytea");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("ProfilePhotos");
+                });
+
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.RefreshTokenEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
 
                     b.Property<string>("Token")
                         .HasColumnType("text");
@@ -53,25 +75,26 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefresTokens");
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.TenantGroupEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
 
                     b.Property<Guid>("OwnerUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<long>("ParentId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("ParentId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OwnerUserId");
+                    b.HasIndex("OwnerUserId")
+                        .IsUnique();
 
                     b.HasIndex("ParentId");
 
@@ -80,10 +103,9 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.ThumbnailTemplateEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("uuid");
 
                     b.Property<string>("ThumbnailFullPath")
                         .HasColumnType("text");
@@ -98,10 +120,10 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserContactEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
 
                     b.Property<string>("Adress")
                         .HasColumnType("text");
@@ -132,7 +154,8 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("UserContacts");
                 });
@@ -174,10 +197,9 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.VideoLessonTemplateEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("uuid");
 
                     b.Property<string>("VideoFullPath")
                         .HasColumnType("text");
@@ -192,13 +214,13 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.WithdrawTransactionEntity", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
+                        .HasColumnType("uuid")
+                        .HasColumnName("Id");
 
-                    b.Property<long>("CredentialId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("CredentialId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("timestamp without time zone");
@@ -206,17 +228,12 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<int>("TransactionStatus")
                         .HasColumnType("integer");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
                     b.Property<decimal>("Value")
                         .HasColumnType("numeric");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CredentialId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("WithdrawTransactions");
                 });
@@ -232,11 +249,22 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.ProfilePhotoEntity", b =>
+                {
+                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
+                        .WithOne("ProfilePhoto")
+                        .HasForeignKey("ServiceAutomation.DataAccess.Models.EntityModels.ProfilePhotoEntity", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.TenantGroupEntity", b =>
                 {
                     b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "OwnerUser")
-                        .WithMany()
-                        .HasForeignKey("OwnerUserId")
+                        .WithOne("Group")
+                        .HasForeignKey("ServiceAutomation.DataAccess.Models.EntityModels.TenantGroupEntity", "OwnerUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -254,8 +282,8 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserContactEntity", b =>
                 {
                     b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                        .WithOne("UserContact")
+                        .HasForeignKey("ServiceAutomation.DataAccess.Models.EntityModels.UserContactEntity", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -265,20 +293,17 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.WithdrawTransactionEntity", b =>
                 {
                     b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", "Credential")
-                        .WithMany()
+                        .WithMany("WithdrawTransactions")
                         .HasForeignKey("CredentialId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Credential");
+                });
 
-                    b.Navigation("User");
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", b =>
+                {
+                    b.Navigation("WithdrawTransactions");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.TenantGroupEntity", b =>
@@ -289,6 +314,12 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", b =>
                 {
                     b.Navigation("Credentionals");
+
+                    b.Navigation("Group");
+
+                    b.Navigation("ProfilePhoto");
+
+                    b.Navigation("UserContact");
                 });
 #pragma warning restore 612, 618
         }

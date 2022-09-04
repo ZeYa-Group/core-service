@@ -30,7 +30,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var addedUser = new UserEntity()
             {
-                Id = identityGenerator.Generate(),
                 FirstName = user.Name,
                 LastName = user.Surname,
                 Email = user.Email,

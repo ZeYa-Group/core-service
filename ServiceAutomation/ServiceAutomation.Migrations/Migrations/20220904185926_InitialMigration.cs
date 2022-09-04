@@ -1,16 +1,14 @@
 ﻿using System;
-using System.Drawing;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace ServiceAutomation.DataAccess.Migrations.Migrations
 {
-    public partial class Initialmigration : Migration
+    public partial class InitialMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "RefresTokens",
+                name: "RefreshTokens",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
@@ -19,15 +17,14 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RefresTokens", x => x.Id);
+                    table.PrimaryKey("PK_RefreshTokens", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
                 name: "Thumbnails",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ThumbnailName = table.Column<string>(type: "text", nullable: true),
                     ThumbnailFullPath = table.Column<string>(type: "text", nullable: true)
                 },
@@ -59,8 +56,7 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                 name: "VideoLessons",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     VideoName = table.Column<string>(type: "text", nullable: true),
                     VideoFullPath = table.Column<string>(type: "text", nullable: true)
                 },
@@ -73,8 +69,7 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                 name: "Credentials",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     IBAN = table.Column<string>(type: "text", nullable: true),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
@@ -90,13 +85,31 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ProfilePhotos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Data = table.Column<byte[]>(type: "bytea", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ProfilePhotos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ProfilePhotos_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "TenantGroups",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     OwnerUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    ParentId = table.Column<long>(type: "bigint", nullable: false)
+                    ParentId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -119,8 +132,7 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                 name: "UserContacts",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
                     UserId = table.Column<Guid>(type: "uuid", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: true),
                     LastName = table.Column<string>(type: "text", nullable: true),
@@ -146,10 +158,8 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                 name: "WithdrawTransactions",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    CredentialId = table.Column<long>(type: "bigint", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    CredentialId = table.Column<Guid>(type: "uuid", nullable: false),
                     TransactionStatus = table.Column<int>(type: "integer", nullable: false),
                     Value = table.Column<decimal>(type: "numeric", nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp without time zone", nullable: false)
@@ -163,12 +173,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         principalTable: "Credentials",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_WithdrawTransactions_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -177,9 +181,16 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ProfilePhotos_UserId",
+                table: "ProfilePhotos",
+                column: "UserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TenantGroups_OwnerUserId",
                 table: "TenantGroups",
-                column: "OwnerUserId");
+                column: "OwnerUserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_TenantGroups_ParentId",
@@ -189,23 +200,22 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_UserContacts_UserId",
                 table: "UserContacts",
-                column: "UserId");
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_WithdrawTransactions_CredentialId",
                 table: "WithdrawTransactions",
                 column: "CredentialId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_WithdrawTransactions_UserId",
-                table: "WithdrawTransactions",
-                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "RefresTokens");
+                name: "ProfilePhotos");
+
+            migrationBuilder.DropTable(
+                name: "RefreshTokens");
 
             migrationBuilder.DropTable(
                 name: "TenantGroups");

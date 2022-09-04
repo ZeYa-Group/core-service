@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public class CredentialEntity
+    public class CredentialEntity: Entity
     {
-        public long Id { get; set; }
         public string IBAN { get; set; }
+
         public Guid UserId { get; set; }
 
         public virtual UserEntity User { get; set; }
+
+        public virtual ICollection<WithdrawTransactionEntity> WithdrawTransactions { get; set; }
     }
 }
