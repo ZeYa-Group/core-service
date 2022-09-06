@@ -18,11 +18,8 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public byte[] PasswordSalt { get; set; }
 
         public ICollection<CredentialEntity> Credentionals { get; set; }
-
         public virtual TenantGroupEntity Group { get; set; }
-
         public virtual UserContactEntity UserContact { get; set; }
-
         public virtual ProfilePhotoEntity ProfilePhoto { get; set; }
     }
 }

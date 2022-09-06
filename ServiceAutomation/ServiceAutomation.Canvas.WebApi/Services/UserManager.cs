@@ -30,8 +30,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var addedUser = new UserEntity()
             {
-                FirstName = user.Name,
-                LastName = user.Surname,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
                 Email = user.Email,
                 Country = user.Country,
                 InviteReferral = user.InviteCode,

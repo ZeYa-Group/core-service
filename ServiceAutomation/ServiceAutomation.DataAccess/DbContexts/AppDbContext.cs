@@ -11,7 +11,6 @@ namespace ServiceAutomation.DataAccess.DbContexts
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-
         }
     }
 }
