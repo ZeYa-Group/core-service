@@ -1,8 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Npgsql.TypeHandlers.DateTimeHandlers;
+using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
+using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using System;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Controllers
@@ -11,19 +15,35 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
     [ApiController]
     public class UserProfileController : ControllerBase
     {
-        public UserProfileController()
+        private readonly IUserProfileService userProfileService;
+        public UserProfileController(IUserProfileService userProfileService)
         {
-
+            this.userProfileService = userProfileService;
         }
 
+        [Authorize]
         [HttpGet(Constants.Requests.UserProfile.GetProfileInfo)]
-        public async Task GetProfileInfo(Guid userId)
+        public async Task<UserProfileResponseModel> GetProfileInfo(Guid userId)
         {
-            throw new NotImplementedException();
+            return await userProfileService.GetUserInfo(userId);
         }
 
+        [Authorize]
         [HttpPost(Constants.Requests.UserProfile.UploadProfilePhoto)]
-        public async Task UploadProfilePhoto([FromForm] UploadProfilePhotoRequestModel requestModel)
+        public async Task<ResultModel> UploadProfilePhoto([FromForm] UploadProfilePhotoRequestModel requestModel)
+        {
+            var photo = requestModel.ProfilePhoto;
+
+            await using var memoryStream = new MemoryStream();
+            await photo.CopyToAsync(memoryStream);
+            var photoData = memoryStream.ToArray();
+
+            return await userProfileService.UploadProfilePhoto(requestModel.UserId, photoData);
+        }
+
+        [Authorize]
+        [HttpPost(Constants.Requests.UserProfile.UploadProfileInfo)]
+        public async Task<ResultModel> UploadProfileInfo([FromBody] UploadUserProfileRequestModel requestModel)
         {
             throw new NotImplementedException();
         }

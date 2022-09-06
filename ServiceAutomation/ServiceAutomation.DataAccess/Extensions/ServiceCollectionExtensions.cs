@@ -29,7 +29,6 @@ namespace ServiceAutomation.DataAccess.Extensions
 
                 options.UseNpgsql(connectionString,
                     b => b.MigrationsAssembly("ServiceAutomation.DataAccess.Migrations"));
-                
             });
 
             services.AddScoped<ServiceDbContext, AppDbContext>();

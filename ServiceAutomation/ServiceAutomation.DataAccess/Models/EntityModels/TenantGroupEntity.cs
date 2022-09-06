@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public class TenantGroupEntity: Entity
+    public class TenantGroupEntity : Entity
     {
         public Guid OwnerUserId { get; set; }
         public Guid ParentId { get; set; }

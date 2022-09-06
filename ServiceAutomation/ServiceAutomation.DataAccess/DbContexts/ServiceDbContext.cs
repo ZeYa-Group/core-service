@@ -17,7 +17,6 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<CredentialEntity> Credentials { get; set; }
         public virtual DbSet<WithdrawTransactionEntity> WithdrawTransactions { get; set; }
         public virtual DbSet<UserContactEntity> UserContacts { get; set; }
-
         public virtual DbSet<TenantGroupEntity> TenantGroups { get; set; }
         public virtual DbSet<VideoLessonTemplateEntity> VideoLessons { get; set; }
         public virtual DbSet<ProfilePhotoEntity> ProfilePhotos { get; set; }

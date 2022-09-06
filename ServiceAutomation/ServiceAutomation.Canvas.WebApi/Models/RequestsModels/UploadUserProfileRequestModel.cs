@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace ServiceAutomation.DataAccess.Models.EntityModels
+namespace ServiceAutomation.Canvas.WebApi.Models.RequestsModels
 {
-    public class UserContactEntity : Entity
+    public class UploadUserProfileRequestModel
     {
-        public Guid UserId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Patronymic { get; set; }
@@ -14,6 +13,5 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public string PassportSeries { get; set; }
         public string PassportNumber { get; set; }
         public string IdentityCode { get; set; }
-        public virtual UserEntity User { get; set; }
     }
 }
