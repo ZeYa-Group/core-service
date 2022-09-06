@@ -31,7 +31,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var refreshToken = new RefreshTokenEntity()
             {
-                Id = generator.Generate(),
                 Token = token.Token,
                 UserId = token.UserId
             };

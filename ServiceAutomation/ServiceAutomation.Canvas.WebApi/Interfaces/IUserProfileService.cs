@@ -1,12 +1,12 @@
 ﻿using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
-    public interface IWithdrawService
+    public interface IUserProfileService
     {
-        Task<IEnumerable<WithdrawResponseModel>> GetWithdrawHistory(Guid userId);
+        Task<UserProfileResponseModel> GetUserInfo(Guid userId);
+        Task<ResultModel> UploadProfilePhoto(Guid userId, byte[] data);
     }
 }

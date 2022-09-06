@@ -21,7 +21,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             this.mapper = mapper;
         }
 
-        public async Task<VideoLessonResponseModel> GetVideo(long id)
+        public async Task<VideoLessonResponseModel> GetVideo(Guid id)
         {
             var videoLesson = await dbContext.VideoLessons.FirstOrDefaultAsync(x => x.Id == id);
             return mapper.Map<VideoLessonResponseModel>(videoLesson);
