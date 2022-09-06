@@ -2,7 +2,7 @@
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public class UserContactEntity: Entity
+    public class UserContactEntity : Entity
     {
         public Guid UserId { get; set; }
         public string FirstName { get; set; }

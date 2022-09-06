@@ -2,7 +2,7 @@
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public class ProfilePhotoEntity: Entity
+    public class ProfilePhotoEntity : Entity
     {
         public Guid UserId { get; set; }
         public Byte[] Data { get; set; }

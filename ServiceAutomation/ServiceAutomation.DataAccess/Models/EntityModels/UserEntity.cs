@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public class UserEntity: Entity
+    public class UserEntity : Entity
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

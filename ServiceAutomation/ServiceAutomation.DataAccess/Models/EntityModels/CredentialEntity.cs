@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public class CredentialEntity: Entity
+    public class CredentialEntity : Entity
     {
         public string IBAN { get; set; }
 

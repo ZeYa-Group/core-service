@@ -3,7 +3,7 @@ using System.Transactions;
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public class WithdrawTransactionEntity: Entity
+    public class WithdrawTransactionEntity : Entity
     {
         public Guid CredentialId { get; set; }
         public TransactionStatus TransactionStatus { get; set; }
