@@ -21,6 +21,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<TenantGroupEntity> TenantGroups { get; set; }
         public virtual DbSet<VideoLessonTemplateEntity> VideoLessons { get; set; }
         public virtual DbSet<ProfilePhotoEntity> ProfilePhotos { get; set; }
+        public virtual DbSet<PackageEntity> Packages { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
@@ -35,6 +36,9 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new UserContactEntityConfiguration());
             modelBuilder.ApplyConfiguration(new WithdrawTransactionEntityConfiguration());
             modelBuilder.ApplyConfiguration(new RefreshTokenEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new PackageEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new BonusEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new PackageBonusAssociationEntityConfiguration());
         }
     }
 }

@@ -13,8 +13,4 @@
     <ProjectReference Include="..\ServiceAutomation.DataAccess\ServiceAutomation.DataAccess.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-
 </Project>
