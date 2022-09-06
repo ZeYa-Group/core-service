@@ -16,6 +16,11 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<ThumbnailTemplateEntity, ThumbnailResponseModel>();
             CreateMap<WithdrawTransactionEntity, WithdrawResponseModel>();
             CreateMap<VideoLessonTemplateEntity, VideoLessonResponseModel>();
+
+            CreateMap<UserContactEntity, UserProfileResponseModel>()
+                .ForMember(x => x.Email, opt => opt.MapFrom(x => x.User.Email))
+                .ForMember(x => x.ProfilePhoto, opt => opt.MapFrom(x => x.User.ProfilePhoto.Data))
+                .ForMember(x => x.PersonalReferral, opt => opt.MapFrom(x => x.User.PersonalReferral));
         }
     }
 }

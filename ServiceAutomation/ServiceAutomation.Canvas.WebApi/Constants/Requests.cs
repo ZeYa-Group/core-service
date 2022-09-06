@@ -50,6 +50,7 @@
         {
             public const string GetProfileInfo = "GetProfileInfo";
             public const string UploadProfilePhoto = "UploadProfilePhoto";
+            public const string UploadProfileInfo = "UploadProfileInfo";
         }
     }
 }
