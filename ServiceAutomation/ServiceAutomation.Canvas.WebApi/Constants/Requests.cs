@@ -6,6 +6,7 @@
         {
             public const string GetReferralLink = "GetReferralLink/{id}";
             public const string GetAuthAction = "GetAuth";
+            public const string GetAction = "GetAction";
         }
 
         public static class User

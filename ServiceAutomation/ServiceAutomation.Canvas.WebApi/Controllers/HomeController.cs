@@ -25,5 +25,12 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         {
             return await userReferralService.GetUserRefferal(userId);
         }
+
+        [AllowAnonymous]
+        [HttpGet(Constants.Requests.Home.GetAction)]
+        public async Task<IActionResult> GetAction()
+        {
+            return Ok("Fastpanel");
+        }
     }
 }
