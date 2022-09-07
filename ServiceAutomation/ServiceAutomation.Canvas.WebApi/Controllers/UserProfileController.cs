@@ -43,7 +43,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
         [Authorize]
         [HttpPost(Constants.Requests.UserProfile.UploadProfileInfo)]
-        public async Task UploadProfileInfo()
+        public async Task<ResultModel> UploadProfileInfo([FromBody] UploadUserProfileRequestModel requestModel)
         {
             throw new NotImplementedException();
         }

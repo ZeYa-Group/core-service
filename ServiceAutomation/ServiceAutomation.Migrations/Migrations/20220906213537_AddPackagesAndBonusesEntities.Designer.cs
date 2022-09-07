@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceAutomation.DataAccess.DbContexts;
@@ -9,9 +10,10 @@ using ServiceAutomation.DataAccess.DbContexts;
 namespace ServiceAutomation.DataAccess.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220906213537_AddPackagesAndBonusesEntities")]
+    partial class AddPackagesAndBonusesEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,8 +199,8 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<string>("Adress")
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("timestamp without time zone");
+                    b.Property<string>("EmailAddress")
+                        .HasColumnType("text");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("text");
@@ -213,9 +215,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PassportSeries")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Patronymic")
                         .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
