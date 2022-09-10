@@ -97,12 +97,12 @@ namespace ServiceAutomation.Canvas.WebApi
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
         {
-            if (env.IsDevelopment())
-            {
+            //if (env.IsDevelopment())
+            //{
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ServiceAutomation.Canvas.WebApi v1"));
-            }
+            //}
 
             app.UseCors("MyPolicy");
 
