@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
+using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.EntityModels;
@@ -68,6 +69,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             response.Success = response.Errors != null ? false :  true;
 
+            return response;
+        }
+
+        public async Task<ResultModel> UploadProfileInfo(UploadUserProfileRequestModel requestModel)
+        {
+            var response = new ResultModel();
             return response;
         }
     }
