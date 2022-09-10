@@ -28,9 +28,9 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpGet(Constants.Requests.Home.GetAction)]
-        public async Task<IActionResult> GetAction()
+        public async Task<string> GetAction()
         {
-            return Ok("Fastpanel");
+            return "Chickha";
         }
     }
 }
