@@ -7,6 +7,7 @@ using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.EntityModels;
 using System;
 using System.Threading.Tasks;
+using static ServiceAutomation.Canvas.WebApi.Constants.Requests;
 
 namespace ServiceAutomation.Canvas.WebApi.Services
 {
@@ -75,7 +76,42 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task<ResultModel> UploadProfileInfo(UploadUserProfileRequestModel requestModel)
         {
             var response = new ResultModel();
-            return response;
+            //var photo = await dbContext.ProfilePhotos.FirstOrDefaultAsync(x => x.UserId == userId);
+
+            //if (photo == null)
+            //{
+            //    var photo2 = new ProfilePhotoEntity()
+            //    {
+            //        Data = data,
+            //        UserId = userId
+            //    };
+
+            //    try
+            //    {
+            //        await dbContext.ProfilePhotos.AddAsync(photo);
+            //        await dbContext.SaveChangesAsync();
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        response.Errors.Add(ex.Message);
+            //        response.Success = false;
+            //    }
+            //}
+
+            //try
+            //{
+            //    photo.Data = data;
+            //    await dbContext.SaveChangesAsync();
+            //}
+            //catch (Exception ex)
+            //{
+            //    response.Errors.Add(ex.Message);
+            //    response.Success = false;
+            //}
+
+            //response.Success = response.Errors != null ? false : true;
+
+            return response; 
         }
     }
 }
