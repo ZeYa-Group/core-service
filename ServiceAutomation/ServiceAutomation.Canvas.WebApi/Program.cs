@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -14,16 +15,23 @@ namespace ServiceAutomation.Canvas.WebApi
     {
         public static void Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            CreateWebHostBuilder(args).Build().Run();
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+        public static IWebHostBuilder CreateWebHostBuilder(string[] args)
+        {
+            var builder = WebHost.CreateDefaultBuilder(args)
+                .UseStartup<Startup>()
+                .ConfigureKestrel(a =>
                 {
-                    webBuilder.ConfigureKestrel(serverOptions =>
-                    {
-                    }).UseStartup<Startup>();
+                    a.AddServerHeader = false;
                 });
+            var port = Environment.GetEnvironmentVariable("PORT");
+            if (!String.IsNullOrWhiteSpace(port))
+            {
+                builder.UseUrls("http://*:" + port);
+            }
+            return builder;
+        }
     }
 }

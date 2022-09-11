@@ -111,7 +111,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             //response.Success = response.Errors != null ? false : true;
 
-
             return response; 
         }
     }
