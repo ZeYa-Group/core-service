@@ -31,6 +31,7 @@ namespace ServiceAutomation.Canvas.WebApi
             {
                 builder.UseUrls("http://*:" + port);
             }
+
             return builder;
         }
     }
