@@ -23,7 +23,6 @@ namespace ServiceAutomation.Canvas.WebApi
                 {
                     webBuilder.ConfigureKestrel(serverOptions =>
                     {
-                        //serverOptions.Listen(IPAddress.Any, Convert.ToInt32(Environment.GetEnvironmentVariable("PORT")));
                     }).UseStartup<Startup>();
                 });
     }
