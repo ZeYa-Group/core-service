@@ -1,5 +1,5 @@
 build:
   docker:
-    web: Dockerfile
+    web: ServiceAutomation/ServiceAutomation.Canvas.WebApi/Dockerfile
 run:
   web: bundle exec puma -C config/puma.rb
