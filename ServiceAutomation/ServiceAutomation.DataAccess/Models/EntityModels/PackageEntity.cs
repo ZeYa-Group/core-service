@@ -12,5 +12,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public decimal Price { get; set; }
 
         public virtual IList<PackageBonusAssociationEntity> PackageBonuses { get; set; }
+
+        public virtual IList<PurchaseEntity> UsersPurchases { get; set; }
     }
 }

@@ -23,10 +23,11 @@
             public const string GetThumbnailById = "GetThumbnailById/{id}";
         }
 
-        public static class PackageTemplate
+        public static class Package
         {
-            public const string GetPackTemplates = "GetPackTemplates";
-            public const string BuyPackTemplate = "BuyPackTemplate";
+            public const string GetPackages = nameof(GetPackages);
+            public const string BuyPackage = nameof(BuyPackage);
+            public const string GetUserPackage = nameof(GetUserPackage);
         }
 
         public static class Withdraw

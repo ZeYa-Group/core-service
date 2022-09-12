@@ -21,6 +21,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<VideoLessonTemplateEntity> VideoLessons { get; set; }
         public virtual DbSet<ProfilePhotoEntity> ProfilePhotos { get; set; }
         public virtual DbSet<PackageEntity> Packages { get; set; }
+        public virtual DbSet<PurchaseEntity> UsersPurchases { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
@@ -38,6 +39,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new PackageEntityConfiguration());
             modelBuilder.ApplyConfiguration(new BonusEntityConfiguration());
             modelBuilder.ApplyConfiguration(new PackageBonusAssociationEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new PurchaseEntityConfiguration());
         }
     }
 }
