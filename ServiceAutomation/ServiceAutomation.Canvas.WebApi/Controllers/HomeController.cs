@@ -10,7 +10,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ControllerBase
+    public class HomeController : ApiBaseController
     {
         private readonly IUserReferralService userReferralService;
 

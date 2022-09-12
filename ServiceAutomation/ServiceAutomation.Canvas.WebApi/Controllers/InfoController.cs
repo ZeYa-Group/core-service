@@ -12,7 +12,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InfoController : ControllerBase
+    public class InfoController : ApiBaseController
     {
         private readonly IInfoService infoService;
 

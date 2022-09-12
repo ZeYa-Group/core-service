@@ -12,7 +12,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WithdrawController : ControllerBase
+    public class WithdrawController : ApiBaseController
     {
         private readonly IWithdrawService withdrawService;
 

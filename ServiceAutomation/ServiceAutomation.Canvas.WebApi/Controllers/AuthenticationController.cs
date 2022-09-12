@@ -5,6 +5,7 @@ using ServiceAutomation.Canvas.WebApi.Constants;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
 using System;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -12,7 +13,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthenticationController : ControllerBase
+    public class AuthenticationController : ApiBaseController
     {
         private readonly IAuthProvider authProvider;
         private readonly IUserManager userManager;
@@ -41,12 +42,8 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpPost(Requests.User.Logout)]
         public async Task<IActionResult> Logout()
         {
-            string userId = HttpContext.User.FindFirstValue("id");
-            if(!Guid.TryParse(userId, out Guid currentUserId))
-            {
-                return Unauthorized();
-            }
-            return Ok(userId);
+            var userId = GetCurrentUserId();
+            return Ok();
         }
 
         [AllowAnonymous]
