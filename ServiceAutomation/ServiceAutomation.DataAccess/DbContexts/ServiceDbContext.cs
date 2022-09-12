@@ -1,11 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceAutomation.DataAccess.DbModelConfigurations;
 using ServiceAutomation.DataAccess.Models.EntityModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ServiceAutomation.DataAccess.DbContexts
 {
@@ -22,6 +17,10 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<ProfilePhotoEntity> ProfilePhotos { get; set; }
         public virtual DbSet<PackageEntity> Packages { get; set; }
         public virtual DbSet<PurchaseEntity> UsersPurchases { get; set; }
+
+        public virtual DbSet<BasicLevelEntity> BasicLevels { get; set; }
+
+        public virtual DbSet<MonthlyLevelEntity> MonthlyLevels { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
@@ -40,6 +39,8 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new BonusEntityConfiguration());
             modelBuilder.ApplyConfiguration(new PackageBonusAssociationEntityConfiguration());
             modelBuilder.ApplyConfiguration(new PurchaseEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new BasicLevelEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new MonthlyLevelEntityConfiguration());
         }
     }
 }

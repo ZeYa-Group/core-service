@@ -10,7 +10,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PackagesController : ControllerBase
+    public class PackagesController : ApiBaseController
     {
         private readonly IPackagesService _packagesService;
 
@@ -36,8 +36,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
                 return BadRequest();
             }
 
-            var userId = new Guid(User?.Identity?.Name);
-
+            var userId = GetCurrentUserId();
             await _purchaseService.BuyPackageAsync(package, userId);
 
             return Ok();
