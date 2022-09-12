@@ -97,7 +97,7 @@ namespace ServiceAutomation.Canvas.WebApi
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
         {
-            if (env.IsProduction())
+            if (env.IsProduction() || env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();

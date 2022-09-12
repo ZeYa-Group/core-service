@@ -4,7 +4,7 @@
     {
         public static class Home
         {
-            public const string GetReferralLink = "GetReferralLink/{id}";
+            public const string GetReferralLink = "GetReferralLink";
             public const string GetAuthAction = "GetAuth";
             public const string GetAction = "GetAction";
         }
@@ -20,7 +20,7 @@
         public static class Info
         {
             public const string GetThumbnails = "GetThumbnails";
-            public const string GetThumbnailById = "GetThumbnailById/{id}";
+            public const string GetThumbnailById = "GetThumbnailById";
         }
 
         public static class PackageTemplate
@@ -31,7 +31,7 @@
 
         public static class Withdraw
         {
-            public const string GetWithdrawHistory = "GetWithdrawHistory/{id}";
+            public const string GetWithdrawHistory = "GetWithdrawHistory";
             public const string MakeWithdraw = "Withdraw";
         }
 
@@ -44,12 +44,12 @@
         public static class VideoTemplate
         {
             public const string GetVideos = "GetVideos";
-            public const string GetVideo = "GetVideoById/{id}";
+            public const string GetVideo = "GetVideoById";
         }
 
         public static class UserProfile
         {
-            public const string GetProfileInfo = "GetProfileInfo/{id}";
+            public const string GetProfileInfo = "GetProfileInfo";
             public const string UploadProfilePhoto = "UploadProfilePhoto";
             public const string UploadProfileInfo = "UploadProfileInfo";
         }

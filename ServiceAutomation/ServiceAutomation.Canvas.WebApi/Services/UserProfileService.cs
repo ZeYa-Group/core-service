@@ -39,7 +39,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             if(photo == null)
             {
-                var photo2 = new ProfilePhotoEntity()
+                photo = new ProfilePhotoEntity()
                 {
                     Data = data,
                     UserId = userId
@@ -76,40 +76,60 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task<ResultModel> UploadProfileInfo(UploadUserProfileRequestModel requestModel)
         {
             var response = new ResultModel();
-            //var photo = await dbContext.ProfilePhotos.FirstOrDefaultAsync(x => x.UserId == userId);
 
-            //if (photo == null)
-            //{
-            //    var photo2 = new ProfilePhotoEntity()
-            //    {
-            //        Data = data,
-            //        UserId = userId
-            //    };
+            var userProfileData = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.UserId == requestModel.UserId);
+           
+            if (userProfileData == null)
+            {
+                userProfileData = new UserContactEntity()
+                {
+                    FirstName = requestModel.FirstName,
+                    LastName = requestModel.LastName,
+                    Patronymic = requestModel.Patronymic,
+                    DateOfBirth = requestModel.DateOfBirth,
+                    PhoneNumber = requestModel.PhoneNumber,
+                    Adress = requestModel.Adress,
+                    PassportSeries = requestModel.PassportSeries,
+                    PassportNumber = requestModel.PassportNumber,
+                    IdentityCode = requestModel.IdentityCode,
+                    UserId = requestModel.UserId
+                };
 
-            //    try
-            //    {
-            //        await dbContext.ProfilePhotos.AddAsync(photo);
-            //        await dbContext.SaveChangesAsync();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        response.Errors.Add(ex.Message);
-            //        response.Success = false;
-            //    }
-            //}
+                try
+                {
+                    await dbContext.UserContacts.AddAsync(userProfileData);
+                    await dbContext.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    response.Errors.Add(ex.Message);
+                    response.Success = false;
+                }
+            }
+            else
+            {
+                try
+                {
+                    userProfileData.FirstName = requestModel.FirstName;
+                    userProfileData.LastName = requestModel.LastName;
+                    userProfileData.Patronymic = requestModel.Patronymic;
+                    userProfileData.DateOfBirth = requestModel.DateOfBirth;
+                    userProfileData.PhoneNumber = requestModel.PhoneNumber;
+                    userProfileData.Adress = requestModel.Adress;
+                    userProfileData.PassportSeries = requestModel.PassportSeries;
+                    userProfileData.PassportNumber = requestModel.PassportNumber;
+                    userProfileData.IdentityCode = requestModel.IdentityCode;
 
-            //try
-            //{
-            //    photo.Data = data;
-            //    await dbContext.SaveChangesAsync();
-            //}
-            //catch (Exception ex)
-            //{
-            //    response.Errors.Add(ex.Message);
-            //    response.Success = false;
-            //}
-
-            //response.Success = response.Errors != null ? false : true;
+                    await dbContext.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    response.Errors.Add(ex.Message);
+                    response.Success = false;
+                }
+            }
+            
+            response.Success = response.Errors != null ? false : true;
 
             return response; 
         }
