@@ -13,7 +13,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserProfileController : ControllerBase
+    public class UserProfileController : ApiBaseController
     {
         private readonly IUserProfileService userProfileService;
         public UserProfileController(IUserProfileService userProfileService)

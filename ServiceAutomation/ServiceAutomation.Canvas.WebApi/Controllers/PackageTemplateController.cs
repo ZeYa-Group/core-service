@@ -7,7 +7,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PackageTemplateController : ControllerBase
+    public class PackageTemplateController : ApiBaseController
     {
         public PackageTemplateController()
         {
