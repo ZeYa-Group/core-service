@@ -10,7 +10,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HomeController : ControllerBase
+    public class HomeController : ApiBaseController
     {
         private readonly IUserReferralService userReferralService;
 
@@ -24,6 +24,13 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         public async Task<string> GetUserReferral(Guid userId)
         {
             return await userReferralService.GetUserRefferal(userId);
+        }
+
+        [AllowAnonymous]
+        [HttpGet(Constants.Requests.Home.GetAction)]
+        public async Task<string> GetAction()
+        {
+            return "Chickha";
         }
     }
 }

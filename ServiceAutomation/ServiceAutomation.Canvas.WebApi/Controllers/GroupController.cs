@@ -10,7 +10,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GroupController : ControllerBase
+    public class GroupController : ApiBaseController
     {
         private readonly IReferralGroupService groupService;
 

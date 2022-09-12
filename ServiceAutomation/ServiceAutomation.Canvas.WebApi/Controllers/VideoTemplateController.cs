@@ -11,7 +11,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VideoTemplateController : ControllerBase
+    public class VideoTemplateController : ApiBaseController
     {
         private readonly IVideoTemplateService videoTemplateService;
         public VideoTemplateController(IVideoTemplateService videoTemplateService)
