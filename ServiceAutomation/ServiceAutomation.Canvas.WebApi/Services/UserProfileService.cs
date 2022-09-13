@@ -110,15 +110,15 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 try
                 {
-                    userProfileData.FirstName = requestModel.FirstName;
-                    userProfileData.LastName = requestModel.LastName;
-                    userProfileData.Patronymic = requestModel.Patronymic;
+                    userProfileData.FirstName = requestModel?.FirstName;
+                    userProfileData.LastName = requestModel?.LastName;
+                    userProfileData.Patronymic = requestModel?.Patronymic;
                     userProfileData.DateOfBirth = requestModel.DateOfBirth;
-                    userProfileData.PhoneNumber = requestModel.PhoneNumber;
-                    userProfileData.Adress = requestModel.Adress;
-                    userProfileData.PassportSeries = requestModel.PassportSeries;
-                    userProfileData.PassportNumber = requestModel.PassportNumber;
-                    userProfileData.IdentityCode = requestModel.IdentityCode;
+                    userProfileData.PhoneNumber = requestModel?.PhoneNumber;
+                    userProfileData.Adress = requestModel?.Adress;
+                    userProfileData.PassportSeries = requestModel?.PassportSeries;
+                    userProfileData.PassportNumber = requestModel?.PassportNumber;
+                    userProfileData.IdentityCode = requestModel?.IdentityCode;
 
                     await dbContext.SaveChangesAsync();
                 }

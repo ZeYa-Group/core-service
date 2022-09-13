@@ -15,6 +15,7 @@
             public const string Logout = "Logout";
             public const string Register = "Register";
             public const string Refresh = "Refresh";
+            public const string GetUserId = "GetUserId";
         }
 
         public static class Info
