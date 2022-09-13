@@ -13,11 +13,11 @@ namespace ServiceAutomation.DataAccess
 
     public class DatabaseSecret : IDatabaseSecret
     {
-        private string host = "postgresql-86496-0.cloudclusters.net";
-        private string port = "11042";
-        private string username = "admin";
-        private string password = "652431Tim";
-        private string database = "TrifectaDev"; //TrifectaProd - prod DB Name
+        private string host = "localhost";
+        private string port = "5432";
+        private string username = "postgres";
+        private string password = "21122012";
+        private string database = "Trifecta"; //TrifectaProd - prod DB Name
         private string minPool = "1";
 
         public string GetConnectionString()

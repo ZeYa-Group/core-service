@@ -32,7 +32,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
                 .ForMember(x => x.Title, opt => opt.MapFrom(x => x.GetPackageBonusTitle()));
 
             CreateMap<PackageEntity, PackageModel>()
-                .ForMember(x => x.Bonuses, opt => opt.MapFrom(x => x.PackageBonuses));
+                .ForMember(x => x.Bonuses, opt => opt.MapFrom(x => x.PackageBonuses.OrderBy(pb => pb.Bonus.DisplayOrder)));
         }
     }
 }

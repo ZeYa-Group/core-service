@@ -32,6 +32,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var packagesEntities = await _dbContext.Packages
                 .Include(x => x.PackageBonuses)
                 .ThenInclude(x => x.Bonus)
+                .OrderBy(x => x.DisplayOrder)
                 .ToListAsync();
 
             return packagesEntities.Select(x => _mapper.Map<PackageModel>(x));
@@ -42,10 +43,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var package = await _dbContext.UsersPurchases
                                 .AsNoTracking()
                                 .Where(x => x.UserId == userId)
+                                .OrderByDescending(x => x.PurchaseDate)
                                 .Include(x=> x.Package)
                                 .ThenInclude(x => x.PackageBonuses)
                                 .ThenInclude(x => x.Bonus)
-                                .Select(x => x.Package)
+                                .Select(x => x.Package)                                
                                 .FirstOrDefaultAsync();
 
             return _mapper.Map<PackageModel>(package);

@@ -30,13 +30,14 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpPost(Constants.Requests.Package.BuyPackage)]
         public async Task<IActionResult> BuyPackageAsync([FromBody] BuyPackageRequestModel buyPackageRequest)
         {
+            var userId = GetCurrentUserId();
+
             var package = await _packagesService.GetPackageByIdAsync(buyPackageRequest.PackageId);
             if (package == null)
             {
                 return BadRequest();
             }
 
-            var userId = GetCurrentUserId();
             await _purchaseService.BuyPackageAsync(package, userId);
 
             return Ok();
