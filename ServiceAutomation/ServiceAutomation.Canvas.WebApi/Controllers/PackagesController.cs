@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
@@ -21,18 +22,21 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             _purchaseService = purchaseService;
         }
 
+        [Authorize]
         [HttpGet(Constants.Requests.Package.GetPackages)]
         public async Task<IEnumerable<PackageModel>> GetPackagesAsync()
         {
             return await _packagesService.GetPackagesAsync();
         }
 
+        [Authorize]
         [HttpPost(Constants.Requests.Package.BuyPackage)]
         public async Task<IActionResult> BuyPackageAsync([FromBody] BuyPackageRequestModel buyPackageRequest)
         {
             var userId = GetCurrentUserId();
 
             var package = await _packagesService.GetPackageByIdAsync(buyPackageRequest.PackageId);
+
             if (package == null)
             {
                 return BadRequest();
@@ -43,6 +47,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpGet(Constants.Requests.Package.GetUserPackage)]
         public async Task<PackageModel> GetUserPackageAsync(Guid userId)
         {
