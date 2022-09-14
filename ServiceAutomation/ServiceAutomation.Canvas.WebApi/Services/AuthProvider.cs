@@ -63,6 +63,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             return new AuthenticationResult()
             {
+                UserId = user.Id,
                 Success = true,
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
@@ -87,6 +88,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             return new AuthenticationResult
             {
+                UserId = responseUser.Id,
                 Success = true,
                 AccessToken = accessToken,
                 RefreshToken = refreshToken,
