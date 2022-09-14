@@ -21,5 +21,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public virtual TenantGroupEntity Group { get; set; }
         public virtual UserContactEntity UserContact { get; set; }
         public virtual ProfilePhotoEntity ProfilePhoto { get; set; }
+
+        public virtual ICollection<PurchaseEntity> UserPurchases { get; set; }
     }
 }

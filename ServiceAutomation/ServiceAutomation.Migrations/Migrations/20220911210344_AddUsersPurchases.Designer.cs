@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceAutomation.DataAccess.DbContexts;
@@ -9,9 +10,10 @@ using ServiceAutomation.DataAccess.DbContexts;
 namespace ServiceAutomation.DataAccess.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220911210344_AddUsersPurchases")]
+    partial class AddUsersPurchases
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,45 +21,12 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                 .HasAnnotation("ProductVersion", "5.0.12")
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.BasicLevelEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("Id");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<int?>("PartnersCount")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid?>("PartnersLevelId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal?>("Turnover")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PartnersLevelId");
-
-                    b.ToTable("BasicLevels");
-                });
-
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.BonusEntity", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("Id");
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -92,28 +61,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.ToTable("Credentials");
                 });
 
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.MonthlyLevelEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("Id");
-
-                    b.Property<int>("Level")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<decimal?>("Turnover")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MonthlyLevels");
-                });
-
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.PackageBonusAssociationEntity", b =>
                 {
                     b.Property<Guid>("PackageId")
@@ -146,9 +93,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid")
                         .HasColumnName("Id");
-
-                    b.Property<int>("DisplayOrder")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -394,15 +338,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.HasIndex("CredentialId");
 
                     b.ToTable("WithdrawTransactions");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.BasicLevelEntity", b =>
-                {
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.BasicLevelEntity", "PartnersLevel")
-                        .WithMany()
-                        .HasForeignKey("PartnersLevelId");
-
-                    b.Navigation("PartnersLevel");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", b =>

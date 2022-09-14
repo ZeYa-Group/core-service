@@ -47,6 +47,8 @@ namespace ServiceAutomation.Canvas.WebApi.DependencyInjection
             services.AddScoped<IUserReferralService, UserReferralService>();
             services.AddScoped<IVideoTemplateService, VideoTemplateService>();
             services.AddScoped<IUserProfileService, UserProfileService>();
+            services.AddScoped<IPackagesService, PackagesService>();
+            services.AddScoped<IPurchaseService, PurchaseService>();
         }
     }
 
