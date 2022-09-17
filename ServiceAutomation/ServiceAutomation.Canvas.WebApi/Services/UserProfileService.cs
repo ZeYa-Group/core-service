@@ -73,26 +73,21 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return response;
         }
 
-        public async Task<ResultModel> UploadProfileInfo(UploadUserProfileRequestModel requestModel)
+        public async Task<ResultModel> UploadProfileInfo(Guid userId, string firstName, string lastName, string patronymic, DateTime dateOfBirth)
         {
             var response = new ResultModel();
 
-            var userProfileData = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.UserId == requestModel.UserId);
+            var userProfileData = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.UserId == userId);
            
             if (userProfileData == null)
             {
-                userProfileData = new UserContactEntity()
+                userProfileData = new UserProfileInfoEntity()
                 {
-                    FirstName = requestModel.FirstName,
-                    LastName = requestModel.LastName,
-                    Patronymic = requestModel.Patronymic,
-                    DateOfBirth = requestModel.DateOfBirth,
-                    PhoneNumber = requestModel.PhoneNumber,
-                    Adress = requestModel.Adress,
-                    PassportSeries = requestModel.PassportSeries,
-                    PassportNumber = requestModel.PassportNumber,
-                    IdentityCode = requestModel.IdentityCode,
-                    UserId = requestModel.UserId
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Patronymic = patronymic,
+                    DateOfBirth = dateOfBirth,
+                    UserId = userId
                 };
 
                 try
@@ -110,15 +105,10 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 try
                 {
-                    userProfileData.FirstName = requestModel?.FirstName;
-                    userProfileData.LastName = requestModel?.LastName;
-                    userProfileData.Patronymic = requestModel?.Patronymic;
-                    userProfileData.DateOfBirth = requestModel.DateOfBirth;
-                    userProfileData.PhoneNumber = requestModel?.PhoneNumber;
-                    userProfileData.Adress = requestModel?.Adress;
-                    userProfileData.PassportSeries = requestModel?.PassportSeries;
-                    userProfileData.PassportNumber = requestModel?.PassportNumber;
-                    userProfileData.IdentityCode = requestModel?.IdentityCode;
+                    userProfileData.FirstName = firstName;
+                    userProfileData.LastName = lastName;
+                    userProfileData.Patronymic = patronymic;
+                    userProfileData.DateOfBirth = dateOfBirth;
 
                     await dbContext.SaveChangesAsync();
                 }
@@ -128,7 +118,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     response.Success = false;
                 }
             }
-            
+
             response.Success = response.Errors != null ? false : true;
 
             return response; 

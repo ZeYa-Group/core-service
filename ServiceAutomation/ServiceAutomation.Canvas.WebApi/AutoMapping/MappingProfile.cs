@@ -22,7 +22,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<WithdrawTransactionEntity, WithdrawResponseModel>();
             CreateMap<VideoLessonTemplateEntity, VideoLessonResponseModel>();
 
-            CreateMap<UserContactEntity, UserProfileResponseModel>()
+            CreateMap<UserProfileInfoEntity, UserProfileResponseModel>()
                 .ForMember(x => x.Email, opt => opt.MapFrom(x => x.User.Email))
                 .ForMember(x => x.ProfilePhoto, opt => opt.MapFrom(x => x.User.ProfilePhoto.Data))
                 .ForMember(x => x.PersonalReferral, opt => opt.MapFrom(x => x.User.PersonalReferral));

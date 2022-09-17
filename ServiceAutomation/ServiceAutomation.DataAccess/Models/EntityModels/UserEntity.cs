@@ -19,7 +19,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
 
         public ICollection<CredentialEntity> Credentionals { get; set; }
         public virtual TenantGroupEntity Group { get; set; }
-        public virtual UserContactEntity UserContact { get; set; }
+        public virtual UserProfileInfoEntity UserContact { get; set; }
         public virtual ProfilePhotoEntity ProfilePhoto { get; set; }
 
         public virtual ICollection<PurchaseEntity> UserPurchases { get; set; }

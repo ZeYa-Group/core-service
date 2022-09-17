@@ -9,6 +9,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
     {
         Task<UserProfileResponseModel> GetUserInfo(Guid userId);
         Task<ResultModel> UploadProfilePhoto(Guid userId, byte[] data);
-        Task<ResultModel> UploadProfileInfo(UploadUserProfileRequestModel requestModel);
+        Task<ResultModel> UploadProfileInfo(Guid userId, string firstName, string lastName, string patronymic, DateTime dateOfBirth);
     }
 }

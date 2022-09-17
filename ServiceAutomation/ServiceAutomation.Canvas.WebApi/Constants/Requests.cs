@@ -55,5 +55,17 @@
             public const string UploadProfilePhoto = "UploadProfilePhoto";
             public const string UploadProfileInfo = "UploadProfileInfo";
         }
+
+        public static class UserDocument
+        {
+            public const string GetUserLegalNotice = "GetUserLegalNotice";
+            public const string UploadUserLegalNotice = "UploadUserLegalNotice";
+            public const string GetUserEvidenceData = "GetUserEvidenceData";
+            public const string UploadUserEvidenceData = "UploadUserEvidenceData";
+            public const string GetUserBankRequecitations = "GetUserBankRequecitations";
+            public const string UploadUserBankRequecitations = "UploadUserBankRequecitations";
+            public const string GetUserLegalAddress = "GetUserLegalAddress";
+            public const string UploadUserLegalAddress = "UploadUserLegalAddress";
+        }
     }
 }

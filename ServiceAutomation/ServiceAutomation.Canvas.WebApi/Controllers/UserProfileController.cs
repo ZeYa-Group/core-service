@@ -8,6 +8,7 @@ using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using static ServiceAutomation.Canvas.WebApi.Constants.Requests;
 
 namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
@@ -45,7 +46,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpPost(Constants.Requests.UserProfile.UploadProfileInfo)]
         public async Task<ResultModel> UploadProfileInfo([FromBody] UploadUserProfileRequestModel requestModel)
         {
-            return await userProfileService.UploadProfileInfo(requestModel);
+            return await userProfileService.UploadProfileInfo(requestModel.UserId, requestModel.FirstName, requestModel.LastName, requestModel.Patronymic, requestModel.DateOfBirth);
         }
     }
 }
