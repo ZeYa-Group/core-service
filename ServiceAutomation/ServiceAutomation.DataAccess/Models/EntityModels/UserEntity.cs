@@ -17,7 +17,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
 
-        public ICollection<CredentialEntity> Credentionals { get; set; }
+        public virtual CredentialEntity Credentional { get; set; }
         public virtual TenantGroupEntity Group { get; set; }
         public virtual UserProfileInfoEntity UserContact { get; set; }
         public virtual ProfilePhotoEntity ProfilePhoto { get; set; }

@@ -29,17 +29,17 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             //    .ToListAsync();
 
             var withdrawHistory = await dbContext.Users.Where(x => x.Id == userId)
-                .Include(x => x.Credentionals)
+                .Include(x => x.Credentional)
                 .ThenInclude(x => x.WithdrawTransactions)
                 .ToListAsync();
 
-            var res = withdrawHistory.Select(x => x.Credentionals);
-
+            var res = withdrawHistory.Select(x => x.Credentional);
+            var res2 = res.SelectMany(x => x.WithdrawTransactions);
 
             //.SelectMany(x => x.WithdrawTransactions)
             //.ToListAsync();
 
-            var response = withdrawHistory.Select(x => mapper.Map<WithdrawResponseModel>(x));
+            var response = res2.Select(x => mapper.Map<WithdrawResponseModel>(x));
 
             return response;
         }
