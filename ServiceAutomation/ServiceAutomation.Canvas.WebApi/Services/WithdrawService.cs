@@ -32,6 +32,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 .Include(x => x.Credentionals)
                 .ThenInclude(x => x.WithdrawTransactions)
                 .ToListAsync();
+
             var res = withdrawHistory.Select(x => x.Credentionals);
 
 
