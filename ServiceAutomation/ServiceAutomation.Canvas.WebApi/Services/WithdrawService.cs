@@ -23,23 +23,17 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<IEnumerable<WithdrawResponseModel>> GetWithdrawHistory(Guid userId)
         {
-            //var withdrawHistory = await dbContext.Users.Where(x => x.Id == userId)
-            //    .SelectMany(x => x.Credentionals)
-            //    .SelectMany(x => x.WithdrawTransactions)
-            //    .ToListAsync();
-
-            var withdrawHistory = await dbContext.Users.Where(x => x.Id == userId)
+            var user = await dbContext.Users.Where(x => x.Id == userId)
                 .Include(x => x.Credentional)
                 .ThenInclude(x => x.WithdrawTransactions)
-                .ToListAsync();
+                .FirstOrDefaultAsync();
 
-            var res = withdrawHistory.Select(x => x.Credentional);
-            var res2 = res.SelectMany(x => x.WithdrawTransactions);
+            var withdrawHistory = user.Credentional.WithdrawTransactions;
 
             //.SelectMany(x => x.WithdrawTransactions)
             //.ToListAsync();
 
-            var response = res2.Select(x => mapper.Map<WithdrawResponseModel>(x));
+            var response = withdrawHistory.Select(x => mapper.Map<WithdrawResponseModel>(x));
 
             return response;
         }
