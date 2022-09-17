@@ -15,8 +15,10 @@ namespace ServiceAutomation.Canvas.AutoMapping
     {
         public MappingProfile()
         {
-            CreateMap<UserEntity, UserModel>();
-            CreateMap<RegisterRequestModel, UserModel>();
+            CreateMap<UserEntity, UserModel>()
+                .ForMember(x => x.InviteCode, opt => opt.MapFrom(x => x.InviteReferral));
+            CreateMap<RegisterRequestModel, UserModel>()
+                .ForMember(x => x.InviteCode, opt => opt.MapFrom(x => x.ReferralCode));
             CreateMap<RefreshTokenEntity, RefreshToken>();
             CreateMap<ThumbnailTemplateEntity, ThumbnailResponseModel>();
             CreateMap<WithdrawTransactionEntity, WithdrawResponseModel>();
