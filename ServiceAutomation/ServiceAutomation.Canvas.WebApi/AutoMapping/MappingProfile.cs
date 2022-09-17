@@ -29,6 +29,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<UserProfileInfoEntity, UserProfileResponseModel>()
                 .ForMember(x => x.Email, opt => opt.MapFrom(x => x.User.Email))
                 .ForMember(x => x.ProfilePhoto, opt => opt.MapFrom(x => x.User.ProfilePhoto.Data))
+                .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.User.UserPhoneNumber.PhoneNumber))
                 .ForMember(x => x.PersonalReferral, opt => opt.MapFrom(x => x.User.PersonalReferral));
 
             CreateMap<PackageBonusAssociationEntity, BonusModel>()

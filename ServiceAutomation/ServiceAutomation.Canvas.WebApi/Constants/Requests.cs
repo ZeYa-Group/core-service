@@ -54,6 +54,9 @@
             public const string GetProfileInfo = "GetProfileInfo";
             public const string UploadProfilePhoto = "UploadProfilePhoto";
             public const string UploadProfileInfo = "UploadProfileInfo";
+            public const string ChangePassword = "ChangePassword";
+            public const string ChangeEmailAdress = "ChangeEmailAdress";
+            public const string UploadPhoneNumber = "UploadPhoneNumber";
         }
 
         public static class UserDocument

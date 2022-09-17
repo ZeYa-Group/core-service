@@ -10,5 +10,8 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
         Task<UserProfileResponseModel> GetUserInfo(Guid userId);
         Task<ResultModel> UploadProfilePhoto(Guid userId, byte[] data);
         Task<ResultModel> UploadProfileInfo(Guid userId, string firstName, string lastName, string patronymic, DateTime dateOfBirth);
+        Task<ResultModel> ChangePassword(Guid userId, string oldPassword, string newPassword);
+        Task<ResultModel> ChangeEmailAdress(Guid userId, string newEmail);
+        Task<ResultModel> UploadPhoneNumber(Guid userId, string newPhoneNumber);
     }
 }

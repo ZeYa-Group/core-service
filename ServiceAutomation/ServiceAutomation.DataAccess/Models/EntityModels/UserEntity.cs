@@ -17,10 +17,11 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
 
-        public virtual CredentialEntity Credentional { get; set; }
+        public virtual CredentialEntity Credential { get; set; }
         public virtual TenantGroupEntity Group { get; set; }
         public virtual UserProfileInfoEntity UserContact { get; set; }
         public virtual ProfilePhotoEntity ProfilePhoto { get; set; }
+        public virtual UserPhoneNumberEntity UserPhoneNumber { get; set; }
 
         public virtual ICollection<PurchaseEntity> UserPurchases { get; set; }
     }

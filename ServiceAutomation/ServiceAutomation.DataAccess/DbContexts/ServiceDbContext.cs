@@ -17,9 +17,8 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<ProfilePhotoEntity> ProfilePhotos { get; set; }
         public virtual DbSet<PackageEntity> Packages { get; set; }
         public virtual DbSet<PurchaseEntity> UsersPurchases { get; set; }
-
         public virtual DbSet<BasicLevelEntity> BasicLevels { get; set; }
-
+        public virtual DbSet<UserPhoneNumberEntity> UserPhones { get; set; }
         public virtual DbSet<MonthlyLevelEntity> MonthlyLevels { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
