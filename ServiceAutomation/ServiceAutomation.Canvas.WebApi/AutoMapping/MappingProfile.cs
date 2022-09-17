@@ -21,12 +21,17 @@ namespace ServiceAutomation.Canvas.AutoMapping
                 .ForMember(x => x.InviteCode, opt => opt.MapFrom(x => x.ReferralCode));
             CreateMap<RefreshTokenEntity, RefreshToken>();
             CreateMap<ThumbnailTemplateEntity, ThumbnailResponseModel>();
-            CreateMap<WithdrawTransactionEntity, WithdrawResponseModel>();
+            CreateMap<WithdrawTransactionEntity, WithdrawResponseModel>()
+                .ForMember(x => x.CardCode, opt => opt.MapFrom(x => x.Credential.IBAN))
+                .ForMember(x => x.Status, opt => opt.MapFrom(x => x.TransactionStatus.ToString()))
+                .ForMember(x => x.Amount, opt => opt.MapFrom(x => x.Value))
+                .ForMember(x => x.DateTime, opt => opt.MapFrom(x => x.Date));
             CreateMap<VideoLessonTemplateEntity, VideoLessonResponseModel>();
 
-            CreateMap<UserContactEntity, UserProfileResponseModel>()
+            CreateMap<UserProfileInfoEntity, UserProfileResponseModel>()
                 .ForMember(x => x.Email, opt => opt.MapFrom(x => x.User.Email))
                 .ForMember(x => x.ProfilePhoto, opt => opt.MapFrom(x => x.User.ProfilePhoto.Data))
+                .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.User.UserPhoneNumber.PhoneNumber))
                 .ForMember(x => x.PersonalReferral, opt => opt.MapFrom(x => x.User.PersonalReferral));
 
             CreateMap<PackageBonusAssociationEntity, BonusModel>()

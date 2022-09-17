@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceAutomation.DataAccess.DbContexts;
@@ -9,9 +10,10 @@ using ServiceAutomation.DataAccess.DbContexts;
 namespace ServiceAutomation.DataAccess.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220917110513_change user contact structure")]
+    partial class changeusercontactstructure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,8 +89,7 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Credentials");
                 });
@@ -304,28 +305,9 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<string>("PersonalReferral")
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("UserPhoneNumberId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserPhoneNumberId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserPhoneNumberEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserPhones");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserProfileInfoEntity", b =>
@@ -413,8 +395,8 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", b =>
                 {
                     b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
-                        .WithOne("Credential")
-                        .HasForeignKey("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", "UserId")
+                        .WithMany("Credentionals")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -489,15 +471,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Navigation("Parent");
                 });
 
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", b =>
-                {
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserPhoneNumberEntity", "UserPhoneNumber")
-                        .WithMany()
-                        .HasForeignKey("UserPhoneNumberId");
-
-                    b.Navigation("UserPhoneNumber");
-                });
-
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserProfileInfoEntity", b =>
                 {
                     b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
@@ -544,7 +517,7 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", b =>
                 {
-                    b.Navigation("Credential");
+                    b.Navigation("Credentionals");
 
                     b.Navigation("Group");
 

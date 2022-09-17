@@ -11,15 +11,14 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<ThumbnailTemplateEntity> Thumbnails { get; set; }
         public virtual DbSet<CredentialEntity> Credentials { get; set; }
         public virtual DbSet<WithdrawTransactionEntity> WithdrawTransactions { get; set; }
-        public virtual DbSet<UserContactEntity> UserContacts { get; set; }
+        public virtual DbSet<UserProfileInfoEntity> UserContacts { get; set; }
         public virtual DbSet<TenantGroupEntity> TenantGroups { get; set; }
         public virtual DbSet<VideoLessonTemplateEntity> VideoLessons { get; set; }
         public virtual DbSet<ProfilePhotoEntity> ProfilePhotos { get; set; }
         public virtual DbSet<PackageEntity> Packages { get; set; }
         public virtual DbSet<PurchaseEntity> UsersPurchases { get; set; }
-
         public virtual DbSet<BasicLevelEntity> BasicLevels { get; set; }
-
+        public virtual DbSet<UserPhoneNumberEntity> UserPhones { get; set; }
         public virtual DbSet<MonthlyLevelEntity> MonthlyLevels { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)

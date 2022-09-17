@@ -6,8 +6,10 @@ using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using static ServiceAutomation.Canvas.WebApi.Constants.Requests;
 
 namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
@@ -45,7 +47,39 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpPost(Constants.Requests.UserProfile.UploadProfileInfo)]
         public async Task<ResultModel> UploadProfileInfo([FromBody] UploadUserProfileRequestModel requestModel)
         {
-            return await userProfileService.UploadProfileInfo(requestModel);
+            return await userProfileService.UploadProfileInfo(requestModel.UserId, requestModel.FirstName, requestModel.LastName, requestModel.Patronymic, requestModel.DateOfBirth);
+        }
+
+        [Authorize]
+        [HttpPost(Constants.Requests.UserProfile.ChangePassword)]
+        public async Task<ResultModel> ChangePassword([FromBody] ChangePasswordRequestModel requestModel)
+        {
+            if(requestModel.NewPassword != requestModel.ConfirmPassword)
+            {
+                return new ResultModel()
+                {
+                    Success = false,
+                    Errors = new List<string>()
+                    {
+                        "Password do not match"
+                    }
+                };
+            }
+            return await userProfileService.ChangePassword(requestModel.UserId, requestModel.OldPassword, requestModel.NewPassword);
+        }
+
+        [Authorize]
+        [HttpPost(Constants.Requests.UserProfile.UploadPhoneNumber)]
+        public async Task<ResultModel> UploadPhoneNumber([FromBody] ChangePhoneNumberRequestModel requestModel)
+        {
+            return await userProfileService.UploadPhoneNumber(requestModel.UserId, requestModel.NewPhoneNumber);
+        }
+
+        [Authorize]
+        [HttpPost(Constants.Requests.UserProfile.ChangeEmailAdress)]
+        public async Task<ResultModel> ChangeEmailAdress([FromBody] ChangeEmailRequestModel requestModel)
+        {
+            return await userProfileService.ChangeEmailAdress(requestModel.UserId, requestModel.NewEmailAdress);
         }
     }
 }

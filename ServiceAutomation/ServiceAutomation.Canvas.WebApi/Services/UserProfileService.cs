@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
+using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.EntityModels;
 using System;
+using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using static ServiceAutomation.Canvas.WebApi.Constants.Requests;
 
@@ -26,8 +29,10 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var user = await dbContext.UserContacts
                 .Include(x => x.User)
-                .ThenInclude(x=>x.ProfilePhoto)
-                .FirstOrDefaultAsync(x=> x.UserId == userId);
+                .ThenInclude(x => x.ProfilePhoto)
+                .Include(x => x.User)
+                .ThenInclude(x => x.UserPhoneNumber)
+                .FirstOrDefaultAsync(x => x.UserId == userId);
 
             return mapper.Map<UserProfileResponseModel>(user);
         }
@@ -37,9 +42,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var response = new ResultModel();
             var photo = await dbContext.ProfilePhotos.FirstOrDefaultAsync(x => x.UserId == userId);
 
-            if(photo == null)
+            if (photo == null)
             {
-                var photo2 = new ProfilePhotoEntity()
+                photo = new ProfilePhotoEntity()
                 {
                     Data = data,
                     UserId = userId
@@ -62,56 +67,177 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 photo.Data = data;
                 await dbContext.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Errors.Add(ex.Message);
                 response.Success = false;
             }
 
-            response.Success = response.Errors != null ? false :  true;
+            response.Success = response.Errors != null ? false : true;
 
             return response;
         }
 
-        public async Task<ResultModel> UploadProfileInfo(UploadUserProfileRequestModel requestModel)
+        public async Task<ResultModel> UploadProfileInfo(Guid userId, string firstName, string lastName, string patronymic, DateTime dateOfBirth)
         {
             var response = new ResultModel();
-            //var photo = await dbContext.ProfilePhotos.FirstOrDefaultAsync(x => x.UserId == userId);
 
-            //if (photo == null)
-            //{
-            //    var photo2 = new ProfilePhotoEntity()
-            //    {
-            //        Data = data,
-            //        UserId = userId
-            //    };
+            var userProfileData = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.UserId == userId);
 
-            //    try
-            //    {
-            //        await dbContext.ProfilePhotos.AddAsync(photo);
-            //        await dbContext.SaveChangesAsync();
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        response.Errors.Add(ex.Message);
-            //        response.Success = false;
-            //    }
-            //}
+            if (userProfileData == null)
+            {
+                userProfileData = new UserProfileInfoEntity()
+                {
+                    FirstName = firstName,
+                    LastName = lastName,
+                    Patronymic = patronymic,
+                    DateOfBirth = dateOfBirth,
+                    UserId = userId
+                };
 
-            //try
-            //{
-            //    photo.Data = data;
-            //    await dbContext.SaveChangesAsync();
-            //}
-            //catch (Exception ex)
-            //{
-            //    response.Errors.Add(ex.Message);
-            //    response.Success = false;
-            //}
+                try
+                {
+                    await dbContext.UserContacts.AddAsync(userProfileData);
+                    await dbContext.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    response.Errors.Add(ex.Message);
+                    response.Success = false;
+                }
+            }
+            else
+            {
+                try
+                {
+                    userProfileData.FirstName = firstName;
+                    userProfileData.LastName = lastName;
+                    userProfileData.Patronymic = patronymic;
+                    userProfileData.DateOfBirth = dateOfBirth;
 
-            //response.Success = response.Errors != null ? false : true;
+                    await dbContext.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    response.Errors.Add(ex.Message);
+                    response.Success = false;
+                }
+            }
 
-            return response; 
+            response.Success = response.Errors != null ? false : true;
+
+            return response;
+        }
+
+        public async Task<ResultModel> ChangePassword(Guid userId, string oldPassword, string newPassword)
+        {
+            var response = new ResultModel();
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+            if (user == null)
+            {
+                response.Errors.Add("User is not found");
+                response.Success = false;
+
+                return response;
+            }
+
+            var isPasswordCorrect = VerifyPasswordhash(oldPassword, user.PasswordHash, user.PasswordSalt);
+
+            if (isPasswordCorrect)
+            {
+                var updatedPasswordModel = CreatePasswordHash(newPassword);
+
+                user.PasswordSalt = updatedPasswordModel.PasswordSalt;
+                user.PasswordHash = updatedPasswordModel.PasswordHash;
+
+                await dbContext.SaveChangesAsync();
+
+                response.Success = true;
+            }
+            else
+            {
+                response.Errors.Add("Icorrect password");
+                response.Success = false;
+            }
+
+            return response;
+        }
+
+        private bool VerifyPasswordhash(string password, byte[] passwordHash, byte[] passwordSalt)
+        {
+            using (var hmac = new HMACSHA512(passwordSalt))
+            {
+                var computedHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes((string)password));
+
+                return computedHash.SequenceEqual(passwordHash);
+            }
+        }
+
+        private PasswordHashModel CreatePasswordHash(string password)
+        {
+            using (var hmac = new HMACSHA512())
+            {
+                return new PasswordHashModel()
+                {
+                    PasswordSalt = hmac.Key,
+                    PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password))
+                };
+            }
+        }
+
+        public async Task<ResultModel> ChangeEmailAdress(Guid userId, string newEmail)
+        {
+            var result = new ResultModel();
+
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            var isEmailExists = await dbContext.Users.FirstOrDefaultAsync(x => x.Email == newEmail);
+
+            if (user != null)
+            {
+                if (isEmailExists != null)
+                {
+                    user.Email = newEmail;
+                    await dbContext.SaveChangesAsync();
+
+                    result.Success = true;
+                    return result;
+                }
+            }
+
+            result.Success = false;
+            return result;
+        }
+
+        public async Task<ResultModel> UploadPhoneNumber(Guid userId, string newPhoneNumber)
+        {
+            var result = new ResultModel();
+            var user = await dbContext.Users
+                .Include(x => x.UserPhoneNumber)
+                .FirstOrDefaultAsync(x => x.Id == userId);
+
+            if (user != null)
+            {
+                if (user.UserPhoneNumber == null)
+                {
+                    user.UserPhoneNumber = new UserPhoneNumberEntity()
+                    {
+                        PhoneNumber = newPhoneNumber
+                    };
+
+                    await dbContext.UserPhones.AddAsync(user.UserPhoneNumber);
+                    await dbContext.SaveChangesAsync();
+                }
+
+                user.UserPhoneNumber.PhoneNumber = newPhoneNumber;
+                await dbContext.SaveChangesAsync();
+
+                result.Success = true;
+                return result;
+            }
+
+            result.Success = false;
+            return result;
         }
     }
 }
