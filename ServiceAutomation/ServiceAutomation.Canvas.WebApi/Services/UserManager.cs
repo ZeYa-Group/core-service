@@ -17,13 +17,19 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly IMapper mapper;
         private readonly IIdentityGenerator identityGenerator;
         private readonly IUserReferralService userReferralService;
+        private readonly ITenantGroupService tenantGroupService;
 
-        public UserManager(AppDbContext dbContext, IMapper mapper, IIdentityGenerator identityGenerator, IUserReferralService userReferralService)
+        public UserManager(AppDbContext dbContext,
+                            IMapper mapper,
+                            IIdentityGenerator identityGenerator,
+                            IUserReferralService userReferralService,
+                            ITenantGroupService tenantGroupService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.identityGenerator = identityGenerator;
             this.userReferralService = userReferralService;
+            this.tenantGroupService = tenantGroupService;
         }
 
         public async Task<UserModel> AddUserAsync(UserModel user)
@@ -43,7 +49,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await dbContext.Users.AddAsync(addedUser);
             await dbContext.SaveChangesAsync();
 
-            return mapper.Map<UserModel>(addedUser);
+            var userModel = mapper.Map<UserModel>(addedUser);
+
+            await tenantGroupService.CreateTenantGroupForUserAsync(userModel);
+
+            return userModel;
         }
 
         public async Task<UserModel> GetByEmailAsync(string email)
@@ -80,6 +90,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             }
 
             return false;
-        }
+        }       
     }
 }

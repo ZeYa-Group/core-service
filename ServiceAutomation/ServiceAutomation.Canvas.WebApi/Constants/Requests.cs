@@ -37,10 +37,13 @@
             public const string MakeWithdraw = "Withdraw";
         }
 
-        public static class Group
+        public static class Structure
         {
+            public const string GetUserGroup = nameof(GetUserGroup);
             public const string GetTree = "GetTree";
-            public const string AddUser = "AddUser";
+            public const string GetUserReferralGroup = nameof(GetUserReferralGroup);
+            public const string GetReferralGroup = nameof(GetReferralGroup);
+            public const string GetPartnersReferralGroups = nameof(GetPartnersReferralGroups);
         }
 
         public static class VideoTemplate
