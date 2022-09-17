@@ -136,7 +136,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             if (user == null)
             {
-                response.Errors.Add("User is not found");
+                response.Errors.Add("User is null");
                 response.Success = false;
 
                 return response;
@@ -157,7 +157,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             }
             else
             {
-                response.Errors.Add("Icorrect password");
+                response.Errors.Add("Password is incorrect");
                 response.Success = false;
             }
 
@@ -227,6 +227,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
                     await dbContext.UserPhones.AddAsync(user.UserPhoneNumber);
                     await dbContext.SaveChangesAsync();
+
+                    result.Success = true;
+                    return result;
                 }
 
                 user.UserPhoneNumber.PhoneNumber = newPhoneNumber;

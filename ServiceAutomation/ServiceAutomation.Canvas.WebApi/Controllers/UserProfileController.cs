@@ -32,7 +32,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
         [Authorize]
         [HttpPost(Constants.Requests.UserProfile.UploadProfilePhoto)]
-        public async Task<ResultModel> UploadProfilePhoto([FromForm] UploadProfilePhotoRequestModel requestModel)
+        public async Task<IActionResult> UploadProfilePhoto([FromForm] UploadProfilePhotoRequestModel requestModel)
         {
             var photo = requestModel.ProfilePhoto;
 
@@ -40,46 +40,75 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             await photo.CopyToAsync(memoryStream);
             var photoData = memoryStream.ToArray();
 
-            return await userProfileService.UploadProfilePhoto(requestModel.UserId, photoData);
+            var response = await userProfileService.UploadProfilePhoto(requestModel.UserId, photoData);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok();
         }
 
         [Authorize]
         [HttpPost(Constants.Requests.UserProfile.UploadProfileInfo)]
-        public async Task<ResultModel> UploadProfileInfo([FromBody] UploadUserProfileRequestModel requestModel)
+        public async Task<IActionResult> UploadProfileInfo([FromBody] UploadUserProfileRequestModel requestModel)
         {
-            return await userProfileService.UploadProfileInfo(requestModel.UserId, requestModel.FirstName, requestModel.LastName, requestModel.Patronymic, requestModel.DateOfBirth);
+            var response = await userProfileService.UploadProfileInfo(requestModel.UserId, requestModel.FirstName, requestModel.LastName, requestModel.Patronymic, requestModel.DateOfBirth);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok();
         }
 
         [Authorize]
         [HttpPost(Constants.Requests.UserProfile.ChangePassword)]
-        public async Task<ResultModel> ChangePassword([FromBody] ChangePasswordRequestModel requestModel)
+        public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequestModel requestModel)
         {
             if(requestModel.NewPassword != requestModel.ConfirmPassword)
             {
-                return new ResultModel()
-                {
-                    Success = false,
-                    Errors = new List<string>()
-                    {
-                        "Password do not match"
-                    }
-                };
+                return BadRequest("Passwords do not match");
             }
-            return await userProfileService.ChangePassword(requestModel.UserId, requestModel.OldPassword, requestModel.NewPassword);
+
+            var response = await userProfileService.ChangePassword(requestModel.UserId, requestModel.OldPassword, requestModel.NewPassword);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok();
         }
 
         [Authorize]
         [HttpPost(Constants.Requests.UserProfile.UploadPhoneNumber)]
-        public async Task<ResultModel> UploadPhoneNumber([FromBody] ChangePhoneNumberRequestModel requestModel)
+        public async Task<IActionResult> UploadPhoneNumber([FromBody] ChangePhoneNumberRequestModel requestModel)
         {
-            return await userProfileService.UploadPhoneNumber(requestModel.UserId, requestModel.NewPhoneNumber);
+            var response = await userProfileService.UploadPhoneNumber(requestModel.UserId, requestModel.NewPhoneNumber);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok();
         }
 
         [Authorize]
         [HttpPost(Constants.Requests.UserProfile.ChangeEmailAdress)]
-        public async Task<ResultModel> ChangeEmailAdress([FromBody] ChangeEmailRequestModel requestModel)
+        public async Task<IActionResult> ChangeEmailAdress([FromBody] ChangeEmailRequestModel requestModel)
         {
-            return await userProfileService.ChangeEmailAdress(requestModel.UserId, requestModel.NewEmailAdress);
+            var response = await userProfileService.ChangeEmailAdress(requestModel.UserId, requestModel.NewEmailAdress);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok();
         }
     }
 }
