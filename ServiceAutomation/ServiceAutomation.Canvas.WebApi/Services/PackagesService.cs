@@ -12,35 +12,35 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class PackagesService : IPackagesService
     {
-        private readonly AppDbContext _dbContext;
-        private readonly IMapper _mapper;
+        private readonly AppDbContext dbContext;
+        private readonly IMapper mapper;
 
         public PackagesService(AppDbContext dbContext, IMapper mapper)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
+            this.dbContext = dbContext;
+            this.mapper = mapper;
         }
 
         public async Task<PackageModel> GetPackageByIdAsync(Guid packageId)
         {
-            var package = await _dbContext.Packages.FirstAsync(x => x.Id == packageId);
-            return _mapper.Map<PackageModel>(package);
+            var package = await dbContext.Packages.FirstAsync(x => x.Id == packageId);
+            return mapper.Map<PackageModel>(package);
         }
 
         public async Task<IEnumerable<PackageModel>> GetPackagesAsync()
         {
-            var packagesEntities = await _dbContext.Packages
+            var packagesEntities = await dbContext.Packages
                 .Include(x => x.PackageBonuses)
                 .ThenInclude(x => x.Bonus)
                 .OrderBy(x => x.DisplayOrder)
                 .ToListAsync();
 
-            return packagesEntities.Select(x => _mapper.Map<PackageModel>(x));
+            return packagesEntities.Select(x => mapper.Map<PackageModel>(x));
         }
 
         public async Task<PackageModel> GetUserPackageAsync(Guid userId)
         {
-            var package = await _dbContext.UsersPurchases
+            var package = await dbContext.UsersPurchases
                                 .AsNoTracking()
                                 .Where(x => x.UserId == userId)
                                 .OrderByDescending(x => x.PurchaseDate)
@@ -50,7 +50,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                 .Select(x => x.Package)                                
                                 .FirstOrDefaultAsync();
 
-            return _mapper.Map<PackageModel>(package);
+            return mapper.Map<PackageModel>(package);
         }
 
     }

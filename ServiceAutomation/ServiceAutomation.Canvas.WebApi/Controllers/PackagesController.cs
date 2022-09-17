@@ -13,20 +13,20 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
     [ApiController]
     public class PackagesController : ApiBaseController
     {
-        private readonly IPackagesService _packagesService;
+        private readonly IPackagesService packagesService;
 
-        private readonly IPurchaseService _purchaseService;
+        private readonly IPurchaseService purchaseService;
         public PackagesController(IPackagesService packagesService, IPurchaseService purchaseService)
         {
-            _packagesService = packagesService;
-            _purchaseService = purchaseService;
+            this.packagesService = packagesService;
+            this.purchaseService = purchaseService;
         }
 
         [Authorize]
         [HttpGet(Constants.Requests.Package.GetPackages)]
         public async Task<IEnumerable<PackageModel>> GetPackagesAsync()
         {
-            return await _packagesService.GetPackagesAsync();
+            return await packagesService.GetPackagesAsync();
         }
 
         [Authorize]
@@ -35,14 +35,14 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         {
             var userId = GetCurrentUserId();
 
-            var package = await _packagesService.GetPackageByIdAsync(buyPackageRequest.PackageId);
+            var package = await packagesService.GetPackageByIdAsync(buyPackageRequest.PackageId);
 
             if (package == null)
             {
                 return BadRequest();
             }
 
-            await _purchaseService.BuyPackageAsync(package, userId);
+            await purchaseService.BuyPackageAsync(package, userId);
 
             return Ok();
         }
@@ -51,7 +51,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpGet(Constants.Requests.Package.GetUserPackage)]
         public async Task<PackageModel> GetUserPackageAsync(Guid userId)
         {
-            return await _packagesService.GetUserPackageAsync(userId);
+            return await packagesService.GetUserPackageAsync(userId);
         }
 
     }

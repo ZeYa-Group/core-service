@@ -1,15 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Npgsql.TypeHandlers.DateTimeHandlers;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using static ServiceAutomation.Canvas.WebApi.Constants.Requests;
 
 namespace ServiceAutomation.Canvas.WebApi.Controllers
 {

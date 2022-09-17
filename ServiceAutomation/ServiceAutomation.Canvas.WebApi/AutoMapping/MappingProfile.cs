@@ -5,8 +5,6 @@ using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.Common.Models;
 using ServiceAutomation.DataAccess.Models.EntityModels;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace ServiceAutomation.Canvas.AutoMapping
@@ -17,15 +15,19 @@ namespace ServiceAutomation.Canvas.AutoMapping
         {
             CreateMap<UserEntity, UserModel>()
                 .ForMember(x => x.InviteCode, opt => opt.MapFrom(x => x.InviteReferral));
+
             CreateMap<RegisterRequestModel, UserModel>()
                 .ForMember(x => x.InviteCode, opt => opt.MapFrom(x => x.ReferralCode));
+
             CreateMap<RefreshTokenEntity, RefreshToken>();
             CreateMap<ThumbnailTemplateEntity, ThumbnailResponseModel>();
+
             CreateMap<WithdrawTransactionEntity, WithdrawResponseModel>()
                 .ForMember(x => x.CardCode, opt => opt.MapFrom(x => x.Credential.IBAN))
                 .ForMember(x => x.Status, opt => opt.MapFrom(x => x.TransactionStatus.ToString()))
                 .ForMember(x => x.Amount, opt => opt.MapFrom(x => x.Value))
                 .ForMember(x => x.DateTime, opt => opt.MapFrom(x => x.Date));
+
             CreateMap<VideoLessonTemplateEntity, VideoLessonResponseModel>();
 
             CreateMap<UserProfileInfoEntity, UserProfileResponseModel>()
