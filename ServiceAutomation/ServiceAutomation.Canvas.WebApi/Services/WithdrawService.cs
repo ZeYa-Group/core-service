@@ -27,15 +27,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 .Include(x => x.Credentional)
                 .ThenInclude(x => x.WithdrawTransactions)
                 .FirstOrDefaultAsync();
-
-            var withdrawHistory = user.Credentional.WithdrawTransactions;
-
-            //.SelectMany(x => x.WithdrawTransactions)
-            //.ToListAsync();
-
-            var response = withdrawHistory.Select(x => mapper.Map<WithdrawResponseModel>(x));
-
-            return response;
+            
+            return user?.Credentional?.WithdrawTransactions?.Select(x => mapper.Map<WithdrawResponseModel>(x));
         }
     }
 }
