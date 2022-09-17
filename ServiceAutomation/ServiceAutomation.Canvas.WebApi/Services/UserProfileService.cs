@@ -29,10 +29,10 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var user = await dbContext.UserContacts
                 .Include(x => x.User)
-                .ThenInclude(x=>x.ProfilePhoto)
-                .Include(x=>x.User)
-                .ThenInclude(x=>x.UserPhoneNumber)
-                .FirstOrDefaultAsync(x=> x.UserId == userId);
+                .ThenInclude(x => x.ProfilePhoto)
+                .Include(x => x.User)
+                .ThenInclude(x => x.UserPhoneNumber)
+                .FirstOrDefaultAsync(x => x.UserId == userId);
 
             return mapper.Map<UserProfileResponseModel>(user);
         }
@@ -42,7 +42,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var response = new ResultModel();
             var photo = await dbContext.ProfilePhotos.FirstOrDefaultAsync(x => x.UserId == userId);
 
-            if(photo == null)
+            if (photo == null)
             {
                 photo = new ProfilePhotoEntity()
                 {
@@ -67,13 +67,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 photo.Data = data;
                 await dbContext.SaveChangesAsync();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 response.Errors.Add(ex.Message);
                 response.Success = false;
             }
 
-            response.Success = response.Errors != null ? false :  true;
+            response.Success = response.Errors != null ? false : true;
 
             return response;
         }
@@ -83,7 +83,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var response = new ResultModel();
 
             var userProfileData = await dbContext.UserContacts.FirstOrDefaultAsync(x => x.UserId == userId);
-           
+
             if (userProfileData == null)
             {
                 userProfileData = new UserProfileInfoEntity()
@@ -126,7 +126,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             response.Success = response.Errors != null ? false : true;
 
-            return response; 
+            return response;
         }
 
         public async Task<ResultModel> ChangePassword(Guid userId, string oldPassword, string newPassword)
@@ -134,11 +134,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var response = new ResultModel();
             var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
-            if(user == null)
+            if (user == null)
             {
                 response.Errors.Add("User is not found");
                 response.Success = false;
-                
+
                 return response;
             }
 
@@ -193,7 +193,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
             var isEmailExists = await dbContext.Users.FirstOrDefaultAsync(x => x.Email == newEmail);
 
-            if(user != null)
+            if (user != null)
             {
                 if (isEmailExists != null)
                 {
@@ -213,12 +213,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var result = new ResultModel();
             var user = await dbContext.Users
-                .Include(x=>x.UserPhoneNumber)
+                .Include(x => x.UserPhoneNumber)
                 .FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user != null)
             {
-                if(user.UserPhoneNumber == null)
+                if (user.UserPhoneNumber == null)
                 {
                     user.UserPhoneNumber = new UserPhoneNumberEntity()
                     {
