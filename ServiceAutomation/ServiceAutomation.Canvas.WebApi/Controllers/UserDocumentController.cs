@@ -1,5 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using OneOf;
+using ServiceAutomation.Canvas.WebApi.Interfaces.CountryService;
+using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
+using ServiceAutomation.DataAccess.Models.EntityModels;
+using ServiceAutomation.DataAccess.Models.Enums;
 using System;
 using System.Security.Policy;
 using System.Threading.Tasks;
@@ -10,56 +15,24 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
     [ApiController]
     public class UserDocumentController : ApiBaseController
     {
-        public UserDocumentController()
-        {
+        private readonly IDocumentVerificationService verificationService;
 
+        public UserDocumentController(IDocumentVerificationService verificationService)
+        {
+            this.verificationService = verificationService;
         }
 
-        [HttpGet(Constants.Requests.UserDocument.GetUserLegalNotice)]
-        public async Task<IActionResult> GetUserLegalNotice(Guid UserId)
+        [HttpPost(Constants.Requests.UserDocument.SendDataForVerification)]
+        public async Task<IActionResult> SendDataForVerification(DocumentVerificationRequestModel requestModel)
         {
+            await Task.Delay(1000);
             return Ok();
         }
 
-        [HttpPost(Constants.Requests.UserDocument.UploadUserLegalNotice)]
-        public async Task<IActionResult> UploadUserLegalNotice(Guid UserId)
+        [HttpGet(Constants.Requests.UserDocument.GetVerifiedData)]
+        public async Task<IActionResult> GetVerifiedData()
         {
-            return Ok();
-        }
-
-        [HttpGet(Constants.Requests.UserDocument.GetUserEvidenceData)]
-        public async Task<IActionResult> GetUserEvidenceData(Guid UserId)
-        {
-            return Ok();
-        }
-
-        [HttpPost(Constants.Requests.UserDocument.UploadUserEvidenceData)]
-        public async Task<IActionResult> UploadUserEvidenceData(Guid UserId)
-        {
-            return Ok();
-        }
-
-        [HttpGet(Constants.Requests.UserDocument.GetUserBankRequecitations)]
-        public async Task<IActionResult> GetUserBankRequecitations(Guid UserId)
-        {
-            return Ok();
-        }
-
-        [HttpPost(Constants.Requests.UserDocument.UploadUserBankRequecitations)]
-        public async Task<IActionResult> UploadUserBankRequecitations(Guid UserId)
-        {
-            return Ok();
-        }
-
-        [HttpGet(Constants.Requests.UserDocument.GetUserLegalAddress)]
-        public async Task<IActionResult> GetUserLegalAddress(Guid UserId)
-        {
-            return Ok();
-        }
-
-        [HttpPost(Constants.Requests.UserDocument.UploadUserLegalAddress)]
-        public async Task<IActionResult> UploadUserLegalAddress(Guid UserId)
-        {
+            await Task.Delay(100);
             return Ok();
         }
     }

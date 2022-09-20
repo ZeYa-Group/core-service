@@ -1,0 +1,12 @@
+﻿using Microsoft.VisualBasic;
+using System;
+
+namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
+{
+    public class WitnessDataModel : DocumentModel
+    {
+        public string CertificateNumber { get; set; }
+        public string RegistrationAuthority { get; set; }
+        public DateTime CertificateDateIssue { get; set; }
+    }
+}
