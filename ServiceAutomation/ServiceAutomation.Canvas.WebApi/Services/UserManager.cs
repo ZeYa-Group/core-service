@@ -47,11 +47,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             };
 
             await dbContext.Users.AddAsync(addedUser);
-            await dbContext.SaveChangesAsync();
-
+           
             var userModel = mapper.Map<UserModel>(addedUser);
 
             await tenantGroupService.CreateTenantGroupForUserAsync(userModel);
+
+            await dbContext.SaveChangesAsync();
 
             return userModel;
         }

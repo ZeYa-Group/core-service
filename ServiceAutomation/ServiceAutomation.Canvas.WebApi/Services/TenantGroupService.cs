@@ -38,7 +38,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 var parentTenantGroupId = await dbContext.Users.Where(x => x.PersonalReferral == userModel.InviteCode)
                                                                .Select(x => x.Group.Id)
                                                                .FirstOrDefaultAsync();
-                tenantGroup.ParentId = parentTenantGroupId;
+                
+                tenantGroup.ParentId = parentTenantGroupId == Guid.Empty ? null : parentTenantGroupId;
             }
 
             await dbContext.TenantGroups.AddAsync(tenantGroup);
