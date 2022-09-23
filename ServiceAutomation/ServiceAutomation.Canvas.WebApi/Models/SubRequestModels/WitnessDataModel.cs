@@ -3,7 +3,7 @@ using System;
 
 namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
 {
-    public class WitnessDataModel : DocumentModel
+    public class WitnessDataModel 
     {
         public string CertificateNumber { get; set; }
         public string RegistrationAuthority { get; set; }

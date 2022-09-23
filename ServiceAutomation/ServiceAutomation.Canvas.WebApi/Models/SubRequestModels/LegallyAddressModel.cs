@@ -2,7 +2,7 @@
 
 namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
 {
-    public class LegallyAddressModel : DocumentModel
+    public class LegallyAddressModel 
     {
         public string Region { get; set; }
         public string Locality { get; set; }

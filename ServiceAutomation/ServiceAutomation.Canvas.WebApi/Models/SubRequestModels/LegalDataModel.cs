@@ -1,6 +1,6 @@
 ﻿namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
 {
-    public class LegalDataModel : DocumentModel
+    public class LegalDataModel 
     {
         public string LegalEntityFullName { get; set; }
         public string HeadFullName { get; set; }

@@ -1,7 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OneOf;
-using ServiceAutomation.Canvas.WebApi.Interfaces.CountryService;
+using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
 using ServiceAutomation.DataAccess.Models.EntityModels;
 using ServiceAutomation.DataAccess.Models.Enums;
@@ -22,18 +23,42 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.verificationService = verificationService;
         }
 
+        [Authorize]
         [HttpPost(Constants.Requests.UserDocument.SendDataForVerification)]
         public async Task<IActionResult> SendDataForVerification(DocumentVerificationRequestModel requestModel)
         {
-            await Task.Delay(1000);
-            return Ok();
+            var response = await verificationService.SendUserVerificationData(requestModel);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok(response);
         }
 
+        [Authorize]
         [HttpGet(Constants.Requests.UserDocument.GetVerifiedData)]
-        public async Task<IActionResult> GetVerifiedData()
+        public async Task<IActionResult> GetVerifiedData(Guid userId)
         {
-            await Task.Delay(100);
-            return Ok();
+            var data = await verificationService.GetUserVerifiedData(userId);
+            
+            if(data.IsT0)
+            {
+                return Ok(data.AsT0);
+            }
+            else if(data.IsT1)
+            {
+                return Ok(data.AsT1);
+            }
+            else if (data.IsT2)
+            {
+                return Ok(data.AsT2);
+            }
+            else
+            {
+                return BadRequest("Errors ocured while data was processing");
+            }
         }
     }
 }

@@ -20,6 +20,9 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<BasicLevelEntity> BasicLevels { get; set; }
         public virtual DbSet<UserPhoneNumberEntity> UserPhones { get; set; }
         public virtual DbSet<MonthlyLevelEntity> MonthlyLevels { get; set; }
+        public virtual DbSet<UserAccountOrganizationEntity> UserAccountOrganizations { get; set; }
+        public virtual DbSet<LegalUserOrganizationDataEntity> LegalUserOrganizationsData { get; set; }
+        public virtual DbSet<IndividualUserOrganizationDataEntity> IndividualUserOrganizationsData { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {

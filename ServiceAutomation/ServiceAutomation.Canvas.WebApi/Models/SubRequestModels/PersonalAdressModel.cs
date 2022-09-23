@@ -1,6 +1,6 @@
 ﻿namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
 {
-    public class PersonalAdressModel : DocumentModel
+    public class PersonalAdressModel 
     {
         public string Disctrict { get; set; }
         public string City { get; set; }

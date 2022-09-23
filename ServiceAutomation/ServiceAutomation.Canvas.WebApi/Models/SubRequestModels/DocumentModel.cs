@@ -6,5 +6,6 @@
         public WitnessDataModel WitnessDataModel { get; set; }
         public BankRequecitationsModel BankRequecitationModel { get; set; }
         public LegallyAddressModel LegallyAddressModel { get; set; }
+        public PersonalAdressModel PersonalAdressModel { get; set; }
     }
 }
