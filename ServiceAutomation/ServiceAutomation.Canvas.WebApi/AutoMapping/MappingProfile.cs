@@ -30,11 +30,11 @@ namespace ServiceAutomation.Canvas.AutoMapping
 
             CreateMap<VideoLessonTemplateEntity, VideoLessonResponseModel>();
 
-            CreateMap<UserProfileInfoEntity, UserProfileResponseModel>()
-                .ForMember(x => x.Email, opt => opt.MapFrom(x => x.User.Email))
-                .ForMember(x => x.ProfilePhoto, opt => opt.MapFrom(x => x.User.ProfilePhoto.Data))
-                .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.User.UserPhoneNumber.PhoneNumber))
-                .ForMember(x => x.PersonalReferral, opt => opt.MapFrom(x => x.User.PersonalReferral));
+            CreateMap<UserEntity, UserProfileResponseModel>()
+                .ForMember(x => x.Email, opt => opt.MapFrom(x => x.Email))
+                //.ForMember(x => x.ProfilePhoto, opt => opt.MapFrom(x => x.User.ProfilePhoto.Data))
+                .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.UserPhoneNumber.PhoneNumber))
+                .ForMember(x => x.PersonalReferral, opt => opt.MapFrom(x => x.PersonalReferral));
 
             CreateMap<PackageBonusAssociationEntity, BonusModel>()
                 .ForMember(x => x.Id, opt => opt.MapFrom(x => x.Bonus.Id))
