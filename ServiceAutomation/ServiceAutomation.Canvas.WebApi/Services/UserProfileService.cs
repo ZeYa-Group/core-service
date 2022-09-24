@@ -19,7 +19,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly AppDbContext dbContext;
         private readonly IMapper mapper;
 
-        private const string BasePath = "";
+        private const string BasePath = "/";
 
         public UserProfileService(AppDbContext dbContext, IMapper mapper)
         {
@@ -30,8 +30,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task<UserProfileResponseModel> GetUserInfo(Guid userId)
         {
             var user = await dbContext.Users
-                //.Include(x => x.User)
-                //.ThenInclude(x => x.ProfilePhoto)
+                .Include(x => x.ProfilePhoto)
                 .Include(x => x.UserContact)
                 .Include(x => x.UserPhoneNumber)
                 .FirstOrDefaultAsync(x => x.Id == userId);
@@ -70,7 +69,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 photo = new ProfilePhotoEntity()
                 {
-                    //Data = data,
+                    Name = userId.ToString() + ".png",
+                    FullPath = BasePath,
                     UserId = userId
                 };
 
@@ -88,7 +88,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             try
             {
-                //photo.Data = data;
+                photo.Name = data.ToString();
+                photo.FullPath = BasePath;
                 await dbContext.SaveChangesAsync();
             }
             catch (Exception ex)
