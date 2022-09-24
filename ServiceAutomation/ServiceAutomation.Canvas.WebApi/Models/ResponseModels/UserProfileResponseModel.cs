@@ -13,5 +13,7 @@ namespace ServiceAutomation.Canvas.WebApi.Models.ResponseModels
         //public Byte[] ProfilePhoto { get; set; }
         public string ProfilePhoto { get; set; } 
         public string PersonalReferral { get; set; }
+        public string PackageName { get; set; }
+        public Guid PackageId { get; set; }
     }
 }

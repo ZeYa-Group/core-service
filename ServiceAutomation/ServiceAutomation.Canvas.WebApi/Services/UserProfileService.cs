@@ -36,9 +36,28 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 .Include(x => x.UserPhoneNumber)
                 .FirstOrDefaultAsync(x => x.Id == userId);
 
+            var package = await dbContext.UsersPurchases
+                                .AsNoTracking()
+                                .Where(x => x.UserId == userId)
+                                .OrderByDescending(x => x.PurchaseDate)
+                                .Include(x => x.Package)
+                                .ThenInclude(x => x.PackageBonuses)
+                                .ThenInclude(x => x.Bonus)
+                                .Select(x => x.Package)
+                                .FirstOrDefaultAsync();
+
             var response = mapper.Map<UserProfileResponseModel>(user);
+
+            if(package != null)
+            {
+                response.PackageName = package.Name;
+                response.PackageId = package.Id;
+            }
+
             response.ProfilePhoto = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80";
             return response;
+
+
             //return mapper.Map<UserProfileResponseModel>(user);
         }
 
