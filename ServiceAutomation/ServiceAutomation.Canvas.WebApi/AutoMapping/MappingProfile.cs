@@ -45,6 +45,8 @@ namespace ServiceAutomation.Canvas.AutoMapping
 
             CreateMap<IndividualUserOrganizationDataEntity, IndividualEntityDataResponseModel>();
             CreateMap<LegalUserOrganizationDataEntity, LegalEntityDataResponseModel>();
+            CreateMap<AccrualsEntity, AccuralResponseModel>()
+                .ForMember(x => x.TransactionStatus, opt => opt.MapFrom(x => x.TransactionStatus.ToString()));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using LevelHostedService;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ServiceAutomaion.Services.Interfaces;
 using ServiceAutomaion.Services.Services;
@@ -49,6 +50,9 @@ namespace ServiceAutomation.Canvas.WebApi.DependencyInjection
             services.AddScoped<IPackagesService, PackagesService>();
             services.AddScoped<IPurchaseService, PurchaseService>();
             services.AddScoped<IDocumentVerificationService, DocumentVerificationService>();
+            services.AddScoped<IPersonalDataService, PersonalDataService>();
+
+            services.AddHostedService<LevelHostedServices>();
         }
     }
 

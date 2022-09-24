@@ -29,6 +29,13 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         }
 
         [Authorize]
+        [HttpGet(Constants.Requests.Withdraw.GetAccuralHistory)]
+        public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid id)
+        {
+            return await withdrawService.GetAccuralHistory(id);
+        }
+
+        [Authorize]
         [HttpPost(Constants.Requests.Withdraw.MakeWithdraw)]
         public async Task<IEnumerable<WithdrawResponseModel>> Withdraw(WithdrawRequestModel request)
         {

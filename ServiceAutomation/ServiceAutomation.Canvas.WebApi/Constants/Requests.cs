@@ -6,7 +6,7 @@
         {
             public const string GetReferralLink = "GetReferralLink";
             public const string GetAuthAction = "GetAuth";
-            public const string GetAction = "GetAction";
+            public const string GetPersonalPageInfo = "GetPersonalPageInfo";
         }
 
         public static class User
@@ -34,6 +34,7 @@
         public static class Withdraw
         {
             public const string GetWithdrawHistory = "GetWithdrawHistory";
+            public const string GetAccuralHistory = "GetAccuralHistory";
             public const string MakeWithdraw = "Withdraw";
         }
 

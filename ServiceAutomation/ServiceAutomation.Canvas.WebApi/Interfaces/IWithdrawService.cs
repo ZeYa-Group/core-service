@@ -8,5 +8,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
     public interface IWithdrawService
     {
         Task<IEnumerable<WithdrawResponseModel>> GetWithdrawHistory(Guid userId);
+        Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId);
     }
 }

@@ -23,6 +23,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public virtual ProfilePhotoEntity ProfilePhoto { get; set; }
         public virtual UserPhoneNumberEntity UserPhoneNumber { get; set; }
         public virtual ICollection<PurchaseEntity> UserPurchases { get; set; }
+        public virtual ICollection<AccrualsEntity> UserAccruals { get; set; }
         public virtual UserAccountOrganizationEntity UserAccountOrganization { get; set; }
     }
 }
