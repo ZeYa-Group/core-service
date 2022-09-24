@@ -1,5 +1,6 @@
 ﻿using ServiceAutomation.DataAccess.Schemas.Enums;
 using System.Collections.Generic;
+using System;
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
@@ -16,6 +17,10 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
 
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+
+        public Guid? BasicLevelId { get; set; }
+
+        public BasicLevelEntity BasicLevel { get; set; }
 
         public virtual CredentialEntity Credential { get; set; }
         public virtual TenantGroupEntity Group { get; set; }

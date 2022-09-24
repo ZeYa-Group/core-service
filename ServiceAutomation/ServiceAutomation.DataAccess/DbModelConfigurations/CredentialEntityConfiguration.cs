@@ -11,10 +11,10 @@ namespace ServiceAutomation.DataAccess.DbModelConfigurations
             base.Configure(builder);
 
             builder.ToTable(CredentialEntityDBConstants.TableName);
-            //builder.HasOne(x => x.User)
-            //    .WithOne(x => x.Credentional)
-            //    .HasForeignKey(x => x.UserId)
-            //    .IsRequired();
+            builder.HasOne(x => x.User)
+                .WithOne(x => x.Credential)
+                .HasForeignKey<CredentialEntity>(x => x.UserId)
+                .IsRequired();
         }
     }
 

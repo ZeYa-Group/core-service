@@ -34,7 +34,6 @@
         public static class Withdraw
         {
             public const string GetWithdrawHistory = "GetWithdrawHistory";
-            public const string GetAccuralHistory = "GetAccuralHistory";
             public const string MakeWithdraw = "Withdraw";
         }
 
@@ -65,8 +64,14 @@
 
         public static class UserDocument
         {
-            public const string SendDataForVerification = "SendDataForVerification";
-            public const string GetVerifiedData = "GetVerifiedData";
+            public const string GetUserLegalNotice = "GetUserLegalNotice";
+            public const string UploadUserLegalNotice = "UploadUserLegalNotice";
+            public const string GetUserEvidenceData = "GetUserEvidenceData";
+            public const string UploadUserEvidenceData = "UploadUserEvidenceData";
+            public const string GetUserBankRequecitations = "GetUserBankRequecitations";
+            public const string UploadUserBankRequecitations = "UploadUserBankRequecitations";
+            public const string GetUserLegalAddress = "GetUserLegalAddress";
+            public const string UploadUserLegalAddress = "UploadUserLegalAddress";
         }
     }
 }

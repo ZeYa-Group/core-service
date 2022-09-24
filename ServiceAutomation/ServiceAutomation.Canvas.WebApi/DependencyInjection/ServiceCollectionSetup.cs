@@ -6,6 +6,7 @@ using ServiceAutomaion.Services.Services;
 using ServiceAutomation.Canvas.AutoMapping;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Services;
+using ServiceAutomation.Canvas.WebApi.Services.DataFilling;
 using ServiceAutomation.DataAccess.Extensions;
 
 
@@ -52,7 +53,9 @@ namespace ServiceAutomation.Canvas.WebApi.DependencyInjection
             services.AddScoped<IDocumentVerificationService, DocumentVerificationService>();
             services.AddScoped<IPersonalDataService, PersonalDataService>();
 
-            services.AddHostedService<LevelHostedServices>();
+            services.AddHostedService<LevelHostedServices>();            
+            services.AddScoped<ITurnoverService, TurnoverService>();
+            services.AddScoped<ILevelsService, LevelsService>();
         }
     }
 

@@ -2,6 +2,9 @@
 using ServiceAutomation.DataAccess.Models.Enums;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("ServiceAutomation.DataAccess.Migrations")]
 
 namespace ServiceAutomation.DataAccess.DataSeeding
 {

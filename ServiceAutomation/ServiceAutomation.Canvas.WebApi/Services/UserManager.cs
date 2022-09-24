@@ -34,6 +34,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<UserModel> AddUserAsync(UserModel user)
         {
+            var firstBasicLevel = await dbContext.BasicLevels.SingleOrDefaultAsync(x => x.Level == DataAccess.Models.Enums.Level.FirstLevel);
+
             var addedUser = new UserEntity()
             {
                 FirstName = user.FirstName,
@@ -44,10 +46,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 PersonalReferral = userReferralService.GenerateIviteCode(),
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
+                BasicLevel = firstBasicLevel
             };
 
+
             await dbContext.Users.AddAsync(addedUser);
-           
+            await dbContext.SaveChangesAsync();
+
             var userModel = mapper.Map<UserModel>(addedUser);
 
             await tenantGroupService.CreateTenantGroupForUserAsync(userModel);
