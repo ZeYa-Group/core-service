@@ -2,7 +2,7 @@
 {
     public class PersonalAdressModel 
     {
-        public string Disctrict { get; set; }
+        public string District { get; set; }
         public string City { get; set; }
         public string Index { get; set; }
         public string Street { get; set; }

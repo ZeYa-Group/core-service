@@ -4,8 +4,8 @@
     {
         public LegalDataModel LegalDataModel { get; set; }
         public WitnessDataModel WitnessDataModel { get; set; }
-        public BankRequecitationsModel BankRequecitationModel { get; set; }
+        public BankRequecitationsModel BankRequestModel { get; set; }
         public LegallyAddressModel LegallyAddressModel { get; set; }
-        public PersonalAdressModel PersonalAdressModel { get; set; }
+        public PersonalAdressModel PersonalAddressModel { get; set; }
     }
 }
