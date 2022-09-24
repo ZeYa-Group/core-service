@@ -11,6 +11,7 @@ namespace ServiceAutomation.Canvas.WebApi.Models.ResponseModels
         public string PhoneNumber { get; set; }
         public DateTime DateOfBirth { get; set; }
         //public Byte[] ProfilePhoto { get; set; }
+        public string ProfilePhoto { get; set; } 
         public string PersonalReferral { get; set; }
     }
 }

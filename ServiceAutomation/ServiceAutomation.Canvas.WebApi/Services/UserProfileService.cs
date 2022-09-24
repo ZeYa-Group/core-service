@@ -36,7 +36,10 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 .Include(x => x.UserPhoneNumber)
                 .FirstOrDefaultAsync(x => x.Id == userId);
 
-            return mapper.Map<UserProfileResponseModel>(user);
+            var response = mapper.Map<UserProfileResponseModel>(user);
+            response.ProfilePhoto = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80";
+            return response;
+            //return mapper.Map<UserProfileResponseModel>(user);
         }
 
         public async Task<ResultModel> UploadProfilePhoto(Guid userId, byte[] data)
