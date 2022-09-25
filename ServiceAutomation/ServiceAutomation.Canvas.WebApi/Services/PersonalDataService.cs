@@ -35,7 +35,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 response.GroupTurnover = 0;
                 response.MonthlyTurnover = 0;
                 response.ReceivedPayoutPercentage = 0;
-                response.ReuqiredAction = "Lots of to do";
+                response.ReuqiredAction = "test comment";
                 response.ReuqiredGroupTurnover = 9000;
             }
             else
@@ -49,7 +49,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 response.GroupTurnover = 500;
                 response.MonthlyTurnover = 12220;
                 response.ReceivedPayoutPercentage = 10;
-                response.ReuqiredAction = "Lots of to do";
+                response.ReuqiredAction = "test comment";
                 response.ReuqiredGroupTurnover = 0;
             }
 
