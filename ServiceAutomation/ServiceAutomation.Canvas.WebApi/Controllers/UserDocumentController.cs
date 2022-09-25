@@ -25,7 +25,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
         [Authorize]
         [HttpPost(Constants.Requests.UserDocument.SendDataForVerification)]
-        public async Task<IActionResult> SendDataForVerification(DocumentVerificationRequestModel requestModel)
+        public async Task<IActionResult> SendDataForVerification([FromForm] DocumentVerificationRequestModel requestModel)
         {
             var response = await verificationService.SendUserVerificationData(requestModel);
 

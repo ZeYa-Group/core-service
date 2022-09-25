@@ -23,7 +23,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.withdrawService = withdrawService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet(Constants.Requests.Withdraw.GetWithdrawHistory)]
         public async Task<IEnumerable<WithdrawResponseModel>> GetWithdrawHistory(Guid userId, TransactionStatus transactionStatus = default, PeriodType period = default)
         {

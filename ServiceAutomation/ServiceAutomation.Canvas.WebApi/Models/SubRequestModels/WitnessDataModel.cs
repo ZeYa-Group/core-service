@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.VisualBasic;
 using System;
 
 namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
@@ -8,5 +9,6 @@ namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
         public string CertificateNumber { get; set; }
         public string RegistrationAuthority { get; set; }
         public DateTime CertificateDateIssue { get; set; }
+        public IFormFile FileData { get; set; }
     }
 }
