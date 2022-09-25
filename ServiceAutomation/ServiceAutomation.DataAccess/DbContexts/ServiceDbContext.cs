@@ -25,6 +25,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<IndividualUserOrganizationDataEntity> IndividualUserOrganizationsData { get; set; }
         public virtual DbSet<AccrualsEntity> Accruals { get; set; }
         public virtual DbSet<PartnerPurchaseEntity> PartnerPurchase { get; set; }
+        public virtual DbSet<UserLevelsInfoEntity> UserLevelsInfos { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
@@ -47,6 +48,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new MonthlyLevelEntityConfiguration());
             modelBuilder.ApplyConfiguration(new PartnerPurchaseEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new PartnerInfoEntityConfiguration());
         }
     }
 }

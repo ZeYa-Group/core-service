@@ -8,6 +8,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
     {
         Task<LevelModel> GetMonthlyLevelByUserIdAsync(Guid userId);
 
-        Task СalculatePartnersBasicLevels(Guid userId);
+        Task СalculatePartnersBasicLevelsAsync(Guid userId);
     }
 }

@@ -13,11 +13,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     {
         private readonly AppDbContext _dbContext;
         private readonly IPackagesService _packagesService;
+        private readonly ILevelsService _levelsService;
 
-        public PurchaseService(AppDbContext dbContext, IPackagesService packagesService)
+        public PurchaseService(AppDbContext dbContext, IPackagesService packagesService, ILevelsService levelsService)
         {
             _dbContext = dbContext;
             _packagesService = packagesService;
+            _levelsService = levelsService;
         }
 
         public async Task BuyPackageAsync(PackageModel package, Guid userId)
@@ -39,6 +41,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             await _dbContext.UsersPurchases.AddAsync(purchase);
             await _dbContext.SaveChangesAsync();
+
+            await _levelsService.СalculatePartnersBasicLevelsAsync(userId);
         }
 
         public async Task BuyPackageByPackageTypeAsync(PackageType packageType, Guid userId)
@@ -62,6 +66,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             await _dbContext.UsersPurchases.AddAsync(purchase);
             await _dbContext.SaveChangesAsync();
+
+            await _levelsService.СalculatePartnersBasicLevelsAsync(userId);
         }
     }
 }
