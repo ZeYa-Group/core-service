@@ -9,5 +9,7 @@ namespace ServiceAutomation.Canvas.WebApi.Models
         public string Name { get; set; }
 
         public decimal? Turnover { get; set; }
+
+        public int Level { get; set; }
     }
 }

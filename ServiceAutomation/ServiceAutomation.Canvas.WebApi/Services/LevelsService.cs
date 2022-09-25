@@ -4,6 +4,7 @@ using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.EntityModels;
+using ServiceAutomation.DataAccess.Models.Enums;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,13 +27,65 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task<LevelModel> GetMonthlyLevelByUserIdAsync(Guid userId)
         {
             var monthlyTurnover = await _turnoverService.GetMonthlyTurnoverByUserIdAsync(userId);
+            return await GetCurrentMonthlyLevelByTurnoverAsync(monthlyTurnover);
+        }
 
+        public async Task<LevelInfoModel> GetMonthlyLevelInfoByUserIdAsync(Guid userId)
+        {
+            var monthlyTurnover = await _turnoverService.GetMonthlyTurnoverByUserIdAsync(userId);
+            var monthlyLevel = await GetCurrentMonthlyLevelByTurnoverAsync(monthlyTurnover);
+
+            var monthlyLevelInfo = new LevelInfoModel
+            {
+                CurrentLevel = monthlyLevel,
+                CurrentTurnover = monthlyTurnover
+            };
+
+            return monthlyLevelInfo;
+        }
+
+        private async Task<LevelModel> GetCurrentMonthlyLevelByTurnoverAsync(decimal monthlyTurnover)
+        {
             var monthlyLevel = await _dbContext.MonthlyLevels.Where(l => l.Level == _dbContext.MonthlyLevels
-                                                                                        .Where(x => !x.Turnover.HasValue || x.Turnover.Value < monthlyTurnover)
-                                                                                        .Max(x => x.Level))
+                                                             .Where(x => !x.Turnover.HasValue || x.Turnover.Value < monthlyTurnover)
+                                                             .Max(x => x.Level))
                                                              .SingleOrDefaultAsync();
 
             return _mapper.Map<LevelModel>(monthlyLevel);
+        }
+
+        public async Task<LevelInfoModel> GetBasicLevelInfoByUserIdAsync(Guid userId)
+        {
+            var basicLevel = await _dbContext.Users.AsNoTracking()
+                                                   .Where(u => u.Id == userId)
+                                                   .Select(x => x.BasicLevel)
+                                                   .SingleOrDefaultAsync();
+
+            var turnover = await _turnoverService.GetTurnoverByUserIdAsync(userId);
+
+            var basicLevelInfo = new LevelInfoModel
+            {
+                CurrentLevel = _mapper.Map<LevelModel>(basicLevel),
+                CurrentTurnover = turnover
+            };
+
+            return basicLevelInfo;
+        }
+
+        public async Task<NextBasicLevelRequirementsModel> GetNextBasicLevelRequirementsAsync(Level currentUserBasicLevel)
+        {
+            var nextBasicLevel = currentUserBasicLevel + 1;
+
+            var nextBasicLevelEntity = await _dbContext.BasicLevels.AsNoTracking()
+                                                                   .Include(b => b.PartnersLevel)
+                                                                   .FirstAsync(l => l.Level == nextBasicLevel);
+
+            return new NextBasicLevelRequirementsModel
+            {
+                GroupTurnover = nextBasicLevelEntity.Turnover,
+                PartnersRequirementCount = nextBasicLevelEntity.PartnersCount,
+                PartnersRequirementLevel = (int?)nextBasicLevelEntity.PartnersLevel?.Level ?? null
+            };            
         }
 
         public async Task СalculatePartnersBasicLevelsAsync(Guid userId)
@@ -52,8 +105,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
                 var getLevelsInBranchInfosString = GetLevelsInfoSqlQueryString(user);
                 var levelsInfo = await _dbContext.UserLevelsInfos
-                                                  .FromSqlRaw(getLevelsInBranchInfosString)                                                  
-                                                  .Include( x => x.BasicLevel)
+                                                  .FromSqlRaw(getLevelsInBranchInfosString)
+                                                  .Include(x => x.BasicLevel)
                                                   .ToDictionaryAsync(x => x.BasicLevel.Level, x => x.BranchCount);
                 var appropriateLevels = basicLevels.Where(l => l.Turnover == null || l.Turnover < turnover).OrderByDescending(l => (int)l.Level);
 
@@ -74,11 +127,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                         newLevel = level;
                     }
 
-                    if(newLevel != null)
+                    if (newLevel != null)
                     {
                         if (user.BasicLevel != newLevel)
                         {
+                            levelsInfo[user.BasicLevel.Level]--;
                             user.BasicLevel = newLevel;
+                            levelsInfo[user.BasicLevel.Level]++;
                         }
                         break;
                     }
@@ -166,7 +221,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                          + "from("
                                          + "select \"BranchNumber\", \"OwnerBranchId\", \"BasicLevelId\", count(\"BasicLevelId\") as \"CountLevelInBranch\" from resultGroup\n"
                                          + "group by \"BranchNumber\", \"BasicLevelId\", \"OwnerBranchId\"\n"
-                                         +") as levelsInfos \n"
+                                         + ") as levelsInfos \n"
                                          + "group by \"BasicLevelId\"";
 
 

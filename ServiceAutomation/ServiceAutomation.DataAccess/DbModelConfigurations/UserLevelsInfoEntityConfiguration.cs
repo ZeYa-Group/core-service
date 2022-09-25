@@ -4,7 +4,7 @@ using ServiceAutomation.DataAccess.Models.EntityModels;
 
 namespace ServiceAutomation.DataAccess.DbModelConfigurations
 {
-    internal class PartnerInfoEntityConfiguration : IEntityTypeConfiguration<UserLevelsInfoEntity>
+    internal class UserLevelsInfoEntityConfiguration : IEntityTypeConfiguration<UserLevelsInfoEntity>
     {
         public void Configure(EntityTypeBuilder<UserLevelsInfoEntity> builder)
         {

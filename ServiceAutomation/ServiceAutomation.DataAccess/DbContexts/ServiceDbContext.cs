@@ -48,7 +48,10 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new MonthlyLevelEntityConfiguration());
             modelBuilder.ApplyConfiguration(new PartnerPurchaseEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
-            modelBuilder.ApplyConfiguration(new PartnerInfoEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new UserLevelsInfoEntityConfiguration());
+
+            modelBuilder.Ignore<UserLevelsInfoEntity>();
+            modelBuilder.Ignore<PartnerPurchaseEntity>();
         }
     }
 }

@@ -48,7 +48,8 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<AccrualsEntity, AccuralResponseModel>()
                 .ForMember(x => x.TransactionStatus, opt => opt.MapFrom(x => x.TransactionStatus.ToString()));
 
-            CreateMap<LevelEntity, LevelModel>();
+            CreateMap<LevelEntity, LevelModel>()
+                .ForMember( x => x.Level, opt => opt.MapFrom(x => (int)x.Level));
         }
     }
 }

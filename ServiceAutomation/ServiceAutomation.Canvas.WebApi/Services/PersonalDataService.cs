@@ -1,7 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
-using ServiceAutomation.Canvas.WebApi.Interfaces;
+﻿using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.DataAccess.DbContexts;
+using ServiceAutomation.DataAccess.Models.Enums;
 using System;
 using System.Threading.Tasks;
 
@@ -9,49 +9,34 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class PersonalDataService : IPersonalDataService
     {
-        private readonly AppDbContext dbContext;
-        public PersonalDataService(AppDbContext dbContext)
+        private readonly IPackagesService packagesService;
+        private readonly ILevelsService levelsService;
+
+        public PersonalDataService(IPackagesService packagesService, ILevelsService levelsService)
         {
-            this.dbContext = dbContext;
+            this.packagesService = packagesService;
+            this.levelsService = levelsService;
         }
 
         public async Task<HomePageResponseModel> GetHomeUserData(Guid userId)
         {
-            var response = new HomePageResponseModel();
+            var package = await packagesService.GetUserPackageAsync(userId);
+            var monthlyLevelInfo = await levelsService.GetMonthlyLevelInfoByUserIdAsync(userId);
+            var basicLevelInfo = await levelsService.GetBasicLevelInfoByUserIdAsync(userId);
+            var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);
 
-            var packageData = await dbContext.UsersPurchases
-                .Include(x => x.Package).FirstOrDefaultAsync(x => x.UserId == userId);
-
-            Random random = new Random();
-            random.Next(1,10);
-
-            if (packageData == null)
+            var response = new HomePageResponseModel
             {
-                response.BaseLevel = 1;
-                response.MounthlyLevel = 1;
-                response.AllTimeIncome = 0;
-                response.AvailableForWithdrawal = 0;
-                response.AwaitingAccrual = 0;
-                response.GroupTurnover = 0;
-                response.MonthlyTurnover = 0;
-                response.ReceivedPayoutPercentage = 0;
-                response.ReuqiredAction = "test comment";
-                response.ReuqiredGroupTurnover = 9000;
-            }
-            else
-            {
-                response.PackageName = packageData.Package.Name;
-                response.BaseLevel = random.Next(1,9);
-                response.MounthlyLevel = response.BaseLevel + 1;
-                response.AllTimeIncome = 12560;
-                response.AvailableForWithdrawal = 2500;
-                response.AwaitingAccrual = 300;
-                response.GroupTurnover = 500;
-                response.MonthlyTurnover = 12220;
-                response.ReceivedPayoutPercentage = 10;
-                response.ReuqiredAction = "test comment";
-                response.ReuqiredGroupTurnover = 0;
-            }
+                Package = package,
+                BaseLevelInfo = basicLevelInfo,
+                MounthlyLevelInfo = monthlyLevelInfo,
+                AllTimeIncome = 12560,
+                AvailableForWithdrawal = 2500,
+                AwaitingAccrual = 300,
+                ReceivedPayoutPercentage = 10,
+                ReuqiredAction = "test comment",
+                NextBasicLevelRequirements = nextBasicLevelRequirements,
+            };
 
             return response;
         }
