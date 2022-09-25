@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
+using ServiceAutomation.DataAccess.Models.Enums;
+using ServiceAutomation.DataAccess.Schemas.Enums;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,23 +25,16 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
         [Authorize]
         [HttpGet(Constants.Requests.Withdraw.GetWithdrawHistory)]
-        public async Task<IEnumerable<WithdrawResponseModel>> GetWithdrawHistory(Guid id)
+        public async Task<IEnumerable<WithdrawResponseModel>> GetWithdrawHistory(Guid userId, TransactionStatus transactionStatus = default, PeriodType period = default)
         {
-            return await withdrawService.GetWithdrawHistory(id);
+            return await withdrawService.GetWithdrawHistory(userId, transactionStatus, period);
         }
 
         [Authorize]
         [HttpGet(Constants.Requests.Withdraw.GetAccuralHistory)]
-        public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid id)
+        public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId)
         {
-            return await withdrawService.GetAccuralHistory(id);
-        }
-
-        [Authorize]
-        [HttpPost(Constants.Requests.Withdraw.MakeWithdraw)]
-        public async Task<IEnumerable<WithdrawResponseModel>> Withdraw(WithdrawRequestModel request)
-        {
-            throw new NotImplementedException();
+            return await withdrawService.GetAccuralHistory(userId);
         }
     }
 }

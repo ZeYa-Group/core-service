@@ -5,7 +5,7 @@
         public static class Home
         {
             public const string GetReferralLink = "GetReferralLink";
-            public const string GetAuthAction = "GetAuth";
+            public const string GetAuthAction = "GetAction";
             public const string GetPersonalPageInfo = "GetPersonalPageInfo";
         }
 

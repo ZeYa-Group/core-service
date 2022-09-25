@@ -19,7 +19,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.userProfileService = userProfileService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet(Constants.Requests.UserProfile.GetProfileInfo)]
         public async Task<UserProfileResponseModel> GetProfileInfo(Guid userId)
         {
