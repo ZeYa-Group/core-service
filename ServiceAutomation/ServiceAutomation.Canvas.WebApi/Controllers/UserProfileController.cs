@@ -32,11 +32,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         {
             var photo = requestModel.ProfilePhoto;
 
-            await using var memoryStream = new MemoryStream();
-            await photo.CopyToAsync(memoryStream);
-            var photoData = memoryStream.ToArray();
-
-            var response = await userProfileService.UploadProfilePhoto(requestModel.UserId, photoData);
+            var response = await userProfileService.UploadProfilePhoto(requestModel.UserId, photo);
 
             if (!response.Success)
             {

@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using ServiceAutomation.Canvas.WebApi.Constants;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
@@ -7,7 +10,11 @@ using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.EntityModels;
 using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using static ServiceAutomation.Canvas.WebApi.Constants.Requests;
@@ -18,13 +25,15 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     {
         private readonly AppDbContext dbContext;
         private readonly IMapper mapper;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        private const string BasePath = "/";
+        private const string BasePath = "https://trifecta-web-api.herokuapp.com/ProfilePhotos/";
 
-        public UserProfileService(AppDbContext dbContext, IMapper mapper)
+        public UserProfileService(AppDbContext dbContext, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<UserProfileResponseModel> GetUserInfo(Guid userId)
@@ -53,29 +62,33 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 response.PackageId = package.Id;
             }
 
-            response.ProfilePhoto = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8cHJvZmlsZXxlbnwwfHwwfHw%3D&w=1000&q=80";
             return response;
-
-
-            //return mapper.Map<UserProfileResponseModel>(user);
         }
 
-        public async Task<ResultModel> UploadProfilePhoto(Guid userId, byte[] data)
+        public async Task<ResultModel> UploadProfilePhoto(Guid userId, IFormFile data)
         {
             var response = new ResultModel();
             var photo = await dbContext.ProfilePhotos.FirstOrDefaultAsync(x => x.UserId == userId);
+
+            var profilePhotoName = userId.ToString() + ".png";
+            var profilePhotoFullPath = BasePath + profilePhotoName;
 
             if (photo == null)
             {
                 photo = new ProfilePhotoEntity()
                 {
-                    Name = userId.ToString() + ".png",
-                    FullPath = BasePath,
-                    UserId = userId
+                    UserId = userId,
+                    Name = profilePhotoName,
+                    FullPath = profilePhotoFullPath                    
                 };
 
                 try
                 {
+                    using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + profilePhotoFullPath, FileMode.Create))
+                    {
+                        await data.CopyToAsync(fileStream);
+                    }
+
                     await dbContext.ProfilePhotos.AddAsync(photo);
                     await dbContext.SaveChangesAsync();
                 }
@@ -85,17 +98,20 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     response.Success = false;
                 }
             }
-
-            try
+            else
             {
-                photo.Name = data.ToString();
-                photo.FullPath = BasePath;
-                await dbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                response.Errors.Add(ex.Message);
-                response.Success = false;
+                try
+                {
+                    using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + profilePhotoFullPath, FileMode.CreateNew))
+                    {
+                        await data.CopyToAsync(fileStream);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    response.Errors.Add(ex.Message);
+                    response.Success = false;
+                }
             }
 
             response.Success = response.Errors != null ? false : true;

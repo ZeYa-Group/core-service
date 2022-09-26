@@ -35,10 +35,10 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok(await personalDataService.GetHomeUserData(userId));
         }
 
-        [HttpGet(Constants.Requests.Home.GetAuthAction)]
-        public async Task<IActionResult> GetAction()
-        {
-            return Ok("It is Trifecta, beach");
-        }
+        //[HttpGet(Constants.Requests.Home.GetAuthAction)]
+        //public async Task<IActionResult> GetAction()
+        //{
+        //    return Ok("It is Trifecta, beach");
+        //}
     }
 }

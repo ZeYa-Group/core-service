@@ -106,6 +106,8 @@ namespace ServiceAutomation.Canvas.WebApi
 
             app.UseCors("MyPolicy");
 
+            app.UseStaticFiles();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
