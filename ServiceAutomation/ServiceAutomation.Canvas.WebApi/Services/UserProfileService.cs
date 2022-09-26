@@ -27,7 +27,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly IMapper mapper;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-        private const string BasePath = "https://trifecta-web-api.herokuapp.com/ProfilePhotos/";
+        private const string BasePath = "/ProfilePhotos/";
 
         public UserProfileService(AppDbContext dbContext, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
@@ -71,7 +71,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var photo = await dbContext.ProfilePhotos.FirstOrDefaultAsync(x => x.UserId == userId);
 
             var profilePhotoName = userId.ToString() + ".png";
-            var profilePhotoFullPath = BasePath + profilePhotoName;
+            var profilePhotoFullPath = /*webHostEnvironment.EnvironmentName + */BasePath + profilePhotoName;
 
             if (photo == null)
             {
@@ -94,6 +94,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 }
                 catch (Exception ex)
                 {
+                    response.Errors.Add(ex.Message);
+                    response.Success = false;
                 }
             }
             else
