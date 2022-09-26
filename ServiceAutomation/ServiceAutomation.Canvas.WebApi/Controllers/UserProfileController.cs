@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.RequestsModels;
@@ -14,9 +15,11 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
     public class UserProfileController : ApiBaseController
     {
         private readonly IUserProfileService userProfileService;
-        public UserProfileController(IUserProfileService userProfileService)
+        private readonly IWebHostEnvironment webHostEnvironment;
+        public UserProfileController(IUserProfileService userProfileService, IWebHostEnvironment webHostEnvironment)
         {
             this.userProfileService = userProfileService;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         [Authorize]
@@ -101,6 +104,14 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             }
 
             return Ok();
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAction()
+        {
+            var res1 = webHostEnvironment.WebRootPath;
+            var res2 = webHostEnvironment.ContentRootPath;
+            return Ok(res1 + res2);
         }
     }
 }

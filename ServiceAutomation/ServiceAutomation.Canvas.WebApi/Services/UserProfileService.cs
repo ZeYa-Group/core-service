@@ -94,8 +94,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 }
                 catch (Exception ex)
                 {
-                    response.Errors.Add(ex.Message);
-                    response.Success = false;
                 }
             }
             else
