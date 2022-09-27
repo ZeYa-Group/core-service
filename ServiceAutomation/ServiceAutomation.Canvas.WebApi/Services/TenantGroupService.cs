@@ -85,7 +85,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             HasPartners = g.ChildGroups.Count != 0,
             GroupOwner = new PartnerInfoModel
             {
-                //UserId = g.Id,
+                UserId = g.OwnerUserId,
                 FirstName = g.OwnerUser.FirstName,
                 LastName = g.OwnerUser.LastName,
                 Email = g.OwnerUser.Email,
@@ -99,6 +99,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 HasPartners = g.ChildGroups.Count != 0,
                 GroupOwner = new PartnerInfoModel
                 {
+                    UserId = cg.OwnerUserId,
                     FirstName = cg.OwnerUser.FirstName,
                     LastName = cg.OwnerUser.LastName,
                     Email = cg.OwnerUser.Email,
