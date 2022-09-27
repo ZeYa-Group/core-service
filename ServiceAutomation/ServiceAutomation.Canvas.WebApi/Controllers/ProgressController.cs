@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using System;
@@ -17,6 +18,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.progressService = progressService;
         }
 
+        //[Authorize]
         [HttpGet(Constants.Requests.Progress.GetUserProgress)]
         public async Task<IActionResult> GetUserProgress(Guid userId)
         {

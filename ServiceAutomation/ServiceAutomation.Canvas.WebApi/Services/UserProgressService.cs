@@ -18,6 +18,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var monthlyLevelInfo = await levelsService.GetMonthlyLevelInfoByUserIdAsync(userId);
             var basicLevelInfo = await levelsService.GetBasicLevelInfoByUserIdAsync(userId);
+            var nextMounthlyLevelRequirements = await levelsService.GetNextMonthlyLevelAsync(monthlyLevelInfo.CurrentLevel.Level);
             var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);
 
             var response = new ProgressResponseModel
@@ -28,6 +29,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 AvailableForWithdrawal = 0,
                 AwaitingAccrual = 0,
                 NextBasicLevelRequirements = nextBasicLevelRequirements,
+                NextMounthlyLevelRequirement = nextMounthlyLevelRequirements?.Turnover,
+                //PartnersCurrentLevelCount = 0,
             };
 
             return response;

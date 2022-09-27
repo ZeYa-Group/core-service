@@ -56,22 +56,22 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                      .Select(u => u.Group)
                                                      .Select(GetReferralGroupWithPartners)
                                                      .FirstOrDefaultAsync();
-            //int counter = 0;
+            int counter = 0;
             //referralGroup.GroupOwner.Wave = counter++;
-            
-            //foreach(var user in referralGroup.PartnersGroups)
+
+            //var tmp = referralGroup.PartnersGroups;
+            //while(tmp != null)
             //{
-            //    user.GroupOwner.Wave = counter;
-            //    foreach(var partner in user.PartnersGroups)
+            //    foreach(var prt in tmp)
             //    {
-            //        co
+            //        prt.GroupOwner.Wave = counter;
             //    }
+
+            //    counter++;
             //}
 
-            
 
             return referralGroup;
-
         }
 
         public async Task<ReferralGroupModel> GetReferralGroupAsync(Guid groupId)

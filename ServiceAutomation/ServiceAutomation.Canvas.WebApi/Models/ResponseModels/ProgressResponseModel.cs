@@ -7,6 +7,8 @@
         public decimal AllTimeIncome { get; set; }
         public LevelInfoModel BaseLevelInfo { get; set; }
         public NextBasicLevelRequirementsModel NextBasicLevelRequirements { get; set; }
+        public int PartnersCurrentLevelCount { get; set; }
         public LevelInfoModel MounthlyLevelInfo { get; set; }
+        public decimal? NextMounthlyLevelRequirement { get; set; }
     }
 }
