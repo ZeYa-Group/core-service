@@ -1,7 +1,10 @@
-﻿namespace ServiceAutomation.Canvas.WebApi.Models
+﻿using System;
+
+namespace ServiceAutomation.Canvas.WebApi.Models
 {
     public class PartnerInfoModel
     {
+        public Guid UserId { get; set; }
         public string FirstName { get; init; }
 
         public string LastName { get; init; }

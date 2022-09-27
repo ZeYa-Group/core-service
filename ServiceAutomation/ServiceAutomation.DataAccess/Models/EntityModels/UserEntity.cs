@@ -17,6 +17,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
 
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        public bool IsVerifiedUser { get; set; }
 
         public Guid? BasicLevelId { get; set; }
 

@@ -46,7 +46,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 PersonalReferral = userReferralService.GenerateIviteCode(),
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
-                BasicLevel = firstBasicLevel
+                BasicLevel = firstBasicLevel,
+                IsVerifiedUser = false
             };
 
 

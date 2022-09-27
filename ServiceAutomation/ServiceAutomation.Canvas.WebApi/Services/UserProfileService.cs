@@ -71,7 +71,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var photo = await dbContext.ProfilePhotos.FirstOrDefaultAsync(x => x.UserId == userId);
 
             var profilePhotoName = userId.ToString() + ".png";
-            var profilePhotoFullPath = /*webHostEnvironment.EnvironmentName + */BasePath + profilePhotoName;
+            var profilePhotoFullPath = BasePath + profilePhotoName;
 
             if (photo == null)
             {
@@ -102,10 +102,23 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 try
                 {
-                    using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + profilePhotoFullPath, FileMode.CreateNew))
+                    dbContext.Remove(photo);
+                    await dbContext.SaveChangesAsync();
+
+                    var newPhoto = new ProfilePhotoEntity()
+                    {
+                        UserId = userId,
+                        Name = profilePhotoName,
+                        FullPath = profilePhotoFullPath
+                    };
+
+
+                    using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + profilePhotoFullPath, FileMode.Create))
                     {
                         await data.CopyToAsync(fileStream);
                     }
+
+                    await dbContext.SaveChangesAsync();
                 }
                 catch (Exception ex)
                 {
