@@ -7,5 +7,8 @@
         public int? PartnersRequirementCount { get; set; }
 
         public int? PartnersRequirementLevel { get; set; }
+        //public int? PartnersTotalCount { get; set; }
+
+        //public int? PartnersTotalLevel { get; set; }
     }
 }

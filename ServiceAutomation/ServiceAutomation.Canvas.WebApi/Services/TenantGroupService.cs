@@ -56,6 +56,20 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                      .Select(u => u.Group)
                                                      .Select(GetReferralGroupWithPartners)
                                                      .FirstOrDefaultAsync();
+            //int counter = 0;
+            //referralGroup.GroupOwner.Wave = counter++;
+            
+            //foreach(var user in referralGroup.PartnersGroups)
+            //{
+            //    user.GroupOwner.Wave = counter;
+            //    foreach(var partner in user.PartnersGroups)
+            //    {
+            //        co
+            //    }
+            //}
+
+            
+
             return referralGroup;
 
         }
@@ -124,5 +138,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             },
             HasPartners = g.ChildGroups.Count != 0
         };
+
+        private int Counter = 0;
     }
 }
