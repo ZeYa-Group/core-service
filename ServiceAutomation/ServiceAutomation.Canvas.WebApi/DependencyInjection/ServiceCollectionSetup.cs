@@ -56,6 +56,7 @@ namespace ServiceAutomation.Canvas.WebApi.DependencyInjection
             services.AddScoped<ITurnoverService, TurnoverService>();
             services.AddScoped<ILevelsService, LevelsService>();
             services.AddScoped<IBonusCalculatorService, BonusCalculatorService>();
+            services.AddScoped<IAdministratorService, AdministratorService>();
         }
     }
 

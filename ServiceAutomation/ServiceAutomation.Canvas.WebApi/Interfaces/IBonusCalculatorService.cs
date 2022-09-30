@@ -5,6 +5,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
     public interface IBonusCalculatorService
     {
-        Task<int> CalculateBonusAsync(Guid userId);
+        Task<int> CalculateBonusesAsync(Guid userId);
     }
 }

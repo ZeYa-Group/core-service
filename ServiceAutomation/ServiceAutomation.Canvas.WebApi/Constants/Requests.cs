@@ -73,5 +73,10 @@
         {
             public const string GetUserProgress = "GetUserProgress";
         }
+
+        public static class Administrator
+        {
+            public const string GetDocumentVerificationList = "GetDocumentVerificationList";
+        }
     }
 }

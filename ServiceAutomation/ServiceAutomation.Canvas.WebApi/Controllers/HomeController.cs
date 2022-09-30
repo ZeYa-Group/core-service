@@ -40,7 +40,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpGet]
         public async Task<IActionResult> GetBonus(Guid userId)
         {
-            return Ok(await bonusCalculatorService.CalculateBonusAsync(userId));
+            return Ok(await bonusCalculatorService.CalculateBonusesAsync(userId));
         }
     }
 }

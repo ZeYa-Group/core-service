@@ -12,9 +12,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             this.packagesService = packagesService;
         }
 
-        public async Task<int> CalculateBonusAsync(Guid userId)
+        public async Task<int> CalculateBonusesAsync(Guid userId)
         {
-            var data = await GetLevelBonusAsync(userId);
+            var levelBonus = await GetLevelBonusAsync(userId);
 
             return 0;
         }
@@ -22,6 +22,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private async Task<decimal> GetLevelBonusAsync(Guid userId)
         {
             var userPurchases = await packagesService.GetUserPackageAsync(userId);
+            
 
             if(userPurchases == null)
             {
