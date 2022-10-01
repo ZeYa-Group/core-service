@@ -57,31 +57,67 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task<ICollection<UserVerificationResponseModel>> GetVerificationRequest()
         {
             var legalUsersRequests = await dbContext.LegalUserOrganizationsData.Where(x => x.IsVerivied == false).ToListAsync();
-            var result1 = legalUsersRequests.Select(x => mapper.Map<UserVerificationResponseModel>(x)).ToList();
+            var result1 = legalUsersRequests.Select(x => mapper.Map<UserVerificationResponseModel>(x)).ToArray();
 
             var individualUsersRequests = await dbContext.IndividualUserOrganizationsData.Where(x => x.IsVerivied == false).ToListAsync();
-            var result2 = individualUsersRequests.Select(x => mapper.Map<UserVerificationResponseModel>(x)).ToList();
+            var result2 = individualUsersRequests.Select(x => mapper.Map<UserVerificationResponseModel>(x)).ToArray();
 
             var individualEntrepreneursRequests = await dbContext.IndividualEntrepreneurUserOrganizationsData.Where(x => x.IsVerivied == false).ToListAsync();
-            var result3 = individualEntrepreneursRequests.Select(x => mapper.Map<UserVerificationResponseModel>(x)).ToList();
+            var result3 = individualEntrepreneursRequests.Select(x => mapper.Map<UserVerificationResponseModel>(x)).ToArray();
 
-            //foreach(var item in result1)
-            //{
-            //    var itemExtraData = await dbContext.UserContacts
-            //        .Include(x => x.User)
-            //        .ThenInclude(x => x.UserPhoneNumber)
-            //        .FirstOrDefaultAsync(x => x.UserId == item.UserId);
+            for (int i=0; i < result1.Length; i++)
+            {
+                var itemExtraData = await dbContext.UserContacts
+                    .Include(x => x.User)
+                    .ThenInclude(x => x.UserPhoneNumber)
+                    .Include(x => x.User)
+                    .ThenInclude(x => x.UserAccountOrganization)
+                    .FirstOrDefaultAsync(x => x.UserId == result1[i].UserId);
 
-            //    if(itemExtraData != null)
-            //    {
-            //        item.Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
-            //        item.Email = itemExtraData?.User?.Email;
-            //        item.PhoneNumber = itemExtraData?.User?.UserPhoneNumber?.PhoneNumber;
-            //        item.TypeOfEmployment = itemExtraData?.User?.UserAccountOrganization.ToString();
-            //    }
-            //}
+                if (itemExtraData != null)
+                {
+                    result1[i].Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
+                    result1[i].Email = itemExtraData?.User?.Email;
+                    result1[i].PhoneNumber = itemExtraData?.User?.UserPhoneNumber?.PhoneNumber;
+                    result1[i].TypeOfEmployment = itemExtraData?.User?.UserAccountOrganization.TypeOfEmployment.ToString();
+                }
+            }
 
+            for (int i = 0; i < result2.Length; i++)
+            {
+                var itemExtraData = await dbContext.UserContacts
+                    .Include(x => x.User)
+                    .ThenInclude(x => x.UserPhoneNumber)
+                    .Include(x => x.User)
+                    .ThenInclude(x => x.UserAccountOrganization)
+                    .FirstOrDefaultAsync(x => x.UserId == result2[i].UserId);
 
+                if (itemExtraData != null)
+                {
+                    result2[i].Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
+                    result2[i].Email = itemExtraData?.User?.Email;
+                    result2[i].PhoneNumber = itemExtraData?.User?.UserPhoneNumber?.PhoneNumber;
+                    result2[i].TypeOfEmployment = itemExtraData?.User?.UserAccountOrganization.TypeOfEmployment.ToString();
+                }
+            }
+
+            for (int i = 0; i < result3.Length; i++)
+            {
+                var itemExtraData = await dbContext.UserContacts
+                    .Include(x => x.User)
+                    .ThenInclude(x => x.UserPhoneNumber)
+                    .Include(x => x.User)
+                    .ThenInclude(x => x.UserAccountOrganization)
+                    .FirstOrDefaultAsync(x => x.UserId == result3[i].UserId);
+
+                if (itemExtraData != null)
+                {
+                    result3[i].Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
+                    result3[i].Email = itemExtraData?.User?.Email;
+                    result3[i].PhoneNumber = itemExtraData?.User?.UserPhoneNumber?.PhoneNumber;
+                    result3[i].TypeOfEmployment = itemExtraData?.User?.UserAccountOrganization.TypeOfEmployment.ToString();
+                }
+            }
 
             var response = new List<UserVerificationResponseModel>();
             response.AddRange(result1);
