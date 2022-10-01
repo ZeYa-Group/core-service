@@ -1,5 +1,4 @@
-﻿using ServiceAutomation.DataAccess.Models.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public class IndividualUserOrganizationDataEntity : Entity
+    public class IndividualEntrepreneurUserOrganizationDataEntity : Entity
     {
         public Guid UserId { get; set; }
         public string LegalEntityFullName { get; set; }

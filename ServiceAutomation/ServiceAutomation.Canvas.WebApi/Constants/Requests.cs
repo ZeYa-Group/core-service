@@ -77,6 +77,8 @@
         public static class Administrator
         {
             public const string GetDocumentVerificationList = "GetDocumentVerificationList";
+            public const string AcceptUserVerification = "AcceptUserVerification";
+            public const string RejectUserVerification = "RejectUserVerification";
         }
     }
 }

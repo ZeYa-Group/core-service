@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceAutomation.DataAccess.DbContexts;
@@ -9,9 +10,10 @@ using ServiceAutomation.DataAccess.DbContexts;
 namespace ServiceAutomation.DataAccess.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220930152216_add isVerified property")]
+    partial class addisVerifiedproperty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -128,95 +130,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .IsUnique();
 
                     b.ToTable("Credentials");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.IndividualEntrepreneurUserOrganizationDataEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("AccountantName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BankHouseNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BankLocality")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BankRegion")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BankStreet")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BaseOrganization")
-                        .HasColumnType("text");
-
-                    b.Property<string>("BeneficiaryBankName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CertificateDateIssue")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CertificateNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CheckingAccount")
-                        .HasColumnType("text");
-
-                    b.Property<string>("HeadFullName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("HeadPosition")
-                        .HasColumnType("text");
-
-                    b.Property<string>("HouseNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Index")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsVerivied")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("LegalEntityAbbreviatedName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LegalEntityFullName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Locality")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Location")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Region")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RegistrationAuthority")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RoomNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SWIFT")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Street")
-                        .HasColumnType("text");
-
-                    b.Property<string>("UNP")
-                        .HasColumnType("text");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("IndividualEntrepreneurUserOrganizationsData");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.IndividualUserOrganizationDataEntity", b =>

@@ -1,13 +1,8 @@
-﻿using ServiceAutomation.DataAccess.Models.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace ServiceAutomation.DataAccess.Models.EntityModels
+namespace ServiceAutomation.Canvas.WebApi.Models.ResponseModels
 {
-    public class IndividualUserOrganizationDataEntity : Entity
+    public class IndividualEntrepreneurEntityDataResponseModel
     {
         public Guid UserId { get; set; }
         public string LegalEntityFullName { get; set; }
@@ -34,6 +29,5 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public string HouseNumber { get; set; }
         public string Location { get; set; }
         public string RoomNumber { get; set; }
-        public bool IsVerivied { get; set; }
     }
 }

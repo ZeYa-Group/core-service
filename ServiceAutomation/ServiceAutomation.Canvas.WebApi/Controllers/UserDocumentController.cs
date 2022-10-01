@@ -23,7 +23,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.verificationService = verificationService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost(Constants.Requests.UserDocument.SendDataForVerification)]
         public async Task<IActionResult> SendDataForVerification([FromBody] DocumentVerificationRequestModel requestModel)
         {
@@ -54,6 +54,10 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             else if (data.IsT2)
             {
                 return Ok(data.AsT2);
+            }
+            else if (data.IsT3)
+            {
+                return Ok(data.AsT3);
             }
             else
             {

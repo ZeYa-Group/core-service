@@ -23,6 +23,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<UserAccountOrganizationEntity> UserAccountOrganizations { get; set; }
         public virtual DbSet<LegalUserOrganizationDataEntity> LegalUserOrganizationsData { get; set; }
         public virtual DbSet<IndividualUserOrganizationDataEntity> IndividualUserOrganizationsData { get; set; }
+        public virtual DbSet<IndividualEntrepreneurUserOrganizationDataEntity> IndividualEntrepreneurUserOrganizationsData { get; set; }
         public virtual DbSet<AccrualsEntity> Accruals { get; set; }
         public virtual DbSet<PartnerPurchaseEntity> PartnerPurchase { get; set; }
         public virtual DbSet<UserLevelsInfoEntity> UserLevelsInfos { get; set; }
