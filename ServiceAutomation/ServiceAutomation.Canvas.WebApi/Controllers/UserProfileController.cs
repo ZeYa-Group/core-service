@@ -89,7 +89,6 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
                 return BadRequest(response.Errors);
             }
 
-
             return Ok();
         }
 
