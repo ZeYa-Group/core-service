@@ -21,6 +21,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             this.mapper = mapper;
         }
 
+        public Task AcceptContactVerificationRequest(Guid requestId, Guid userId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task AcceptVerificationRequest(Guid requestId, Guid userId)
         {
             var userOrganizationType = await dbContext.UserAccountOrganizations.FirstOrDefaultAsync(x => x.UserId == userId);
@@ -42,6 +47,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             }
 
             await dbContext.SaveChangesAsync();
+        }
+
+        public Task<ICollection<UserContactsVerificationResponseModel>> GetContactVerificationRequest()
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<ICollection<UserVerificationResponseModel>> GetVerificationRequest()
@@ -79,6 +89,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             response.AddRange(result3);
 
             return response;
+        }
+
+        public Task RejectContactVerificationRequest(Guid requestId, Guid userId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task RejectVerificationRequest(Guid requestId, Guid userId)

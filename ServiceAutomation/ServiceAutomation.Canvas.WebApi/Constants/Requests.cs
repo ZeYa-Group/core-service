@@ -79,6 +79,10 @@
             public const string GetDocumentVerificationList = "GetDocumentVerificationList";
             public const string AcceptUserVerification = "AcceptUserVerification";
             public const string RejectUserVerification = "RejectUserVerification";
+
+            public const string GetUserContactsVerivicationList = "GetUserContactsVerivicationList";
+            public const string AcceptUserContactVerification = "AcceptUserContactVerification";
+            public const string RejectUserContactVerification = "RejectUserContactVerification";
         }
     }
 }

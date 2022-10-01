@@ -22,16 +22,34 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok(await administratorService.GetVerificationRequest());
         }
 
-        [HttpGet(Constants.Requests.Administrator.AcceptUserVerification)]
+        [HttpPost(Constants.Requests.Administrator.AcceptUserVerification)]
         public async Task AcceptUserVerification(Guid requestId, Guid userId)
         {
             await administratorService.AcceptVerificationRequest(requestId, userId);
         }
 
-        [HttpGet(Constants.Requests.Administrator.RejectUserVerification)]
+        [HttpPost(Constants.Requests.Administrator.RejectUserVerification)]
         public async Task RejectUserVerification(Guid requestId, Guid userId)
         {
             await administratorService.RejectVerificationRequest(requestId, userId);
+        }
+
+        [HttpGet(Constants.Requests.Administrator.GetUserContactsVerivicationList)]
+        public async Task<IActionResult> GetUserContactsVerivicationList()
+        {
+            return Ok(await administratorService.GetContactVerificationRequest());
+        }
+
+        [HttpPost(Constants.Requests.Administrator.AcceptUserContactVerification)]
+        public async Task AcceptUserContactVerification(Guid requestId, Guid userId)
+        {
+            await administratorService.AcceptContactVerificationRequest(requestId, userId);
+        }
+
+        [HttpPost(Constants.Requests.Administrator.RejectUserContactVerification)]
+        public async Task RejectUserContactVerification(Guid requestId, Guid userId)
+        {
+            await administratorService.RejectContactVerificationRequest(requestId, userId);
         }
     }
 }

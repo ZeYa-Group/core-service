@@ -10,5 +10,8 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
         Task<ICollection<UserVerificationResponseModel>> GetVerificationRequest();
         Task AcceptVerificationRequest(Guid requestId, Guid userId);
         Task RejectVerificationRequest(Guid requestId, Guid userId);
+        Task<ICollection<UserContactsVerificationResponseModel>> GetContactVerificationRequest();
+        Task AcceptContactVerificationRequest(Guid requestId, Guid userId);
+        Task RejectContactVerificationRequest(Guid requestId, Guid userId);
     }
 }

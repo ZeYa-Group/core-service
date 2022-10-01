@@ -23,7 +23,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.verificationService = verificationService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPost(Constants.Requests.UserDocument.SendDataForVerification)]
         public async Task<IActionResult> SendDataForVerification([FromBody] DocumentVerificationRequestModel requestModel)
         {
