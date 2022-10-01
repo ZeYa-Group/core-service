@@ -27,6 +27,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<AccrualsEntity> Accruals { get; set; }
         public virtual DbSet<PartnerPurchaseEntity> PartnerPurchase { get; set; }
         public virtual DbSet<UserLevelsInfoEntity> UserLevelsInfos { get; set; }
+        public virtual DbSet<UserContactVerificationEntity> UserContactVerifications { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {

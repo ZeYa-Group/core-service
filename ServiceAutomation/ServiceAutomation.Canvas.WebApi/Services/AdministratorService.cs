@@ -49,9 +49,10 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await dbContext.SaveChangesAsync();
         }
 
-        public Task<ICollection<UserContactsVerificationResponseModel>> GetContactVerificationRequest()
+        public async Task<ICollection<UserContactsVerificationResponseModel>> GetContactVerificationRequest()
         {
-            throw new NotImplementedException();
+            var contactVerificationCollection = await dbContext.UserContactVerifications.Where(x => x.IsVerified == false).ToListAsync();
+            return null;
         }
 
         public async Task<ICollection<UserVerificationResponseModel>> GetVerificationRequest()
