@@ -65,21 +65,21 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var individualEntrepreneursRequests = await dbContext.IndividualEntrepreneurUserOrganizationsData.Where(x => x.IsVerivied == false).ToListAsync();
             var result3 = individualEntrepreneursRequests.Select(x => mapper.Map<UserVerificationResponseModel>(x)).ToList();
 
-            foreach(var item in result1)
-            {
-                var itemExtraData = await dbContext.UserContacts
-                    .Include(x => x.User)
-                    .ThenInclude(x => x.UserPhoneNumber)
-                    .FirstOrDefaultAsync(x => x.UserId == item.UserId);
+            //foreach(var item in result1)
+            //{
+            //    var itemExtraData = await dbContext.UserContacts
+            //        .Include(x => x.User)
+            //        .ThenInclude(x => x.UserPhoneNumber)
+            //        .FirstOrDefaultAsync(x => x.UserId == item.UserId);
 
-                if(itemExtraData != null)
-                {
-                    item.Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
-                    item.Email = itemExtraData?.User?.Email;
-                    item.PhoneNumber = itemExtraData?.User?.UserPhoneNumber?.PhoneNumber;
-                    item.TypeOfEmployment = itemExtraData?.User?.UserAccountOrganization.ToString();
-                }
-            }
+            //    if(itemExtraData != null)
+            //    {
+            //        item.Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
+            //        item.Email = itemExtraData?.User?.Email;
+            //        item.PhoneNumber = itemExtraData?.User?.UserPhoneNumber?.PhoneNumber;
+            //        item.TypeOfEmployment = itemExtraData?.User?.UserAccountOrganization.ToString();
+            //    }
+            //}
 
 
 
