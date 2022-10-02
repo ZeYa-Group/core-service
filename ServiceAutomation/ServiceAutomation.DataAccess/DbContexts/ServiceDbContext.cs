@@ -33,6 +33,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<LevelBonusRewardPercentEntity> LevelBonusRewardPercents { get; set; }
         public virtual DbSet<BonusEntity> Bonuses { get; set; }
         public virtual DbSet<StartBonusRewardEntity> StartBonusRewards { get; set; }
+        public virtual DbSet<UserAccuralsVerificationEntity> UserAccuralsVerifications { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {

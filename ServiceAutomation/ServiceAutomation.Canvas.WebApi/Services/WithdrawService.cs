@@ -83,43 +83,54 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var user = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
             return user.Select(x => mapper.Map<AccuralResponseModel>(x));
 
-            if (bonus != 0 && transactionStatus != 0)
-            {
-                switch (bonus)
-                {
-                    case BonusType.LevelBonus:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
-                    case BonusType.AutoBonus:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
-                    case BonusType.BunBonus:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
-                    case BonusType.DynamicBonus:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
-                    case BonusType.TravelBonus:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
-                    case BonusType.BonusOverall:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
-                    case BonusType.TeamBonus:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //if (bonus != 0 && transactionStatus != 0)
+            //{
+            //    switch (bonus)
+            //    {
+            //        case BonusType.LevelBonus:
+            //            return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //        case BonusType.AutoBonus:
+            //            return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //        case BonusType.BunBonus:
+            //            return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //        case BonusType.DynamicBonus:
+            //            return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //        case BonusType.TravelBonus:
+            //            return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //        case BonusType.BonusOverall:
+            //            return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //        case BonusType.TeamBonus:
+            //            return user.Select(x => mapper.Map<AccuralResponseModel>(x));
 
-                }
-            }
+            //    }
+            //}
 
-            if (transactionStatus != 0)
-            {
-                return user.Select(x => mapper.Map<AccuralResponseModel>(x));
-            }
+            //if (transactionStatus != 0)
+            //{
+            //    return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //}
         }
 
         public async Task MakeWithdraw(Guid userId, ICollection<Guid> accuralsId)
         {
             var accuralList = new List<AccrualsEntity>();
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
             foreach(var accural in accuralsId)
             {
                 var result = await dbContext.Accruals.FirstOrDefaultAsync(x => x.Id == accural);
                 accuralList.Add(result);
             }
+
+            var accuralVerificationRequest = new UserAccuralsVerificationEntity()
+            {
+                UserId = userId,
+                Accurals = accuralList,
+                User = user
+            };
+
+            await dbContext.UserAccuralsVerifications.AddAsync(accuralVerificationRequest);
+            await dbContext.SaveChangesAsync();
         }
     }
 }
