@@ -67,6 +67,12 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
                 return BadRequest("Passwords are not the same");
             }
 
+
+            if (!await userManager.IsReferraValidAsync(requestModel.ReferralCode))
+            {
+                return BadRequest("Referal code is incorrect");
+            }
+
             if (await userManager.IsUserAlreadyExistsAsync(requestModel.Email))
             {
                 return BadRequest("User already exists");

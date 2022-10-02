@@ -75,13 +75,13 @@ namespace ServiceAutomation.Canvas.WebApi
                         new OpenApiSecurityScheme
                         {
                             Reference = new OpenApiReference
-                            {                      
+                            {
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
                             }
                         },
                         new string[] { }
-                    }           
+                    }
                 });
             });
 
@@ -94,7 +94,7 @@ namespace ServiceAutomation.Canvas.WebApi
             });
         }
 
-        
+
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
         {
             if (env.IsProduction() || env.IsDevelopment())

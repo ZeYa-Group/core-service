@@ -77,7 +77,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return user?.Credential?.WithdrawTransactions?.Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
         }
 
-        public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId)
+        public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId, TransactionStatus transactionStatus = default, PeriodType period = default)
         {
             var user = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
             return user.Select(x => mapper.Map<AccuralResponseModel>(x));
