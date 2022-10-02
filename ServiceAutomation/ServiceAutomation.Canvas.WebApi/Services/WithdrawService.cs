@@ -97,6 +97,10 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                         return user.Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.TravelBonus:
                         return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.BonusOverall:
+                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.TeamBonus:
+                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
 
                 }
             }
