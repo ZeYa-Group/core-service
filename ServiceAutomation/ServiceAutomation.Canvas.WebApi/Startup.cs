@@ -17,6 +17,7 @@ using ServiceAutomation.DataAccess.DbContexts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi
@@ -55,6 +56,15 @@ namespace ServiceAutomation.Canvas.WebApi
                         ClockSkew = TimeSpan.Zero
                     };
                 });
+
+            services.AddAuthorization(opts => {
+                opts.AddPolicy("Admin", policy => {
+                    policy.RequireClaim("Role", "Admin");
+                });
+                opts.AddPolicy("User", policy => {
+                    policy.RequireClaim("Role", "User");
+                });
+            });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

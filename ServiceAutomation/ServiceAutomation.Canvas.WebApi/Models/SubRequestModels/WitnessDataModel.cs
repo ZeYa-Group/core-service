@@ -9,6 +9,6 @@ namespace ServiceAutomation.Canvas.WebApi.Models.SubRequestModels
         public string CertificateNumber { get; set; }
         public string RegistrationAuthority { get; set; }
         public string CertificateDateIssue { get; set; }
-        //public IFormFile FileData { get; set; }
+        public IFormFile FileData { get; set; }
     }
 }

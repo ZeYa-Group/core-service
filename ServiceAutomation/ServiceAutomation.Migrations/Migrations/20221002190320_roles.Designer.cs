@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceAutomation.DataAccess.DbContexts;
@@ -9,9 +10,10 @@ using ServiceAutomation.DataAccess.DbContexts;
 namespace ServiceAutomation.DataAccess.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221002190320_roles")]
+    partial class roles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -23,8 +25,7 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("Id");
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("AccuralAmount")
                         .HasColumnType("numeric");
@@ -32,34 +33,25 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<DateTime>("AccuralDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int?>("AccuralPercent")
+                    b.Property<string>("AccuralName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("AccuralPercent")
                         .HasColumnType("integer");
-
-                    b.Property<Guid>("BonusId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("ForWhomId")
-                        .HasColumnType("uuid");
 
                     b.Property<decimal>("InitialAmount")
                         .HasColumnType("numeric");
 
+                    b.Property<string>("ReferralName")
+                        .HasColumnType("text");
+
                     b.Property<int>("TransactionStatus")
                         .HasColumnType("integer");
-
-                    b.Property<Guid?>("UserEntityId")
-                        .HasColumnType("uuid");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BonusId");
-
-                    b.HasIndex("ForWhomId");
-
-                    b.HasIndex("UserEntityId");
 
                     b.HasIndex("UserId");
 
@@ -252,9 +244,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("VerificationPhotoPath")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.ToTable("IndividualEntrepreneurUserOrganizationsData");
@@ -344,9 +333,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
-                    b.Property<string>("VerificationPhotoPath")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
 
                     b.ToTable("IndividualUserOrganizationsData");
@@ -406,46 +392,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LegalUserOrganizationsData");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.LevelBonusRewardEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("Id");
-
-                    b.Property<Guid>("LevelId")
-                        .HasColumnType("uuid");
-
-                    b.Property<decimal>("Reward")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LevelId");
-
-                    b.ToTable("LevelBonusRewards");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.LevelBonusRewardPercentEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("Id");
-
-                    b.Property<Guid>("PackageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Percent")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PackageId");
-
-                    b.ToTable("LevelBonusRewardPercents");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.MonthlyLevelEntity", b =>
@@ -630,32 +576,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RefreshTokens");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.StartBonusRewardEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("Id");
-
-                    b.Property<int>("CountOfSale")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("DurationOfDays")
-                        .HasColumnType("integer");
-
-                    b.Property<Guid>("PackageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Percent")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PackageId");
-
-                    b.ToTable("StartBonusRewards");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.TenantGroupEntity", b =>
@@ -887,29 +807,11 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.AccrualsEntity", b =>
                 {
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.BonusEntity", "Bonus")
-                        .WithMany()
-                        .HasForeignKey("BonusId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "ForWhom")
-                        .WithMany()
-                        .HasForeignKey("ForWhomId");
-
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", null)
-                        .WithMany("UserAccruals")
-                        .HasForeignKey("UserEntityId");
-
                     b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
-                        .WithMany()
+                        .WithMany("UserAccruals")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Bonus");
-
-                    b.Navigation("ForWhom");
 
                     b.Navigation("User");
                 });
@@ -951,28 +853,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.LevelBonusRewardEntity", b =>
-                {
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.BasicLevelEntity", "Level")
-                        .WithMany()
-                        .HasForeignKey("LevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Level");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.LevelBonusRewardPercentEntity", b =>
-                {
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.PackageEntity", "Package")
-                        .WithMany()
-                        .HasForeignKey("PackageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Package");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.MonthlyLevelStatisticEntity", b =>
@@ -1041,17 +921,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Navigation("Package");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.StartBonusRewardEntity", b =>
-                {
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.PackageEntity", "Package")
-                        .WithMany()
-                        .HasForeignKey("PackageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Package");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.TenantGroupEntity", b =>

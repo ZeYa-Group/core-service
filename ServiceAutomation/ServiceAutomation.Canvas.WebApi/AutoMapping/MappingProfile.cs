@@ -77,6 +77,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
                 .ForMember(x => x.BaseOrganization, opt => opt.MapFrom(x => x.BaseOrganization))
                 .ForMember(x => x.UNP, opt => opt.MapFrom(x => x.UNP))
                 .ForMember(x => x.RegistrationAuthority, opt => opt.MapFrom(x => x.RegistrationAuthority))
+                .ForMember(x => x.VerivicationPhoto, opt => opt.MapFrom(x => x.VerificationPhotoPath))
                 .ForMember(x => x.CertificateNumber, opt => opt.MapFrom(x => x.CertificateNumber));
 
             CreateMap<IndividualEntrepreneurUserOrganizationDataEntity, UserVerificationResponseModel>()
@@ -88,6 +89,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
                 .ForMember(x => x.BaseOrganization, opt => opt.MapFrom(x => x.BaseOrganization))
                 .ForMember(x => x.UNP, opt => opt.MapFrom(x => x.UNP))
                 .ForMember(x => x.RegistrationAuthority, opt => opt.MapFrom(x => x.RegistrationAuthority))
+                .ForMember(x => x.VerivicationPhoto, opt => opt.MapFrom(x => x.VerificationPhotoPath))
                 .ForMember(x => x.CertificateNumber, opt => opt.MapFrom(x => x.CertificateNumber));
 
             CreateMap<LegalUserOrganizationDataEntity, UserVerificationResponseModel>()
