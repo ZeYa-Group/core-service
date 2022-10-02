@@ -21,9 +21,26 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             this.mapper = mapper;
         }
 
-        public Task AcceptContactVerificationRequest(Guid requestId, Guid userId)
+        public async Task AcceptContactVerificationRequest(Guid requestId, Guid userId)
         {
-            throw new NotImplementedException();
+            var verificationRequest = await dbContext.UserContactVerifications.FirstOrDefaultAsync(x => x.Id == requestId);
+            var currentUser = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
+
+            switch (verificationRequest.VerificationType)
+            {
+                case ContactVerificationType.EmailAdress:
+                    currentUser.Email = verificationRequest.NewData;
+                    verificationRequest.IsVerified = true;
+                    break;
+                case ContactVerificationType.PhoneNumber:
+                    currentUser.PhoneNumber = verificationRequest.NewData;
+                    verificationRequest.IsVerified = true;
+                    break;
+                default:
+                    break;
+            }
+
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task AcceptVerificationRequest(Guid requestId, Guid userId)
@@ -51,8 +68,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<ICollection<UserContactsVerificationResponseModel>> GetContactVerificationRequest()
         {
-            var contactVerificationCollection = await dbContext.UserContactVerifications.Where(x => x.IsVerified == false).ToListAsync();
-            return null;
+            var contactVerificationCollection = await dbContext.UserContactVerifications
+                .Include(x => x.User)
+                .Where(x => x.IsVerified == false)
+                .ToListAsync();
+
+            return contactVerificationCollection.Select(x => mapper.Map<UserContactsVerificationResponseModel>(x)).ToList();
         }
 
         public async Task<ICollection<UserVerificationResponseModel>> GetVerificationRequest()
@@ -70,8 +91,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 var itemExtraData = await dbContext.UserContacts
                     .Include(x => x.User)
-                    .ThenInclude(x => x.UserPhoneNumber)
-                    .Include(x => x.User)
                     .ThenInclude(x => x.UserAccountOrganization)
                     .FirstOrDefaultAsync(x => x.UserId == result1[i].UserId);
 
@@ -79,7 +98,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 {
                     result1[i].Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
                     result1[i].Email = itemExtraData?.User?.Email;
-                    result1[i].PhoneNumber = itemExtraData?.User?.UserPhoneNumber?.PhoneNumber;
+                    result1[i].PhoneNumber = itemExtraData?.User?.PhoneNumber;
                     result1[i].TypeOfEmployment = itemExtraData?.User?.UserAccountOrganization.TypeOfEmployment.ToString();
                 }
             }
@@ -88,8 +107,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 var itemExtraData = await dbContext.UserContacts
                     .Include(x => x.User)
-                    .ThenInclude(x => x.UserPhoneNumber)
-                    .Include(x => x.User)
                     .ThenInclude(x => x.UserAccountOrganization)
                     .FirstOrDefaultAsync(x => x.UserId == result2[i].UserId);
 
@@ -97,7 +114,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 {
                     result2[i].Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
                     result2[i].Email = itemExtraData?.User?.Email;
-                    result2[i].PhoneNumber = itemExtraData?.User?.UserPhoneNumber?.PhoneNumber;
+                    result2[i].PhoneNumber = itemExtraData?.User?.PhoneNumber;
                     result2[i].TypeOfEmployment = itemExtraData?.User?.UserAccountOrganization.TypeOfEmployment.ToString();
                 }
             }
@@ -106,8 +123,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 var itemExtraData = await dbContext.UserContacts
                     .Include(x => x.User)
-                    .ThenInclude(x => x.UserPhoneNumber)
-                    .Include(x => x.User)
                     .ThenInclude(x => x.UserAccountOrganization)
                     .FirstOrDefaultAsync(x => x.UserId == result3[i].UserId);
 
@@ -115,7 +130,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 {
                     result3[i].Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
                     result3[i].Email = itemExtraData?.User?.Email;
-                    result3[i].PhoneNumber = itemExtraData?.User?.UserPhoneNumber?.PhoneNumber;
+                    result3[i].PhoneNumber = itemExtraData?.User?.PhoneNumber;
                     result3[i].TypeOfEmployment = itemExtraData?.User?.UserAccountOrganization.TypeOfEmployment.ToString();
                 }
             }
@@ -128,9 +143,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return response;
         }
 
-        public Task RejectContactVerificationRequest(Guid requestId, Guid userId)
+        public async Task RejectContactVerificationRequest(Guid requestId, Guid userId)
         {
-            throw new NotImplementedException();
+            var contactVerificationRequest = await dbContext.UserContactVerifications.FirstOrDefaultAsync(x => x.Id == requestId);
+            
+            dbContext.UserContactVerifications.Remove(contactVerificationRequest);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task RejectVerificationRequest(Guid requestId, Guid userId)

@@ -33,11 +33,12 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<VideoLessonTemplateEntity, VideoLessonResponseModel>();
 
             CreateMap<UserEntity, UserProfileResponseModel>()
-                .ForMember(x => x.Patronymic, opt => opt.MapFrom(x => x.UserContact.Patronymic))
+                .ForMember(x => x.Patronymic, opt => opt.MapFrom(x => x.Patronymic))
                 .ForMember(x => x.DateOfBirth, opt => opt.MapFrom(x => x.UserContact.DateOfBirth))
                 .ForMember(x => x.Email, opt => opt.MapFrom(x => x.Email))
                 .ForMember(x => x.ProfilePhoto, opt => opt.MapFrom(x => x.ProfilePhoto.FullPath))
-                .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.UserPhoneNumber.PhoneNumber))
+                .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.PhoneNumber))
+                .ForMember(x => x.Level, opt => opt.MapFrom(x => x.BasicLevel.Name))
                 .ForMember(x => x.PersonalReferral, opt => opt.MapFrom(x => x.PersonalReferral));
 
 
@@ -85,6 +86,16 @@ namespace ServiceAutomation.Canvas.AutoMapping
                 .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.UserId))
                .ForMember(x => x.SWIFT, opt => opt.MapFrom(x => x.SWIFT))
                .ForMember(x => x.CheckingAccount, opt => opt.MapFrom(x => x.CheckingAccount));
+
+            CreateMap<UserContactVerificationEntity, UserContactsVerificationResponseModel>()
+                .ForMember(x => x.RequestId, opt => opt.MapFrom(x => x.Id))
+                .ForMember(x => x.UserId, opt => opt.MapFrom(x => x.UserId))
+                .ForMember(x => x.FirstName, opt => opt.MapFrom(x => x.User.FirstName))
+                .ForMember(x => x.LastName, opt => opt.MapFrom(x => x.User.LastName))
+                .ForMember(x => x.EmailAddress, opt => opt.MapFrom(x => x.User.Email))
+                .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.User.PhoneNumber))
+                .ForMember(x => x.ContactVerificationType, opt => opt.MapFrom(x => x.VerificationType.ToString()))
+                .ForMember(x => x.NewData, opt => opt.MapFrom(x => x.NewData));
         }
     }
 }
