@@ -57,6 +57,12 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<LegalUserOrganizationDataEntity, LegalEntityDataResponseModel>();
 
             CreateMap<AccrualsEntity, AccuralResponseModel>()
+                .ForMember(x => x.AccuralName, opt => opt.MapFrom(x => $"Начисление {x.Bonus.Name}"))
+                .ForMember(x => x.ReferralName, opt => opt.MapFrom(x => x.ForWhom.Email))
+                .ForMember(x => x.AccuralPercent, opt => opt.MapFrom(x => x.AccuralPercent))
+                .ForMember(x => x.InitialAmount, opt => opt.MapFrom(x => x.InitialAmount))
+                .ForMember(x => x.AccuralAmount, opt => opt.MapFrom(x => x.AccuralAmount))
+                .ForMember(x => x.AccuralDate, opt => opt.MapFrom(x => x.AccuralDate))
                 .ForMember(x => x.TransactionStatus, opt => opt.MapFrom(x => x.TransactionStatus.ToString()));
 
             CreateMap<LevelEntity, LevelModel>()

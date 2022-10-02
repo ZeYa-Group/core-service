@@ -79,8 +79,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId, TransactionStatus transactionStatus = default, PeriodType period = default)
         {
-            var user = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
-            return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+            var accruals = await dbContext.Accruals.AsNoTracking()
+                                               .Where(x => x.UserId == userId)
+                                               .Include(x => x.ForWhom)
+                                               .Include(x => x.Bonus)
+                                               .ToListAsync();
+            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
         }
     }
 }
