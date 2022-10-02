@@ -41,7 +41,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var user = await dbContext.Users
                 .Include(x => x.ProfilePhoto)
                 .Include(x => x.UserContact)
-                .Include(x => x.UserPhoneNumber)
                 .FirstOrDefaultAsync(x => x.Id == userId);
 
             var package = await dbContext.UsersPurchases
@@ -267,27 +266,27 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var result = new ResultModel();
             var user = await dbContext.Users
-                .Include(x => x.UserPhoneNumber)
+                //.Include(x => x.UserPhoneNumber)
                 .FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user != null)
             {
-                if (user.UserPhoneNumber == null)
-                {
-                    user.UserPhoneNumber = new UserPhoneNumberEntity()
-                    {
-                        PhoneNumber = newPhoneNumber
-                    };
+                //if (user.UserPhoneNumber == null)
+                //{
+                //    user.UserPhoneNumber = new UserPhoneNumberEntity()
+                //    {
+                //        PhoneNumber = newPhoneNumber
+                //    };
 
-                    await dbContext.UserPhones.AddAsync(user.UserPhoneNumber);
-                    await dbContext.SaveChangesAsync();
+                //    await dbContext.UserPhones.AddAsync(user.UserPhoneNumber);
+                //    await dbContext.SaveChangesAsync();
 
-                    result.Success = true;
-                    return result;
-                }
+                //    result.Success = true;
+                //    return result;
+                //}
 
-                user.UserPhoneNumber.PhoneNumber = newPhoneNumber;
-                await dbContext.SaveChangesAsync();
+                //user.UserPhoneNumber.PhoneNumber = newPhoneNumber;
+                //await dbContext.SaveChangesAsync();
 
                 result.Success = true;
                 return result;

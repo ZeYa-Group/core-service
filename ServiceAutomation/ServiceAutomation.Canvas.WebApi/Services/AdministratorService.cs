@@ -70,7 +70,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 var itemExtraData = await dbContext.UserContacts
                     .Include(x => x.User)
-                    .ThenInclude(x => x.UserPhoneNumber)
                     .Include(x => x.User)
                     .ThenInclude(x => x.UserAccountOrganization)
                     .FirstOrDefaultAsync(x => x.UserId == result1[i].UserId);
@@ -79,7 +78,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 {
                     result1[i].Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
                     result1[i].Email = itemExtraData?.User?.Email;
-                    result1[i].PhoneNumber = itemExtraData?.User?.UserPhoneNumber?.PhoneNumber;
                     result1[i].TypeOfEmployment = itemExtraData?.User?.UserAccountOrganization.TypeOfEmployment.ToString();
                 }
             }
@@ -88,7 +86,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 var itemExtraData = await dbContext.UserContacts
                     .Include(x => x.User)
-                    .ThenInclude(x => x.UserPhoneNumber)
                     .Include(x => x.User)
                     .ThenInclude(x => x.UserAccountOrganization)
                     .FirstOrDefaultAsync(x => x.UserId == result2[i].UserId);
@@ -97,7 +94,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 {
                     result2[i].Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
                     result2[i].Email = itemExtraData?.User?.Email;
-                    result2[i].PhoneNumber = itemExtraData?.User?.UserPhoneNumber?.PhoneNumber;
                     result2[i].TypeOfEmployment = itemExtraData?.User?.UserAccountOrganization.TypeOfEmployment.ToString();
                 }
             }
@@ -106,7 +102,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 var itemExtraData = await dbContext.UserContacts
                     .Include(x => x.User)
-                    .ThenInclude(x => x.UserPhoneNumber)
                     .Include(x => x.User)
                     .ThenInclude(x => x.UserAccountOrganization)
                     .FirstOrDefaultAsync(x => x.UserId == result3[i].UserId);
@@ -115,7 +110,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 {
                     result3[i].Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
                     result3[i].Email = itemExtraData?.User?.Email;
-                    result3[i].PhoneNumber = itemExtraData?.User?.UserPhoneNumber?.PhoneNumber;
                     result3[i].TypeOfEmployment = itemExtraData?.User?.UserAccountOrganization.TypeOfEmployment.ToString();
                 }
             }
