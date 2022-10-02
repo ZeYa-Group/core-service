@@ -18,18 +18,21 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly IIdentityGenerator identityGenerator;
         private readonly IUserReferralService userReferralService;
         private readonly ITenantGroupService tenantGroupService;
+        private readonly ILevelStatisticService levelStatisticService;
 
         public UserManager(AppDbContext dbContext,
                             IMapper mapper,
                             IIdentityGenerator identityGenerator,
                             IUserReferralService userReferralService,
-                            ITenantGroupService tenantGroupService)
+                            ITenantGroupService tenantGroupService,
+                            ILevelStatisticService levelStatisticService)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
             this.identityGenerator = identityGenerator;
             this.userReferralService = userReferralService;
             this.tenantGroupService = tenantGroupService;
+            this.levelStatisticService = levelStatisticService;
         }
 
         public async Task<UserModel> AddUserAsync(UserModel user)
@@ -57,8 +60,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await dbContext.SaveChangesAsync();
 
             var userModel = mapper.Map<UserModel>(addedUser);
-
+            
             await tenantGroupService.CreateTenantGroupForUserAsync(userModel);
+            await levelStatisticService.AddLevelsInfoForNewUserAsync(addedUser.Id);
 
             await dbContext.SaveChangesAsync();
 

@@ -35,10 +35,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 return;
             }
 
+            var basicLevels = await _dbContext.BasicLevels.Include(x => x.PartnersLevel).ToArrayAsync();
+
             foreach (var user in parentUsers)
             {
                 await CalculateUserMonthlyLevelAsync(user);
-                await СalculatePartnersBasicLevelsAsync(user);
+                await СalculatePartnersBasicLevelsAsync(user, basicLevels);
             }
         }
 
@@ -47,29 +49,22 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var monthlyTurnover = await _turnoverService.GetMonthlyTurnoverByUserIdAsync(user.Id);
             var earnedMonthlyLevel = await _levelsService.GetCurrentMonthlyLevelByTurnoverAsync(monthlyTurnover);
 
-            var currentLevel = await _levelsService.GetMonthlyLevelByUserIdAsync(user.Id);
+            var currentLevel = await _levelStatisticService.GetMonthlyLevelByUserIdAsync(user.Id);
 
-            if (earnedMonthlyLevel.Level < currentLevel.Level)
+            if (earnedMonthlyLevel.Id != currentLevel.Id)
             {
-                throw new Exception("current level cannot be less than earned");
-            }
-
-            if (earnedMonthlyLevel.Id != currentLevel.Id && earnedMonthlyLevel.Level > currentLevel.Level)
-            {
-                await _levelStatisticService.AddNewUserMonthlyLevelRecordAsync(user.Id, earnedMonthlyLevel.Id, monthlyTurnover);
+                await _levelStatisticService.AddMonthlyLevelInfoAsync(user.Id, earnedMonthlyLevel.Id, monthlyTurnover);
             }
             else
             {
-                await _levelStatisticService.UpdateUserMonthlyLevelTurnoverAsync(user.Id, currentLevel.Id, monthlyTurnover);
+                await _levelStatisticService.UpdateMonthlyLevelInfoAsync(user.Id, currentLevel.Id, monthlyTurnover);
             }
 
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task СalculatePartnersBasicLevelsAsync(UserEntity user)
+        public async Task СalculatePartnersBasicLevelsAsync(UserEntity user, BasicLevelEntity[] basicLevels)
         {
-            var basicLevels = await _dbContext.BasicLevels.Include(x => x.PartnersLevel).ToArrayAsync();
-
             var turnover = await _turnoverService.GetTurnoverByUserIdAsync(user.Id);
 
             var getLevelsInBranchInfosString = GetLevelsInfoSqlQueryString(user);
@@ -116,11 +111,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                         {
                             levelsInfo[currlevel] = 1;
                         }
-                        await _levelStatisticService.AddNewUserBasicLevelRecordAsync(user.Id, user.BasicLevelId.Value, turnover);
+                        await _levelStatisticService.AddBasicLevelInfoAsync(user.Id, user.BasicLevelId.Value, turnover);
                     }
                     else
                     {
-                        await _levelStatisticService.UpdateUserBasicLevelTurnoverAsync(user.Id, user.BasicLevelId.Value, turnover);
+                        await _levelStatisticService.UpdateBasicLevelInfoAsync(user.Id, user.BasicLevelId.Value, turnover);
                     }
                 }
             }
@@ -168,7 +163,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                     + "inner join resultGroup parent on parent.\"ParentId\" = parentGroup2.\"Id\")\n"
 
                                     + "SELECT u.\"Id\",\n u.\"FirstName\",\n u.\"LastName\",\n u.\"Email\",\n u.\"Country\",\n u.\"PersonalReferral\",\n"
-                                    + "u.\"InviteReferral\",\n u.\"PasswordHash\",\n u.\"PasswordSalt\",\n u.\"UserPhoneNumberId\",\n"
+                                    + "u.\"InviteReferral\",\n u.\"PasswordHash\",\n u.\"PasswordSalt\",\n"
                                     + "u.\"IsVerifiedUser\",\n u.\"BasicLevelId\""
                                     + "from resultGroup\n"
                                     + "inner join public.\"Users\" as u on u.\"Id\" = resultGroup.\"OwnerUserId\"\n"

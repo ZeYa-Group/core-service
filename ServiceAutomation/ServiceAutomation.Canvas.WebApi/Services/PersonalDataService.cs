@@ -1,6 +1,5 @@
 ﻿using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
-using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.Enums;
 using System;
 using System.Threading.Tasks;
@@ -11,18 +10,20 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     {
         private readonly IPackagesService packagesService;
         private readonly ILevelsService levelsService;
+        private readonly ILevelStatisticService levelStatisticService;
 
-        public PersonalDataService(IPackagesService packagesService, ILevelsService levelsService)
+        public PersonalDataService(IPackagesService packagesService, ILevelsService levelsService, ILevelStatisticService levelStatisticService)
         {
             this.packagesService = packagesService;
             this.levelsService = levelsService;
+            this.levelStatisticService = levelStatisticService;
         }
 
         public async Task<HomePageResponseModel> GetHomeUserData(Guid userId)
         {
             var package = await packagesService.GetUserPackageAsync(userId);
-            var monthlyLevelInfo = await levelsService.GetMonthlyLevelInfoByUserIdAsync(userId);
-            var basicLevelInfo = await levelsService.GetBasicLevelInfoByUserIdAsync(userId);
+            var monthlyLevelInfo = await levelStatisticService.GetMonthlyLevelInfoByUserIdAsync(userId);
+            var basicLevelInfo = await levelStatisticService.GetBasicLevelInfoByUserIdAsync(userId);
             var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);
 
             var response = new HomePageResponseModel
