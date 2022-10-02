@@ -1,5 +1,4 @@
-﻿using ServiceAutomation.DataAccess.Schemas.Enums;
-using System;
+﻿using System;
 
 namespace ServiceAutomation.Canvas.WebApi.Models.ResponseModels
 {
