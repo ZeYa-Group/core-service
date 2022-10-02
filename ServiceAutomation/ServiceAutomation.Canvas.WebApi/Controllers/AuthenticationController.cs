@@ -68,9 +68,9 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             }
 
 
-            if (requestModel.Password.ToLower() != requestModel.ConfirmPassword.ToLower())
+            if (!await userManager.IsReferraValidAsync(requestModel.ReferralCode))
             {
-                return BadRequest("Passwords are not the same");
+                return BadRequest("Referal code is incorrect");
             }
 
             if (await userManager.IsUserAlreadyExistsAsync(requestModel.Email))

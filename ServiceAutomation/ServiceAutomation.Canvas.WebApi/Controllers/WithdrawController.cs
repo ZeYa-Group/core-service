@@ -32,7 +32,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
         [Authorize]
         [HttpGet(Constants.Requests.Withdraw.GetAccuralHistory)]
-        public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId)
+        public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId, TransactionStatus transactionStatus = default, PeriodType period = default)
         {
             return await withdrawService.GetAccuralHistory(userId);
         }

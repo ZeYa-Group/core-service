@@ -11,6 +11,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
     public interface IWithdrawService
     {
         Task<IEnumerable<WithdrawResponseModel>> GetWithdrawHistory(Guid userId, TransactionStatus transactionStatus = default, PeriodType period = default);
-        Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId);
+        Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId, TransactionStatus transactionStatus = default, PeriodType period = default);
     }
 }

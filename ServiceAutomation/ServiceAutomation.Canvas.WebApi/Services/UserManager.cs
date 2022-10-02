@@ -93,6 +93,18 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return mapper.Map<UserModel>(user);
         }
 
+        public async Task<bool> IsReferraValidAsync(string referralCode)
+        {
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.PersonalReferral == referralCode);
+
+            if(user != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public async Task<bool> IsUserAlreadyExistsAsync(string email)
         {
             var user = await dbContext.Users.Where(x => x.Email == email.ToLower()).ToListAsync();
