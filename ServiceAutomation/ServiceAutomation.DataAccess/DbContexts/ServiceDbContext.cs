@@ -32,6 +32,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<LevelBonusRewardEntity> LevelBonusRewards { get; set; }
         public virtual DbSet<LevelBonusRewardPercentEntity> LevelBonusRewardPercents { get; set; }
         public virtual DbSet<BonusEntity> Bonuses { get; set; }
+        public virtual DbSet<StartBonusRewardEntity> StartBonusRewards { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
@@ -60,6 +61,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new LevelBonusRewardEntityConfiguration());
             modelBuilder.ApplyConfiguration(new LevelBonusRewardPercentEntityConfiguration());
             modelBuilder.ApplyConfiguration(new AccrualsEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new StartBonusRewardEntityConfiguration());
         }
     }
 }

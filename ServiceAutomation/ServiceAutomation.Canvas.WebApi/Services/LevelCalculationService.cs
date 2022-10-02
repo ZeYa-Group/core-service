@@ -14,13 +14,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly ILevelsService _levelsService;
         private readonly ITurnoverService _turnoverService;
         private readonly ILevelStatisticService _levelStatisticService;
-        private readonly IRewardAccrualForLevelService _rewardAccrualForLevelService;
+        private readonly IRewardAccrualService _rewardAccrualForLevelService;
 
         public LevelCalculationService(AppDbContext dbContext,
                                        ITurnoverService turnoverService,
                                        ILevelsService levelsService,
                                        ILevelStatisticService levelStatisticService,
-                                       IRewardAccrualForLevelService rewardAccrualForLevelService)
+                                       IRewardAccrualService rewardAccrualForLevelService)
         {
             _dbContext = dbContext;
             _turnoverService = turnoverService;

@@ -49,6 +49,9 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<PackageEntity, PackageModel>()
                 .ForMember(x => x.Bonuses, opt => opt.MapFrom(x => x.PackageBonuses.OrderBy(pb => pb.Bonus.DisplayOrder)));
 
+            CreateMap<PackageEntity, UserPackageModel>()
+                .ForMember(x => x.Bonuses, opt => opt.MapFrom(x => x.PackageBonuses.OrderBy(pb => pb.Bonus.DisplayOrder)));
+
             CreateMap<IndividualUserOrganizationDataEntity, IndividualEntityDataResponseModel>();
             CreateMap<IndividualEntrepreneurUserOrganizationDataEntity, IndividualEntrepreneurEntityDataResponseModel>();
             CreateMap<LegalUserOrganizationDataEntity, LegalEntityDataResponseModel>();

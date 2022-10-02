@@ -18,19 +18,14 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             _dbContext = dbContext;
             _packagesService = packagesService;
         }
-        public async Task<CalulatedLevelBonusRewardInfoModel> CalculateLevelBonusRewardAsync(Guid currentBasicLevel, Guid currentPackage)
+        public async Task<CalulatedRewardInfoModel> CalculateLevelBonusRewardAsync(Guid currentBasicLevel, Guid currentPackage)
         {
             var basicLevelReward = await _dbContext.LevelBonusRewards
                                                       .AsNoTracking()
                                                       .Where(r => r.LevelId == currentBasicLevel)
                                                       .FirstOrDefaultAsync();
             if (basicLevelReward == null)
-                return new CalulatedLevelBonusRewardInfoModel
-                {
-                    InitialReward = 0,
-                    Percent = 0,
-                    Reward = 0
-                };
+                return new CalulatedRewardInfoModel();
 
             var rewardPercent = await _dbContext.LevelBonusRewardPercents
                                                 .AsNoTracking()
@@ -41,7 +36,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var rewardForBasicLevel = basicLevelReward.Reward;
             var reward = (rewardForBasicLevel * rewardPercent) / 100;
 
-            return new CalulatedLevelBonusRewardInfoModel
+            return new CalulatedRewardInfoModel
             {
                 InitialReward = rewardForBasicLevel,
                 Percent = rewardPercent,

@@ -6,6 +6,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
 {
     public interface ILevelBonusCalculatorService
     {
-        Task<CalulatedLevelBonusRewardInfoModel> CalculateLevelBonusRewardAsync(Guid currentBasicLevel, Guid currentPackage);
+        Task<CalulatedRewardInfoModel> CalculateLevelBonusRewardAsync(Guid currentBasicLevel, Guid currentPackage);
     }
 }
