@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.AdministratorResponseModels;
@@ -15,10 +16,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     {
         private readonly AppDbContext dbContext;
         private readonly IMapper mapper;
-        public AdministratorService(AppDbContext dbContext, IMapper mapper)
+        private readonly IWebHostEnvironment hostEnvironment;
+        public AdministratorService(AppDbContext dbContext, IMapper mapper, IWebHostEnvironment hostEnvironment)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
+            this.hostEnvironment = hostEnvironment;
         }
 
         public async Task AcceptContactVerificationRequest(Guid requestId, Guid userId)
@@ -151,7 +154,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task RejectVerificationRequest(Guid requestId, Guid userId)
         {
             var userOrganizationType = await dbContext.UserAccountOrganizations.FirstOrDefaultAsync(x => x.UserId == userId);
-
+            
             switch (userOrganizationType.TypeOfEmployment)
             {
                 case TypeOfEmployment.LegalEntity:
@@ -161,13 +164,19 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 case TypeOfEmployment.IndividualEntity:
                     var individualEntityRequest = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.Id == requestId && x.IsVerivied == false);
                     dbContext.IndividualUserOrganizationsData.Remove(individualEntityRequest);
+                    System.IO.File.Delete(hostEnvironment.WebRootPath + individualEntityRequest.VerificationPhotoPath);
                     break;
                 case TypeOfEmployment.IndividualEntrepreneur:
                     var individualEntrepreneurEntityRequest = await dbContext.IndividualEntrepreneurUserOrganizationsData.FirstOrDefaultAsync(x => x.Id == requestId && x.IsVerivied == false);
                     dbContext.IndividualEntrepreneurUserOrganizationsData.Remove(individualEntrepreneurEntityRequest);
+                    System.IO.File.Delete(hostEnvironment.WebRootPath + individualEntrepreneurEntityRequest.VerificationPhotoPath);
                     break;
             }
 
+            var accountOrganization = await dbContext.UserAccountOrganizations.FirstOrDefaultAsync(x => x.UserId == userId);
+
+
+            dbContext.UserAccountOrganizations.Remove(accountOrganization);
             await dbContext.SaveChangesAsync();
         }
     }

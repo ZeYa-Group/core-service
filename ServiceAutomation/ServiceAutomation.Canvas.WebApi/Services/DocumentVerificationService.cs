@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using OneOf;
 using OneOf.Types;
@@ -22,11 +23,15 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     {
         private readonly AppDbContext dbContext;
         private readonly IMapper mapper;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
-        public DocumentVerificationService(AppDbContext dbContext, IMapper mapper)
+        private const string IndividualBasePath = "/DocumentVerification/IndividualEntity/";
+        private const string IndividualEmpBasePath = "/DocumentVerification/IndividualEntrepreneur/";
+        public DocumentVerificationService(AppDbContext dbContext, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             this.dbContext = dbContext;
             this.mapper = mapper;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<ResultModel> SendUserVerificationData(DocumentVerificationRequestModel requestModel)
@@ -84,7 +89,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                         Street = requestModel.DocumentVerificationModels.LegallyAddressModel.Street,
                         HouseNumber = requestModel.DocumentVerificationModels.LegallyAddressModel.HouseNumber,
                         Location = requestModel.DocumentVerificationModels.LegallyAddressModel.Location,
-                        RoomNumber = requestModel.DocumentVerificationModels.LegallyAddressModel.RoomNumber
+                        RoomNumber = requestModel.DocumentVerificationModels.LegallyAddressModel.RoomNumber,
+                        VerificationData = requestModel.DocumentVerificationModels.WitnessDataModel.FileData
                     };
 
                     return await SendIndividualEntityData(individualEntityModel);
@@ -116,7 +122,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                         Street = requestModel.DocumentVerificationModels.LegallyAddressModel.Street,
                         HouseNumber = requestModel.DocumentVerificationModels.LegallyAddressModel.HouseNumber,
                         Location = requestModel.DocumentVerificationModels.LegallyAddressModel.Location,
-                        RoomNumber = requestModel.DocumentVerificationModels.LegallyAddressModel.RoomNumber
+                        RoomNumber = requestModel.DocumentVerificationModels.LegallyAddressModel.RoomNumber,
+                        VerificationData = requestModel.DocumentVerificationModels.WitnessDataModel.FileData
                     };
 
                     return await SendIndividualEntrepreneurEntityData(individualEntrepreneurEntityModel);
@@ -185,45 +192,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     Success = true
                 };
             }
-            else
+
+            return new ResultModel()
             {
-                var legalUserDataModel = await dbContext.LegalUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == dataModel.UserId);
-                legalUserDataModel.UserId = dataModel.UserId;
-                legalUserDataModel.Region = dataModel.Region;
-                legalUserDataModel.Locality = dataModel.Locality;
-                legalUserDataModel.BankStreet = dataModel.BankStreet;
-                legalUserDataModel.BankHouseNumber = dataModel.BankHouseNumber;
-                legalUserDataModel.BeneficiaryBankName = dataModel.BeneficiaryBankName;
-                legalUserDataModel.CheckingAccount = dataModel.CheckingAccount;
-                legalUserDataModel.SWIFT = dataModel.SWIFT;
-                legalUserDataModel.Disctrict = dataModel.Disctrict;
-                legalUserDataModel.City = dataModel.City;
-                legalUserDataModel.Index = dataModel.Index;
-                legalUserDataModel.Street = dataModel.Street;
-                legalUserDataModel.HouseNumber = dataModel.HouseNumber;
-                legalUserDataModel.Flat = dataModel.Flat;
-
-                try
-                {
-                    await dbContext.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    return new ResultModel()
-                    {
-                        Success = false,
-                        Errors = new List<string>()
-                        {
-                            ex.Message
-                        }
-                    };
-                }
-
-                return new ResultModel()
-                {
-                    Success = true
-                };
-            }
+                Success = false
+            };
         }
 
         private async Task<ResultModel> SendIndividualEntityData(IndividualEntityModel dataModel)
@@ -237,6 +210,14 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     UserId = dataModel.UserId,
                     TypeOfEmployment = dataModel.TypeOfEmployment
                 };
+
+                var verificationPhotoName = dataModel.UserId + "Verification" + ".png";
+                var verificationPhotoFullPath = IndividualBasePath + verificationPhotoName;
+
+                using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + verificationPhotoFullPath, FileMode.Create))
+                {
+                    await dataModel.VerificationData.CopyToAsync(fileStream);
+                }
 
                 var individualUserModel = new IndividualUserOrganizationDataEntity()
                 {
@@ -264,7 +245,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     Street = dataModel.Street,
                     HouseNumber = dataModel.HouseNumber,
                     Location = dataModel.Location,
-                    RoomNumber = dataModel.RoomNumber
+                    RoomNumber = dataModel.RoomNumber,
+                    VerificationPhotoPath = verificationPhotoFullPath,
                 };
 
                 try
@@ -290,57 +272,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     Success = true
                 };
             }
-            else
+
+            return new ResultModel()
             {
-                var individualUserModel = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == dataModel.UserId);
-
-                individualUserModel.UserId = dataModel.UserId;
-                individualUserModel.LegalEntityFullName = dataModel.LegalEntityFullName;
-                individualUserModel.HeadFullName = dataModel.HeadFullName;
-                individualUserModel.LegalEntityAbbreviatedName = dataModel.LegalEntityAbbreviatedName;
-                individualUserModel.HeadPosition = dataModel.HeadPosition;
-                individualUserModel.UNP = dataModel.UNP;
-                individualUserModel.BaseOrganization = dataModel.BaseOrganization;
-                individualUserModel.AccountantName = dataModel.AccountantName;
-                individualUserModel.CertificateNumber = dataModel.CertificateNumber;
-                individualUserModel.RegistrationAuthority = dataModel.RegistrationAuthority;
-                individualUserModel.CertificateDateIssue = dataModel.CertificateDateIssue;
-                individualUserModel.BankRegion = dataModel.BankRegion;
-                individualUserModel.BankLocality = dataModel.BankLocality;
-                individualUserModel.BankStreet = dataModel.BankStreet;
-                individualUserModel.BankHouseNumber = dataModel.BankHouseNumber;
-                individualUserModel.BeneficiaryBankName = dataModel.BeneficiaryBankName;
-                individualUserModel.CheckingAccount = dataModel.CheckingAccount;
-                individualUserModel.SWIFT = dataModel.SWIFT;
-                individualUserModel.Region = dataModel.Region;
-                individualUserModel.Locality = dataModel.Locality;
-                individualUserModel.Index = dataModel.Index;
-                individualUserModel.Street = dataModel.Street;
-                individualUserModel.HouseNumber = dataModel.HouseNumber;
-                individualUserModel.Location = dataModel.Location;
-                individualUserModel.RoomNumber = dataModel.RoomNumber;
-
-                try
-                {
-                    await dbContext.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    return new ResultModel()
-                    {
-                        Success = false,
-                        Errors = new List<string>()
-                        {
-                            ex.Message
-                        }
-                    };
-                }
-
-                return new ResultModel()
-                {
-                    Success = true
-                };
-            }
+                Success = false
+            };
         }
 
         private async Task<ResultModel> SendIndividualEntrepreneurEntityData(IndividualEntrepreneurEntityModel dataModel)
@@ -354,6 +290,14 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     UserId = dataModel.UserId,
                     TypeOfEmployment = dataModel.TypeOfEmployment
                 };
+
+                var verificationPhotoName = dataModel.UserId + "Verification" + ".png";
+                var verificationPhotoFullPath = IndividualEmpBasePath + verificationPhotoName;
+
+                using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + verificationPhotoFullPath, FileMode.Create))
+                {
+                    await dataModel.VerificationData.CopyToAsync(fileStream);
+                }
 
                 var individualUserModel = new IndividualEntrepreneurUserOrganizationDataEntity()
                 {
@@ -381,7 +325,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     Street = dataModel.Street,
                     HouseNumber = dataModel.HouseNumber,
                     Location = dataModel.Location,
-                    RoomNumber = dataModel.RoomNumber
+                    RoomNumber = dataModel.RoomNumber,
+                    VerificationPhotoPath = verificationPhotoFullPath,
                 };
 
                 try
@@ -407,57 +352,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     Success = true
                 };
             }
-            else
+
+            return new ResultModel()
             {
-                var individualUserModel = await dbContext.IndividualEntrepreneurUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == dataModel.UserId);
-
-                individualUserModel.UserId = dataModel.UserId;
-                individualUserModel.LegalEntityFullName = dataModel.LegalEntityFullName;
-                individualUserModel.HeadFullName = dataModel.HeadFullName;
-                individualUserModel.LegalEntityAbbreviatedName = dataModel.LegalEntityAbbreviatedName;
-                individualUserModel.HeadPosition = dataModel.HeadPosition;
-                individualUserModel.UNP = dataModel.UNP;
-                individualUserModel.BaseOrganization = dataModel.BaseOrganization;
-                individualUserModel.AccountantName = dataModel.AccountantName;
-                individualUserModel.CertificateNumber = dataModel.CertificateNumber;
-                individualUserModel.RegistrationAuthority = dataModel.RegistrationAuthority;
-                individualUserModel.CertificateDateIssue = dataModel.CertificateDateIssue;
-                individualUserModel.BankRegion = dataModel.BankRegion;
-                individualUserModel.BankLocality = dataModel.BankLocality;
-                individualUserModel.BankStreet = dataModel.BankStreet;
-                individualUserModel.BankHouseNumber = dataModel.BankHouseNumber;
-                individualUserModel.BeneficiaryBankName = dataModel.BeneficiaryBankName;
-                individualUserModel.CheckingAccount = dataModel.CheckingAccount;
-                individualUserModel.SWIFT = dataModel.SWIFT;
-                individualUserModel.Region = dataModel.Region;
-                individualUserModel.Locality = dataModel.Locality;
-                individualUserModel.Index = dataModel.Index;
-                individualUserModel.Street = dataModel.Street;
-                individualUserModel.HouseNumber = dataModel.HouseNumber;
-                individualUserModel.Location = dataModel.Location;
-                individualUserModel.RoomNumber = dataModel.RoomNumber;
-
-                try
-                {
-                    await dbContext.SaveChangesAsync();
-                }
-                catch (Exception ex)
-                {
-                    return new ResultModel()
-                    {
-                        Success = false,
-                        Errors = new List<string>()
-                        {
-                            ex.Message
-                        }
-                    };
-                }
-
-                return new ResultModel()
-                {
-                    Success = true
-                };
-            }
+                Success = true
+            };
         }
 
         public async Task<OneOf<IndividualEntityDataResponseModel, IndividualEntrepreneurEntityDataResponseModel, LegalEntityDataResponseModel, ResultModel>> GetUserVerifiedData(Guid userId)

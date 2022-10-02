@@ -57,6 +57,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\DocumentVerification\IndividualEntity\" />
+    <Folder Include="wwwroot\DocumentVerification\IndividualEntrepreneur\" />
     <Folder Include="wwwroot\ProfilePhotos\" />
   </ItemGroup>
 </Project>

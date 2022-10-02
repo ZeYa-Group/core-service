@@ -10,6 +10,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "User")]
     public class HomeController : ApiBaseController
     {
         private readonly IUserReferralService userReferralService;
@@ -23,24 +24,16 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             this.bonusCalculatorService = bonusCalculatorService;
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.Home.GetReferralLink)]
         public async Task<string> GetUserReferral(Guid userId)
         {
             return await userReferralService.GetUserRefferal(userId);
         }
 
-        [Authorize]
         [HttpGet(Constants.Requests.Home.GetPersonalPageInfo)]
         public async Task<IActionResult> GetPersonalPageInfo(Guid userId)
         {
             return Ok(await personalDataService.GetHomeUserData(userId));
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetBonus(Guid userId)
-        {
-            return Ok(await bonusCalculatorService.CalculateBonusesAsync(userId));
         }
     }
 }

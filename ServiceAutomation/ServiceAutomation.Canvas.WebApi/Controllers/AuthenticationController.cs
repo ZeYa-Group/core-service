@@ -38,13 +38,6 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
             return Ok(response);
         }
 
-        [Authorize]
-        [HttpPost(Requests.User.GetUserId)]
-        public async Task<IActionResult> GetUserId()
-        {
-            var userId = GetCurrentUserId();
-            return Ok(userId);
-        }
 
         [AllowAnonymous]
         [HttpPost(Requests.User.Refresh)]
