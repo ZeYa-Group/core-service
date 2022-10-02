@@ -52,7 +52,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 PasswordHash = user.PasswordHash,
                 PasswordSalt = user.PasswordSalt,
                 BasicLevel = firstBasicLevel,
-                IsVerifiedUser = false
+                IsVerifiedUser = false,
+                Role = "User"
             };
 
 

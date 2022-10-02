@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.DataAccess.DbContexts;
+using ServiceAutomation.DataAccess.Models.EntityModels;
 using ServiceAutomation.DataAccess.Models.Enums;
 using ServiceAutomation.DataAccess.Schemas.Enums;
 using System;
@@ -77,10 +78,48 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return user?.Credential?.WithdrawTransactions?.Select(x => mapper.Map<WithdrawResponseModel>(x)).OrderByDescending(x => x.DateTime);
         }
 
-        public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId, TransactionStatus transactionStatus = default, PeriodType period = default)
+        public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId, TransactionStatus transactionStatus = default, BonusType bonus = default)
         {
             var user = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
             return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+
+            if (bonus != 0 && transactionStatus != 0)
+            {
+                switch (bonus)
+                {
+                    case BonusType.LevelBonus:
+                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.AutoBonus:
+                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.BunBonus:
+                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.DynamicBonus:
+                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.TravelBonus:
+                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.BonusOverall:
+                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                    case BonusType.TeamBonus:
+                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+
+                }
+            }
+
+            if (transactionStatus != 0)
+            {
+                return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+            }
+        }
+
+        public async Task MakeWithdraw(Guid userId, ICollection<Guid> accuralsId)
+        {
+            var accuralList = new List<AccrualsEntity>();
+
+            foreach(var accural in accuralsId)
+            {
+                var result = await dbContext.Accruals.FirstOrDefaultAsync(x => x.Id == accural);
+                accuralList.Add(result);
+            }
         }
     }
 }
