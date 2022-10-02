@@ -67,6 +67,12 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
                 return BadRequest("Passwords are not the same");
             }
 
+
+            if (requestModel.Password.ToLower() != requestModel.ConfirmPassword.ToLower())
+            {
+                return BadRequest("Passwords are not the same");
+            }
+
             if (await userManager.IsUserAlreadyExistsAsync(requestModel.Email))
             {
                 return BadRequest("User already exists");
