@@ -27,6 +27,8 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<PartnerPurchaseEntity> PartnerPurchase { get; set; }
         public virtual DbSet<UserLevelsInfoEntity> UserLevelsInfos { get; set; }
         public virtual DbSet<UserContactVerificationEntity> UserContactVerifications { get; set; }
+        public virtual DbSet<MonthlyLevelStatisticEntity> MonthlyLevelStatistics { get; set; }
+        public virtual DbSet<BasicLevelStatisticEntity> BasicLevelStatistics { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
@@ -50,6 +52,8 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new PartnerPurchaseEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
             modelBuilder.ApplyConfiguration(new UserLevelsInfoEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new MonthlyLevelStatisticEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new BasicLevelStatisticEntityConfiguration());
         }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceAutomation.DataAccess.DbContexts;
@@ -9,9 +10,10 @@ using ServiceAutomation.DataAccess.DbContexts;
 namespace ServiceAutomation.DataAccess.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221001191428_AddedLevelStatistics")]
+    partial class AddedLevelStatistics
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -645,12 +647,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<bool>("IsVerified")
                         .HasColumnType("boolean");
 
-                    b.Property<string>("NewData")
-                        .HasColumnType("text");
-
-                    b.Property<string>("OldData")
-                        .HasColumnType("text");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid");
 
@@ -698,18 +694,17 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .HasColumnType("bytea");
 
-                    b.Property<string>("Patronymic")
-                        .HasColumnType("text");
-
                     b.Property<string>("PersonalReferral")
                         .HasColumnType("text");
 
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
+                    b.Property<Guid?>("UserPhoneNumberId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BasicLevelId");
+
+                    b.HasIndex("UserPhoneNumberId");
 
                     b.ToTable("Users");
                 });
@@ -725,6 +720,20 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.HasIndex("BasicLevelId");
 
                     b.ToTable("UserLevelsInfos");
+                });
+
+            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserPhoneNumberEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserPhones");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserProfileInfoEntity", b =>
@@ -963,7 +972,13 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .WithMany()
                         .HasForeignKey("BasicLevelId");
 
+                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserPhoneNumberEntity", "UserPhoneNumber")
+                        .WithMany()
+                        .HasForeignKey("UserPhoneNumberId");
+
                     b.Navigation("BasicLevel");
+
+                    b.Navigation("UserPhoneNumber");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserLevelsInfoEntity", b =>
