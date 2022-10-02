@@ -24,7 +24,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task BuyPackageAsync(PackageModel package, Guid userId)
         {
-            var currentUserPackage = await _packagesService.GetUserPackageAsync(userId);
+            var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
 
             if (currentUserPackage != null && currentUserPackage.Price > package.Price)
             {
@@ -49,7 +49,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var purchasedPackage = await _dbContext.Packages.AsNoTracking().FirstOrDefaultAsync(p => p.Type == packageType);
 
-            var currentUserPackage = await _packagesService.GetUserPackageAsync(userId);
+            var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
 
             if (currentUserPackage != null && currentUserPackage.Price > purchasedPackage.Price)
             {

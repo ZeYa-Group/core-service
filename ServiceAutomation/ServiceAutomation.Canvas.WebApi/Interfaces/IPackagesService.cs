@@ -11,6 +11,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
 
         Task<PackageModel> GetPackageByIdAsync(Guid packageId);
 
-        Task<PackageModel> GetUserPackageAsync(Guid userId);
+        Task<PackageModel> GetUserPackageByIdAsync(Guid userId);
     }
 }

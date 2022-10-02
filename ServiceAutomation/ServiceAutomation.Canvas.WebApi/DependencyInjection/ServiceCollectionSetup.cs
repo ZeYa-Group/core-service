@@ -55,10 +55,11 @@ namespace ServiceAutomation.Canvas.WebApi.DependencyInjection
             services.AddHostedService<LevelHostedServices>();            
             services.AddScoped<ITurnoverService, TurnoverService>();
             services.AddScoped<ILevelsService, LevelsService>();
-            services.AddScoped<IBonusCalculatorService, BonusCalculatorService>();
+            services.AddScoped<ILevelBonusCalculatorService, LevelBonusCalculatorService>();
             services.AddScoped<IAdministratorService, AdministratorService>();
             services.AddScoped<ILevelCalculationService, LevelCalculationService>();
             services.AddScoped<ILevelStatisticService, LevelStatisticService>();
+            services.AddScoped<IRewardAccrualForLevelService, RewardAccrualForLevelService>();
         }
     }
 

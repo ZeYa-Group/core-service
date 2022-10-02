@@ -51,7 +51,7 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpGet(Constants.Requests.Package.GetUserPackage)]
         public async Task<PackageModel> GetUserPackageAsync(Guid userId)
         {
-            return await packagesService.GetUserPackageAsync(userId);
+            return await packagesService.GetUserPackageByIdAsync(userId);
         }
 
     }

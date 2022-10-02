@@ -29,6 +29,9 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<UserContactVerificationEntity> UserContactVerifications { get; set; }
         public virtual DbSet<MonthlyLevelStatisticEntity> MonthlyLevelStatistics { get; set; }
         public virtual DbSet<BasicLevelStatisticEntity> BasicLevelStatistics { get; set; }
+        public virtual DbSet<LevelBonusRewardEntity> LevelBonusRewards { get; set; }
+        public virtual DbSet<LevelBonusRewardPercentEntity> LevelBonusRewardPercents { get; set; }
+        public virtual DbSet<BonusEntity> Bonuses { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
@@ -54,6 +57,9 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new UserLevelsInfoEntityConfiguration());
             modelBuilder.ApplyConfiguration(new MonthlyLevelStatisticEntityConfiguration());
             modelBuilder.ApplyConfiguration(new BasicLevelStatisticEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new LevelBonusRewardEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new LevelBonusRewardPercentEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new AccrualsEntityConfiguration());
         }
     }
 }

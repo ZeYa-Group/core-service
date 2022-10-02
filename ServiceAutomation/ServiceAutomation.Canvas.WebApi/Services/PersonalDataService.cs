@@ -21,7 +21,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<HomePageResponseModel> GetHomeUserData(Guid userId)
         {
-            var package = await packagesService.GetUserPackageAsync(userId);
+            var package = await packagesService.GetUserPackageByIdAsync(userId);
             var monthlyLevelInfo = await levelStatisticService.GetMonthlyLevelInfoByUserIdAsync(userId);
             var basicLevelInfo = await levelStatisticService.GetBasicLevelInfoByUserIdAsync(userId);
             var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);

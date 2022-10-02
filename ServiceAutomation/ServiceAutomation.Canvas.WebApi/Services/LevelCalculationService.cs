@@ -14,16 +14,19 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly ILevelsService _levelsService;
         private readonly ITurnoverService _turnoverService;
         private readonly ILevelStatisticService _levelStatisticService;
+        private readonly IRewardAccrualForLevelService _rewardAccrualForLevelService;
 
         public LevelCalculationService(AppDbContext dbContext,
                                        ITurnoverService turnoverService,
                                        ILevelsService levelsService,
-                                       ILevelStatisticService levelStatisticService)
+                                       ILevelStatisticService levelStatisticService,
+                                       IRewardAccrualForLevelService rewardAccrualForLevelService)
         {
             _dbContext = dbContext;
             _turnoverService = turnoverService;
             _levelsService = levelsService;
             _levelStatisticService = levelStatisticService;
+            _rewardAccrualForLevelService = rewardAccrualForLevelService;
         }
 
         public async Task СalculateParentPartnersLevelsAsync(Guid userId)
@@ -92,35 +95,27 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 }
 
                 if (newLevel != null)
+                    break;
+            }
+
+            if (newLevel != null)
+            {
+                if (user.BasicLevel.Id != newLevel.Id)
                 {
-                    if (user.BasicLevel != newLevel)
-                    {
-                        var currlevel = user.BasicLevel.Level;
-                        if (levelsInfo.ContainsKey(currlevel))
-                        {
-                            levelsInfo[currlevel]--;
-                        }
+                    user.BasicLevel = newLevel;
 
-                        user.BasicLevel = newLevel;
-
-                        if (levelsInfo.ContainsKey(currlevel))
-                        {
-                            levelsInfo[currlevel]++;
-                        }
-                        else
-                        {
-                            levelsInfo[currlevel] = 1;
-                        }
-                        await _levelStatisticService.AddBasicLevelInfoAsync(user.Id, user.BasicLevelId.Value, turnover);
-                    }
-                    else
-                    {
-                        await _levelStatisticService.UpdateBasicLevelInfoAsync(user.Id, user.BasicLevelId.Value, turnover);
-                    }
+                    await _levelStatisticService.AddBasicLevelInfoAsync(user.Id, newLevel.Id, turnover);
+                    await _dbContext.SaveChangesAsync();
+                    await _rewardAccrualForLevelService.AccrueRewardForBasicLevelAsync(user.Id);
+                }
+                else
+                {
+                    await _levelStatisticService.UpdateBasicLevelInfoAsync(user.Id, user.BasicLevelId.Value, turnover);
                 }
             }
 
-            await _dbContext.SaveChangesAsync();
+
+
         }
 
         private async Task<UserEntity[]> GetParentUsersAsync(Guid userId)
@@ -164,7 +159,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
                                     + "SELECT u.\"Id\",\n u.\"FirstName\",\n u.\"LastName\",\n u.\"Email\",\n u.\"Country\",\n u.\"PersonalReferral\",\n"
                                     + "u.\"InviteReferral\",\n u.\"PasswordHash\",\n u.\"PasswordSalt\",\n"
-                                    + "u.\"IsVerifiedUser\",\n u.\"BasicLevelId\""
+                                    + "u.\"IsVerifiedUser\",\n u.\"BasicLevelId\",\n u.\"Patronymic\",\n u.\"PhoneNumber\" \n"
                                     + "from resultGroup\n"
                                     + "inner join public.\"Users\" as u on u.\"Id\" = resultGroup.\"OwnerUserId\"\n"
                                     + "order by \"Level\"";

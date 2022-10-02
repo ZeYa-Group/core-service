@@ -38,7 +38,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return packagesEntities.Select(x => mapper.Map<PackageModel>(x));
         }
 
-        public async Task<PackageModel> GetUserPackageAsync(Guid userId)
+        public async Task<PackageModel> GetUserPackageByIdAsync(Guid userId)
         {
             var package = await dbContext.UsersPurchases
                                 .AsNoTracking()
