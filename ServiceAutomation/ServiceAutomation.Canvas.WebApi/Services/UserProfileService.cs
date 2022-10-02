@@ -249,7 +249,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             if (user != null)
             {
-                if (isEmailExists != null)
+                if (isEmailExists == null)
                 {
                     var userContactVerificationRequest = new UserContactVerificationEntity()
                     {
