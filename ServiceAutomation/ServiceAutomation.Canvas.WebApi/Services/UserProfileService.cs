@@ -41,6 +41,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var user = await dbContext.Users
                 .Include(x => x.ProfilePhoto)
                 .Include(x => x.UserContact)
+                .Include(x => x.BasicLevel)
                 .FirstOrDefaultAsync(x => x.Id == userId);
 
             var package = await dbContext.UsersPurchases
@@ -250,7 +251,17 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 if (isEmailExists != null)
                 {
-                    user.Email = newEmail;
+                    var userContactVerificationRequest = new UserContactVerificationEntity()
+                    {
+                        UserId = userId,
+                        User = user,
+                        OldData = user.Email,
+                        NewData = newEmail,
+                        VerificationType = DataAccess.Models.Enums.ContactVerificationType.EmailAdress,
+                        IsVerified = false
+                    };
+
+                    await dbContext.UserContactVerifications.AddAsync(userContactVerificationRequest);
                     await dbContext.SaveChangesAsync();
 
                     result.Success = true;
@@ -266,27 +277,34 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var result = new ResultModel();
             var user = await dbContext.Users
-                //.Include(x => x.UserPhoneNumber)
                 .FirstOrDefaultAsync(x => x.Id == userId);
 
             if (user != null)
             {
-                //if (user.UserPhoneNumber == null)
-                //{
-                //    user.UserPhoneNumber = new UserPhoneNumberEntity()
-                //    {
-                //        PhoneNumber = newPhoneNumber
-                //    };
+                ////if (user.PhoneNumber == null)
+                ////{
+                ////    user.PhoneNumber = newPhoneNumber;
+                ////    await dbContext.SaveChangesAsync();
 
-                //    await dbContext.UserPhones.AddAsync(user.UserPhoneNumber);
-                //    await dbContext.SaveChangesAsync();
+                ////    result.Success = true;
+                ////    return result;
+                ////}
 
-                //    result.Success = true;
-                //    return result;
-                //}
-
-                //user.UserPhoneNumber.PhoneNumber = newPhoneNumber;
+                ////user.PhoneNumber = newPhoneNumber;
                 //await dbContext.SaveChangesAsync();
+
+                var userContactVerificationRequest = new UserContactVerificationEntity()
+                {
+                    UserId = userId,
+                    User = user,
+                    OldData = user.PhoneNumber,
+                    NewData = newPhoneNumber,
+                    VerificationType = DataAccess.Models.Enums.ContactVerificationType.PhoneNumber,
+                    IsVerified = false
+                };
+
+                await dbContext.UserContactVerifications.AddAsync(userContactVerificationRequest);
+                await dbContext.SaveChangesAsync();
 
                 result.Success = true;
                 return result;

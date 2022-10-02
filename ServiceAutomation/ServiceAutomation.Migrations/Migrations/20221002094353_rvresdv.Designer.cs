@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceAutomation.DataAccess.DbContexts;
@@ -9,9 +10,10 @@ using ServiceAutomation.DataAccess.DbContexts;
 namespace ServiceAutomation.DataAccess.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221002094353_rvresdv")]
+    partial class rvresdv
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,34 +86,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.HasIndex("PartnersLevelId");
 
                     b.ToTable("BasicLevels");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.BasicLevelStatisticEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("Id");
-
-                    b.Property<Guid>("LevelId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ReachingLevelDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<decimal?>("Turnover")
-                        .HasColumnType("numeric");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LevelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("BasicLevelStatistics");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.BonusEntity", b =>
@@ -412,34 +386,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MonthlyLevels");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.MonthlyLevelStatisticEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("Id");
-
-                    b.Property<Guid>("LevelId")
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime>("ReachingLevelDate")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<decimal?>("Turnover")
-                        .HasColumnType("numeric");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("LevelId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("MonthlyLevelStatistics");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.PackageBonusAssociationEntity", b =>
@@ -820,25 +766,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Navigation("PartnersLevel");
                 });
 
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.BasicLevelStatisticEntity", b =>
-                {
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.BasicLevelEntity", "Level")
-                        .WithMany()
-                        .HasForeignKey("LevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Level");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", b =>
                 {
                     b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
@@ -846,25 +773,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .HasForeignKey("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.MonthlyLevelStatisticEntity", b =>
-                {
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.MonthlyLevelEntity", "Level")
-                        .WithMany()
-                        .HasForeignKey("LevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Level");
 
                     b.Navigation("User");
                 });

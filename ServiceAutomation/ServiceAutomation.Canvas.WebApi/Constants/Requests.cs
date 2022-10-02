@@ -83,6 +83,10 @@
             public const string GetUserContactsVerivicationList = "GetUserContactsVerivicationList";
             public const string AcceptUserContactVerification = "AcceptUserContactVerification";
             public const string RejectUserContactVerification = "RejectUserContactVerification";
+
+            //public const string GetUserContactsVerivicationList = "GetUserContactsVerivicationList";
+            //public const string AcceptUserContactVerification = "AcceptUserContactVerification";
+            //public const string RejectUserContactVerification = "RejectUserContactVerification";
         }
     }
 }

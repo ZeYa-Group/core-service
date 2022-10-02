@@ -11,6 +11,8 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
     {
         public Guid UserId { get; set; }
         public ContactVerificationType VerificationType { get; set; }
+        public string OldData { get; set; }
+        public string NewData { get; set; }
         public bool IsVerified { get; set; }
         public virtual UserEntity User { get; set; }
     }
