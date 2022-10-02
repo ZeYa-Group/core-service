@@ -19,11 +19,26 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             this.dbContext = dbContext;
         }
 
-        public async Task<TenantGroupEntity> GetReferralTree(Guid userId)
+        public async Task<ReferralGroupModel> GetReferralTree(Guid userId)
         {
-            var referralGroup = await dbContext.TenantGroups.Where(x => x.OwnerUserId == userId).Include(x => x.ChildGroups).FirstOrDefaultAsync();
+           var referralGroup = await dbContext.Users.AsNoTracking()
+                                                    .Where(u => u.Id == userId)
+                                                    .Select(u => u.Group)
+                                                    .Select(GetReferralGroupWithPartners)
+                                                    .FirstOrDefaultAsync();
 
+            await FillReferralTreeAsync(referralGroup.PartnersGroups);
             return referralGroup;
+        }
+
+        private async Task FillReferralTreeAsync(ReferralGroupModel[] childPartners)
+        {
+            foreach(var partner in childPartners)
+            {
+                var childParetnerGroups = await GetPartnersReferralGroupsAsync(partner.Id);
+                partner.PartnersGroups = childParetnerGroups;
+                await FillReferralTreeAsync(childParetnerGroups);
+            }
         }
 
         public async Task CreateTenantGroupForUserAsync(UserModel userModel)
@@ -56,20 +71,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                      .Select(u => u.Group)
                                                      .Select(GetReferralGroupWithPartners)
                                                      .FirstOrDefaultAsync();
-            int counter = 0;
-            //referralGroup.GroupOwner.Wave = counter++;
-
-            //var tmp = referralGroup.PartnersGroups;
-            //while(tmp != null)
-            //{
-            //    foreach(var prt in tmp)
-            //    {
-            //        prt.GroupOwner.Wave = counter;
-            //    }
-
-            //    counter++;
-            //}
-
 
             return referralGroup;
         }
@@ -96,7 +97,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly Expression<Func<TenantGroupEntity, ReferralGroupModel>> GetReferralGroupWithPartners = g => new ReferralGroupModel
         {
             Id = g.Id,
-            HasPartners = g.ChildGroups.Count != 0,
+            HasPartners = g.ChildGroups.Any(),
             GroupOwner = new PartnerInfoModel
             {
                 UserId = g.OwnerUserId,
@@ -110,7 +111,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             PartnersGroups = g.ChildGroups.Select(cg => new ReferralGroupModel
             {
                 Id = cg.Id,
-                HasPartners = g.ChildGroups.Count != 0,
+                HasPartners = cg.ChildGroups.Any(),
                 GroupOwner = new PartnerInfoModel
                 {
                     UserId = cg.OwnerUserId,
@@ -129,6 +130,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             Id = g.Id,
             GroupOwner = new PartnerInfoModel
             {
+                UserId = g.OwnerUserId,
                 FirstName = g.OwnerUser.FirstName,
                 LastName = g.OwnerUser.LastName,
                 Email = g.OwnerUser.Email,
@@ -136,9 +138,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                        .Select(p => p.Package.Name)
                                                        .FirstOrDefault()
             },
-            HasPartners = g.ChildGroups.Count != 0
+            HasPartners = g.ChildGroups.Any()
         };
-
-        private int Counter = 0;
     }
 }
