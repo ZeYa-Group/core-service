@@ -80,38 +80,38 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId, TransactionStatus transactionStatus = default, BonusType bonus = default)
         {
-            var accruals = await dbContext.Accruals/*.AsNoTracking()*/
+            var accruals = await dbContext.Accruals.AsNoTracking()
                                                    .Where(x => x.UserId == userId)
                                                    .Include(x => x.ForWhom)
                                                    .Include(x => x.Bonus)
                                                    .ToListAsync();
             return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
 
-            if (bonus != 0 && transactionStatus != 0)
-            {
-                switch (bonus)
-                {
-                    case BonusType.LevelBonus:
-                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-                    case BonusType.AutoBonus:
-                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-                    case BonusType.BunBonus:
-                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-                    case BonusType.DynamicBonus:
-                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-                    case BonusType.TravelBonus:
-                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-                    case BonusType.BonusOverall:
-                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-                    case BonusType.TeamBonus:
-                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-                }
-            }
+            //if (bonus != 0 && transactionStatus != 0)
+            //{
+            //    switch (bonus)
+            //    {
+            //        case BonusType.LevelBonus:
+            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //        case BonusType.AutoBonus:
+            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //        case BonusType.BunBonus:
+            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //        case BonusType.DynamicBonus:
+            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //        case BonusType.TravelBonus:
+            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //        case BonusType.BonusOverall:
+            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //        case BonusType.TeamBonus:
+            //            return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //    }
+            //}
 
-            if (transactionStatus != 0)
-            {
-                return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-            }
+            //if (transactionStatus != 0)
+            //{
+            //    return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
+            //}
         }
 
         public async Task MakeWithdraw(Guid userId, ICollection<Guid> accuralsId)
@@ -122,6 +122,10 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             foreach(var accural in accuralsId)
             {
                 var result = await dbContext.Accruals.FirstOrDefaultAsync(x => x.Id == accural);
+                result.TransactionStatus = TransactionStatus.Pending;
+
+                await dbContext.SaveChangesAsync();
+
                 accuralList.Add(result);
             }
 

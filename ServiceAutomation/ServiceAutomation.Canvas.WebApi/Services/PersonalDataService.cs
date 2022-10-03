@@ -31,6 +31,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var basicLevelInfo = await levelStatisticService.GetBasicLevelInfoByUserIdAsync(userId);
             var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);
             var allTimeIncome = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
+            var availableForWithdraw = await dbContext.Accruals.Where(x => x.UserId == userId && x.TransactionStatus == DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw).ToListAsync();
             var awaitingAccural = await dbContext.UserAccuralsVerifications.Where(x => x.UserId == userId).ToListAsync();
 
             decimal awaitin = 0;
@@ -45,7 +46,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 BaseLevelInfo = basicLevelInfo,
                 MounthlyLevelInfo = monthlyLevelInfo,
                 AllTimeIncome = allTimeIncome.Sum(x => x.AccuralAmount),
-                AvailableForWithdrawal = 122,
+                AvailableForWithdrawal = availableForWithdraw.Sum(x => x.AccuralAmount),
                 AwaitingAccrual = awaitin,
                 ReceivedPayoutPercentage = 0,
                 ReuqiredAction = "test comment",

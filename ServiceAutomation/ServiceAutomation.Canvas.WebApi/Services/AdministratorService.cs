@@ -5,6 +5,7 @@ using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.AdministratorResponseModels;
 using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.DataAccess.DbContexts;
+using ServiceAutomation.DataAccess.Models.EntityModels;
 using ServiceAutomation.DataAccess.Models.Enums;
 using System;
 using System.Collections.Generic;
@@ -81,7 +82,20 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 var accural = await dbContext.Accruals.FirstOrDefaultAsync(x => x.Id == item);
                 accural.TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Accept;
+
+                await dbContext.SaveChangesAsync();
             }
+
+            var withdarwAmount = verificationRequest.Accurals.Sum(x => x.AccuralAmount);
+
+            var withdrawRequest = new WithdrawTransactionEntity()
+            {
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Accept,
+                Date = DateTime.UtcNow,
+                Value = withdarwAmount
+            };
+
+            await dbContext.WithdrawTransactions.AddAsync(withdrawRequest);
 
             verificationRequest.IsVerified = true;
 
@@ -208,7 +222,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task RejectContactVerificationRequest(Guid requestId, Guid userId)
         {
             var contactVerificationRequest = await dbContext.UserContactVerifications.FirstOrDefaultAsync(x => x.Id == requestId);
-            
+
             dbContext.UserContactVerifications.Remove(contactVerificationRequest);
             await dbContext.SaveChangesAsync();
         }
@@ -250,7 +264,20 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 var accural = await dbContext.Accruals.FirstOrDefaultAsync(x => x.Id == item);
                 accural.TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Failed;
+
+                await dbContext.SaveChangesAsync();
             }
+
+            var withdarwAmount = verificationRequest.Accurals.Sum(x => x.AccuralAmount);
+
+            var withdrawRequest = new WithdrawTransactionEntity()
+            {
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Accept,
+                Date = DateTime.UtcNow,
+                Value = withdarwAmount
+            };
+
+            await dbContext.WithdrawTransactions.AddAsync(withdrawRequest);
 
             dbContext.UserAccuralsVerifications.Remove(verificationRequest);
 
