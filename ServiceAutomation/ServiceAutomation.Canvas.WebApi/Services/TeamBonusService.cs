@@ -34,7 +34,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return new CalulatedRewardInfoModel
             {
                 InitialReward = initialReward,
-                Percent = percent,
+                Percent = (int)percent,
                 Reward = reward
             };
         }
@@ -64,7 +64,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return new CalulatedRewardInfoModel
             {
                 InitialReward = initialReward,
-                Percent = percent,
+                Percent = (int)percent,
                 Reward = reward
             };
         }
