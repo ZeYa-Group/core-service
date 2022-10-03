@@ -396,7 +396,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public Task<ResultModel> SendUserVerificationPhoto(IFormFile file, Guid userId)
         {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }
