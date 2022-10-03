@@ -80,7 +80,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<IEnumerable<AccuralResponseModel>> GetAccuralHistory(Guid userId, TransactionStatus transactionStatus = default, BonusType bonus = default)
         {
-            var accruals = await dbContext.Accruals.AsNoTracking()
+            var accruals = await dbContext.Accruals/*.AsNoTracking()*/
                                                    .Where(x => x.UserId == userId)
                                                    .Include(x => x.ForWhom)
                                                    .Include(x => x.Bonus)
