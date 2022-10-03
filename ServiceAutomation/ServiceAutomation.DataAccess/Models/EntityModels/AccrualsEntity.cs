@@ -15,7 +15,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
 
         public virtual UserEntity ForWhom { get; set; }
 
-        public int? AccuralPercent { get; set; }
+        public double? AccuralPercent { get; set; }
 
         public TransactionStatus TransactionStatus { get; set; }
 
@@ -23,5 +23,9 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public decimal AccuralAmount { get; set; }
 
         public DateTime AccuralDate { get; set; }
+
+        public Guid? ForBsicLevelId { get; set; }
+
+        public BasicLevelEntity ForBsicLevel { get; set; }
     }
 }

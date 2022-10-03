@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceAutomation.DataAccess.DbContexts;
@@ -9,9 +10,10 @@ using ServiceAutomation.DataAccess.DbContexts;
 namespace ServiceAutomation.DataAccess.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221003150546_AddTravelBonusRequirements")]
+    partial class AddTravelBonusRequirements
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,8 +34,8 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<DateTime>("AccuralDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<double?>("AccuralPercent")
-                        .HasColumnType("double precision");
+                    b.Property<int?>("AccuralPercent")
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("BonusId")
                         .HasColumnType("uuid");
@@ -725,29 +727,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.ToTable("StartBonusRewards");
                 });
 
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.TeamBonusRewardEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("Id");
-
-                    b.Property<decimal>("CommonTurnover")
-                        .HasColumnType("numeric");
-
-                    b.Property<Guid>("MonthlyLevelId")
-                        .HasColumnType("uuid");
-
-                    b.Property<double>("Percent")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("MonthlyLevelId");
-
-                    b.ToTable("TeamBonusRewards");
-                });
-
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.TenantGroupEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1247,17 +1226,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .IsRequired();
 
                     b.Navigation("Package");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.TeamBonusRewardEntity", b =>
-                {
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.MonthlyLevelEntity", "MonthlyLevel")
-                        .WithMany()
-                        .HasForeignKey("MonthlyLevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("MonthlyLevel");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.TenantGroupEntity", b =>
