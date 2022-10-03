@@ -10,11 +10,15 @@ namespace ServiceAutomation.Canvas.WebApi.Services
     {
         private readonly ILevelsService levelsService;
         private readonly ILevelStatisticService levelStatisticService;
+        private readonly ITravelBonusService travelBonusService;
 
-        public UserProgressService(ILevelsService levelsService, ILevelStatisticService levelStatisticService)
+        public UserProgressService(ILevelsService levelsService,
+                                   ILevelStatisticService levelStatisticService,
+                                   ITravelBonusService travelBonusService)
         {
             this.levelsService = levelsService;
             this.levelStatisticService = levelStatisticService;
+            this.travelBonusService = travelBonusService;
         }
 
         public async Task<ProgressResponseModel> GetUserProgress(Guid userId)
@@ -23,6 +27,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var basicLevelInfo = await levelStatisticService.GetBasicLevelInfoByUserIdAsync(userId);
             var nextMounthlyLevelRequirements = await levelsService.GetNextMonthlyLevelAsync(monthlyLevelInfo.CurrentLevel.Level);
             var nextBasicLevelRequirements = await levelsService.GetNextBasicLevelRequirementsAsync((Level)basicLevelInfo.CurrentLevel.Level);
+            var travelBonusInfo = await travelBonusService.GetTravelBonusInfoByUserIdAsync(userId);
 
             var response = new ProgressResponseModel
             {
@@ -33,6 +38,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 AwaitingAccrual = 0,
                 NextBasicLevelRequirements = nextBasicLevelRequirements,
                 NextMounthlyLevelRequirement = nextMounthlyLevelRequirements?.Turnover,
+                TravelBonusInfo = travelBonusInfo
                 //PartnersCurrentLevelCount = 0,
             };
 

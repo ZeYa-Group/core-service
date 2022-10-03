@@ -2,6 +2,7 @@
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.DataAccess.DbContexts;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ServiceAutomation.Canvas.WebApi.Services
@@ -28,6 +29,27 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                             .SumAsync(x => x.PurchasePrice);
 
             return turnover ?? 0;
+        }
+
+        public async Task<decimal> GetUserPersonalTurnoverByUserIdAsync(Guid userId)
+        {
+            var startDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 01);
+
+            var userIds = await _dbContext.Users.AsNoTracking()
+                                                         .Where(u => u.Id == userId)
+                                                         .SelectMany(u => u.Group.ChildGroups)
+                                                         .Select(g => g.OwnerUser)
+                                                         .Where(u => u.UserPurchases.Any(p => p.PurchaseDate >= startDate))
+                                                         .Select(u => u.Id)
+                                                         .ToArrayAsync();
+
+            var personalTurnover = await _dbContext.UsersPurchases.AsNoTracking()
+                                                                  .Where(p => userIds.Contains(p.UserId))
+                                                                  .Where(p => p.PurchaseDate >= startDate)
+                                                                  .GroupBy(p => p.UserId)
+                                                                  .Select(x => x.Max(y => y.Price))
+                                                                  .SumAsync();
+            return personalTurnover;
         }
 
         public async Task<decimal> GetTurnoverByUserIdAsync(Guid userId)

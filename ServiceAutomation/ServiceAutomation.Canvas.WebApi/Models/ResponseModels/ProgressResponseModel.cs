@@ -10,5 +10,7 @@
         public int PartnersCurrentLevelCount { get; set; }
         public LevelInfoModel MounthlyLevelInfo { get; set; }
         public decimal? NextMounthlyLevelRequirement { get; set; }
+
+        public TravelBonusInfoModel TravelBonusInfo { get; set; }
     }
 }
