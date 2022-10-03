@@ -38,6 +38,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<AutoBonusRewardEntity> AutoBonusRewards { get; set; }
         public virtual DbSet<UserFinanceEntity> UserFinances { get; set; }
         public virtual DbSet<TravelBonusRequirementEntity> TravelBonusRequirements { get; set; }
+        public virtual DbSet<TeamBonusRewardEntity> TeamBonusRewards { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
@@ -70,6 +71,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new DynamicBonusRewardEntityConfiguration());
             modelBuilder.ApplyConfiguration(new AutoBonusRewardEntityConfiguration());
             modelBuilder.ApplyConfiguration(new TravelBonusRequirementEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new TeamBonusRewardEntityConfiguration());
         }
     }
 }

@@ -15,7 +15,7 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
 
         public virtual UserEntity ForWhom { get; set; }
 
-        public int? AccuralPercent { get; set; }
+        public double? AccuralPercent { get; set; }
 
         public TransactionStatus TransactionStatus { get; set; }
 
