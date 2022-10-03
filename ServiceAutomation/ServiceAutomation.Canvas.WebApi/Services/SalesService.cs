@@ -30,5 +30,22 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                             .CountAsync();
             return countSales;
         }
+
+        public async Task<int> GerSalesCountInMonthAsync(Guid userId)
+        {
+            var referralUsersIds = await _dbContext.Users.AsNoTracking()
+                                             .Where(u => u.Id == userId)
+                                             .Select(u => u.Group)
+                                             .SelectMany(g => g.ChildGroups)
+                                             .Select(g => g.OwnerUserId)
+                                             .ToArrayAsync();
+
+            var startOfMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            var countSales = await _dbContext.UsersPurchases.AsNoTracking()
+                                                            .Where(p => referralUsersIds.Contains(p.UserId))
+                                                            .Where(p => p.PurchaseDate >= startOfMonth)
+                                                            .CountAsync();
+            return countSales;
+        }
     }
 }

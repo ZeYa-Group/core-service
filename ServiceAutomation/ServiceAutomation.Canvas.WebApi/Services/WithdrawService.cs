@@ -92,26 +92,26 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 switch (bonus)
                 {
                     case BonusType.LevelBonus:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.AutoBonus:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.BunBonus:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.DynamicBonus:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.TravelBonus:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.BonusOverall:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.TeamBonus:
-                        return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                        return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
 
                 }
             }
 
             if (transactionStatus != 0)
             {
-                return user.Select(x => mapper.Map<AccuralResponseModel>(x));
+                return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
             }
         }
 
