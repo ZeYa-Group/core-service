@@ -32,5 +32,6 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public virtual ICollection<PurchaseEntity> UserPurchases { get; set; }
         public virtual ICollection<AccrualsEntity> UserAccruals { get; set; }
         public virtual UserAccountOrganizationEntity UserAccountOrganization { get; set; }
+        public virtual UserFinanceEntity UserFinance { get; set; }
     }
 }
