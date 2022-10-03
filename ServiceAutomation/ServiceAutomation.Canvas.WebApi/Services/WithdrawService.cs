@@ -105,9 +105,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                         return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
                     case BonusType.TeamBonus:
                         return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
-
-            //    }
-            //}
+                }
+            }
 
             if (transactionStatus != 0)
             {
