@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using OneOf;
 using OneOf.Types;
@@ -90,7 +91,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                         HouseNumber = requestModel.DocumentVerificationModels.LegallyAddressModel.HouseNumber,
                         Location = requestModel.DocumentVerificationModels.LegallyAddressModel.Location,
                         RoomNumber = requestModel.DocumentVerificationModels.LegallyAddressModel.RoomNumber,
-                        VerificationData = requestModel.DocumentVerificationModels.WitnessDataModel.FileData
+                        //VerificationData = requestModel.DocumentVerificationModels.WitnessDataModel.FileData
                     };
 
                     return await SendIndividualEntityData(individualEntityModel);
@@ -123,7 +124,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                         HouseNumber = requestModel.DocumentVerificationModels.LegallyAddressModel.HouseNumber,
                         Location = requestModel.DocumentVerificationModels.LegallyAddressModel.Location,
                         RoomNumber = requestModel.DocumentVerificationModels.LegallyAddressModel.RoomNumber,
-                        VerificationData = requestModel.DocumentVerificationModels.WitnessDataModel.FileData
+                        //VerificationData = requestModel.DocumentVerificationModels.WitnessDataModel.FileData
                     };
 
                     return await SendIndividualEntrepreneurEntityData(individualEntrepreneurEntityModel);
@@ -211,13 +212,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     TypeOfEmployment = dataModel.TypeOfEmployment
                 };
 
-                var verificationPhotoName = dataModel.UserId + "Verification" + ".png";
-                var verificationPhotoFullPath = IndividualBasePath + verificationPhotoName;
+                //var verificationPhotoName = dataModel.UserId + "Verification" + ".png";
+                //var verificationPhotoFullPath = IndividualBasePath + verificationPhotoName;
 
-                using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + verificationPhotoFullPath, FileMode.Create))
-                {
-                    await dataModel.VerificationData.CopyToAsync(fileStream);
-                }
+                //using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + verificationPhotoFullPath, FileMode.Create))
+                //{
+                //    await dataModel.VerificationData.CopyToAsync(fileStream);
+                //}
 
                 var individualUserModel = new IndividualUserOrganizationDataEntity()
                 {
@@ -246,7 +247,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     HouseNumber = dataModel.HouseNumber,
                     Location = dataModel.Location,
                     RoomNumber = dataModel.RoomNumber,
-                    VerificationPhotoPath = verificationPhotoFullPath,
+                    //VerificationPhotoPath = verificationPhotoFullPath,
                 };
 
                 try
@@ -291,13 +292,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     TypeOfEmployment = dataModel.TypeOfEmployment
                 };
 
-                var verificationPhotoName = dataModel.UserId + "Verification" + ".png";
-                var verificationPhotoFullPath = IndividualEmpBasePath + verificationPhotoName;
+                //var verificationPhotoName = dataModel.UserId + "Verification" + ".png";
+                //var verificationPhotoFullPath = IndividualEmpBasePath + verificationPhotoName;
 
-                using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + verificationPhotoFullPath, FileMode.Create))
-                {
-                    await dataModel.VerificationData.CopyToAsync(fileStream);
-                }
+                //using (var fileStream = new FileStream(webHostEnvironment.WebRootPath + verificationPhotoFullPath, FileMode.Create))
+                //{
+                //    await dataModel.VerificationData.CopyToAsync(fileStream);
+                //}
 
                 var individualUserModel = new IndividualEntrepreneurUserOrganizationDataEntity()
                 {
@@ -326,7 +327,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     HouseNumber = dataModel.HouseNumber,
                     Location = dataModel.Location,
                     RoomNumber = dataModel.RoomNumber,
-                    VerificationPhotoPath = verificationPhotoFullPath,
+                    //VerificationPhotoPath = verificationPhotoFullPath,
                 };
 
                 try
@@ -391,6 +392,11 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 default:
                     throw new ArgumentException("Invalid argument");
             }
+        }
+
+        public Task<ResultModel> SendUserVerificationPhoto(IFormFile file, Guid userId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

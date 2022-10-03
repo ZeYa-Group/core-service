@@ -90,11 +90,31 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var withdrawRequest = new WithdrawTransactionEntity()
             {
+                UserId = verificationRequest.UserId,
                 TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Accept,
                 Date = DateTime.UtcNow,
                 Value = withdarwAmount
             };
 
+            var userOrganization = await dbContext.UserAccountOrganizations.FirstOrDefaultAsync(x => x.UserId == verificationRequest.UserId);
+
+            switch (userOrganization.TypeOfEmployment)
+            {
+                case TypeOfEmployment.LegalEntity:
+                    var legalData = await dbContext.LegalUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == verificationRequest.UserId);
+                    withdrawRequest.CheckingAccount = legalData.CheckingAccount;
+                    break;
+                case TypeOfEmployment.IndividualEntity:
+                    var individualData = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == verificationRequest.UserId);
+                    withdrawRequest.CheckingAccount = individualData.CheckingAccount;
+                    break;
+                case TypeOfEmployment.IndividualEntrepreneur:
+                    var individualEntrepreneurData = await dbContext.IndividualEntrepreneurUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == verificationRequest.UserId);
+                    withdrawRequest.CheckingAccount = individualEntrepreneurData.CheckingAccount;
+                    break;
+            }
+
+            
             await dbContext.WithdrawTransactions.AddAsync(withdrawRequest);
 
             verificationRequest.IsVerified = true;
@@ -272,10 +292,29 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var withdrawRequest = new WithdrawTransactionEntity()
             {
-                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Accept,
+                UserId = verificationRequest.UserId,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Failed,
                 Date = DateTime.UtcNow,
                 Value = withdarwAmount
             };
+
+            var userOrganization = await dbContext.UserAccountOrganizations.FirstOrDefaultAsync(x => x.UserId == verificationRequest.UserId);
+
+            switch (userOrganization.TypeOfEmployment)
+            {
+                case TypeOfEmployment.LegalEntity:
+                    var legalData = await dbContext.LegalUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == verificationRequest.UserId);
+                    withdrawRequest.CheckingAccount = legalData.CheckingAccount;
+                    break;
+                case TypeOfEmployment.IndividualEntity:
+                    var individualData = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == verificationRequest.UserId);
+                    withdrawRequest.CheckingAccount = individualData.CheckingAccount;
+                    break;
+                case TypeOfEmployment.IndividualEntrepreneur:
+                    var individualEntrepreneurData = await dbContext.IndividualEntrepreneurUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == verificationRequest.UserId);
+                    withdrawRequest.CheckingAccount = individualEntrepreneurData.CheckingAccount;
+                    break;
+            }
 
             await dbContext.WithdrawTransactions.AddAsync(withdrawRequest);
 

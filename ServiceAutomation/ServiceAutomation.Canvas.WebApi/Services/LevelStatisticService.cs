@@ -138,7 +138,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task AddLevelsInfoForNewUserAsync(Guid userId)
         {
-            var secondMonthlyLevel = await _dbContext.MonthlyLevels.FirstAsync(l => l.Level == Level.SecondLevel);
+            var secondMonthlyLevel = await _dbContext.MonthlyLevels.FirstAsync(l => l.Level == Level.FirstLevel);
             await AddMonthlyLevelInfoAsync(userId, secondMonthlyLevel.Id, 0);
 
             var firstBasicLevel = await _dbContext.BasicLevels.FirstAsync(b => b.Level == Level.FirstLevel);

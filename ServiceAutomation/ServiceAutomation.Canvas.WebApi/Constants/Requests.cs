@@ -66,6 +66,7 @@
         public static class UserDocument
         {
             public const string SendDataForVerification = "SendDataForVerification";
+            public const string SendPhotoForVerification = "SendPhotoForVerification";
             public const string GetVerifiedData = "GetVerifiedData";
         }
 

@@ -26,9 +26,22 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
 
         
         [HttpPost(Constants.Requests.UserDocument.SendDataForVerification)]
-        public async Task<IActionResult> SendDataForVerification([FromForm] DocumentVerificationRequestModel requestModel)
+        public async Task<IActionResult> SendDataForVerification([FromBody] DocumentVerificationRequestModel requestModel)
         {
             var response = await verificationService.SendUserVerificationData(requestModel);
+
+            if (!response.Success)
+            {
+                return BadRequest(response.Errors);
+            }
+
+            return Ok(response);
+        }
+
+        [HttpPost(Constants.Requests.UserDocument.SendPhotoForVerification)]
+        public async Task<IActionResult> SendPhotoForVerification([FromForm] IFormFile photo, Guid userId)
+        {
+            var response = await verificationService.SendUserVerificationPhoto(photo, userId);
 
             if (!response.Success)
             {

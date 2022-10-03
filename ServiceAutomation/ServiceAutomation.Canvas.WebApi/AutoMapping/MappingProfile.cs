@@ -25,7 +25,7 @@ namespace ServiceAutomation.Canvas.AutoMapping
             CreateMap<ThumbnailTemplateEntity, ThumbnailResponseModel>();
 
             CreateMap<WithdrawTransactionEntity, WithdrawResponseModel>()
-                .ForMember(x => x.CardCode, opt => opt.MapFrom(x => x.Credential.IBAN))
+                .ForMember(x => x.CardCode, opt => opt.MapFrom(x => x.CheckingAccount))
                 .ForMember(x => x.Status, opt => opt.MapFrom(x => x.TransactionStatus.ToString()))
                 .ForMember(x => x.Amount, opt => opt.MapFrom(x => x.Value))
                 .ForMember(x => x.DateTime, opt => opt.MapFrom(x => x.Date));

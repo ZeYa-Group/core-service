@@ -10,8 +10,8 @@ using ServiceAutomation.DataAccess.DbContexts;
 namespace ServiceAutomation.DataAccess.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221003192528_sdvsdvssvsvsdvsvwgwgfwgfwegfwegfwe12")]
-    partial class sdvsdvssvsvsdvsvwgwgfwgfwegfwegfwe12
+    [Migration("20221003202734_fix fintech")]
+    partial class fixfintech
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -997,7 +997,10 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("Id");
 
-                    b.Property<Guid>("CredentialId")
+                    b.Property<string>("CheckingAccount")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("CredentialEntityId")
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("Date")
@@ -1011,7 +1014,7 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CredentialId");
+                    b.HasIndex("CredentialEntityId");
 
                     b.ToTable("WithdrawTransactions");
                 });
@@ -1329,13 +1332,9 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.WithdrawTransactionEntity", b =>
                 {
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", "Credential")
+                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.CredentialEntity", null)
                         .WithMany("WithdrawTransactions")
-                        .HasForeignKey("CredentialId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Credential");
+                        .HasForeignKey("CredentialEntityId");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.BonusEntity", b =>
