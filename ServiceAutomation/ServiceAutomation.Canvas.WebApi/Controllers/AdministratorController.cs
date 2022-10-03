@@ -57,19 +57,19 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         [HttpGet(Constants.Requests.Administrator.GetWithdrawRequestList)]
         public async Task<IActionResult> GetWithdrawRequestList()
         {
-            return Ok(await administratorService.GetContactVerificationRequest());
+            return Ok(await administratorService.GetWitdrawRequests());
         }
 
         [HttpPost(Constants.Requests.Administrator.AcceptUserWithdraw)]
-        public async Task AcceptUserWithdraw(Guid requestId, Guid userId)
+        public async Task AcceptUserWithdraw([FromBody ]Guid requestId)
         {
-            await administratorService.AcceptContactVerificationRequest(requestId, userId);
+            await administratorService.AccepWitdrawRequest(requestId);
         }
 
         [HttpPost(Constants.Requests.Administrator.RejectUserWithdraw)]
-        public async Task RejectUserWithdraw(Guid requestId, Guid userId)
+        public async Task RejectUserWithdraw([FromBody] Guid requestId)
         {
-            await administratorService.RejectContactVerificationRequest(requestId, userId);
+            await administratorService.RejectWitdrawRequest(requestId);
         }
     }
 }

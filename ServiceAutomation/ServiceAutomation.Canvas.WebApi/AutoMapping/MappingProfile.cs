@@ -107,6 +107,12 @@ namespace ServiceAutomation.Canvas.AutoMapping
                 .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.User.PhoneNumber))
                 .ForMember(x => x.ContactVerificationType, opt => opt.MapFrom(x => x.VerificationType.ToString()))
                 .ForMember(x => x.NewData, opt => opt.MapFrom(x => x.NewData));
+
+            CreateMap<UserAccuralsVerificationEntity, WithdrawVerifictionResponseModel>()
+                .ForMember(x => x.Name, opt => opt.MapFrom(x => x.User.FirstName))
+                .ForMember(x => x.Surname, opt => opt.MapFrom(x => x.User.LastName))
+                .ForMember(x => x.Email, opt => opt.MapFrom(x => x.User.Email))
+                .ForMember(x => x.PhoneNumber, opt => opt.MapFrom(x => x.User.PhoneNumber));
         }
     }
 }

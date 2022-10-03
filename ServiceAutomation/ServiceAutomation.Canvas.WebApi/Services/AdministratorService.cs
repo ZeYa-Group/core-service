@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
 using ServiceAutomation.Canvas.WebApi.Models.AdministratorResponseModels;
+using ServiceAutomation.Canvas.WebApi.Models.ResponseModels;
 using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.Enums;
 using System;
@@ -65,6 +66,24 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     individualEntrepreneurEntityRequest.IsVerivied = true;
                     break;     
             }
+
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            user.IsVerifiedUser = true;
+
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task AccepWitdrawRequest(Guid requestId)
+        {
+            var verificationRequest = await dbContext.UserAccuralsVerifications.Include(x => x.Accurals).FirstOrDefaultAsync(x => x.Id == requestId);
+
+            foreach (var item in verificationRequest.Accurals.Select(x => x.Id))
+            {
+                var accural = await dbContext.Accruals.FirstOrDefaultAsync(x => x.Id == item);
+                accural.TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Accept;
+            }
+
+            verificationRequest.IsVerified = true;
 
             await dbContext.SaveChangesAsync();
         }
@@ -143,6 +162,49 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             return response;
         }
 
+        public async Task<ICollection<WithdrawVerifictionResponseModel>> GetWitdrawRequests()
+        {
+            var requests = await dbContext.UserAccuralsVerifications
+                .Include(x => x.Accurals)
+                .ThenInclude( x => x.Bonus)
+                .Include(x => x.User)
+                .ThenInclude(x => x.UserAccountOrganization)
+                .Where(x => x.IsVerified == false)
+                .ToListAsync();
+
+            var result  = new List<WithdrawVerifictionResponseModel>();
+
+            for (int i = 0; i < requests.Count; i++)
+            {
+                var item = mapper.Map<WithdrawVerifictionResponseModel>(requests[i]);
+
+                switch (requests[i].User.UserAccountOrganization.TypeOfEmployment)
+                {
+                    case TypeOfEmployment.LegalEntity:
+                        var legalAccount = await dbContext.LegalUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == requests[i].User.Id);
+                        item.CheckingAccount = legalAccount.CheckingAccount;
+                        break;
+                    case TypeOfEmployment.IndividualEntity:
+                        var individualAccount = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == requests[i].User.Id);
+                        item.CheckingAccount = individualAccount.CheckingAccount;
+                        break;
+                    case TypeOfEmployment.IndividualEntrepreneur:
+                        var individualEntrepreneurAccount = await dbContext.IndividualEntrepreneurUserOrganizationsData.FirstOrDefaultAsync(x => x.UserId == requests[i].User.Id);
+                        item.CheckingAccount = individualEntrepreneurAccount.CheckingAccount;
+                        break;
+                }
+               
+                foreach(var accural in item.Accurals)
+                {
+                    item.WithdrawSum += accural.AccuralAmount;
+                }
+
+                result.Add(item);
+            }
+
+            return result;
+        }
+
         public async Task RejectContactVerificationRequest(Guid requestId, Guid userId)
         {
             var contactVerificationRequest = await dbContext.UserContactVerifications.FirstOrDefaultAsync(x => x.Id == requestId);
@@ -177,6 +239,21 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
 
             dbContext.UserAccountOrganizations.Remove(accountOrganization);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task RejectWitdrawRequest(Guid requestId)
+        {
+            var verificationRequest = await dbContext.UserAccuralsVerifications.Include(x => x.Accurals).FirstOrDefaultAsync(x => x.Id == requestId);
+            
+            foreach(var item in verificationRequest.Accurals.Select(x => x.Id))
+            {
+                var accural = await dbContext.Accruals.FirstOrDefaultAsync(x => x.Id == item);
+                accural.TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Failed;
+            }
+
+            dbContext.UserAccuralsVerifications.Remove(verificationRequest);
+
             await dbContext.SaveChangesAsync();
         }
     }

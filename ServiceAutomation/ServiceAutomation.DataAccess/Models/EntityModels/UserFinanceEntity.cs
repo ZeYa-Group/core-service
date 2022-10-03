@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace ServiceAutomation.DataAccess.Models.EntityModels
 {
-    public class UserAccuralsVerificationEntity : Entity
+    public class UserFinanceEntity : Entity
     {
         public Guid UserId { get; set; }
-        public ICollection<AccrualsEntity> Accurals { get; set; }
-        public bool IsVerified { get; set; }
+        public decimal AllTimeIncome { get; set; }
+        public decimal AvailableForWithdrawal { get; set; }
+        public decimal AwaitingAccrual { get; set; }
+
         public virtual UserEntity User { get; set; }
-       
     }
 }
