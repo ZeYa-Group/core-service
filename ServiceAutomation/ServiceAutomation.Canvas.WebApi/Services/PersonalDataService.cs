@@ -45,7 +45,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 BaseLevelInfo = basicLevelInfo,
                 MounthlyLevelInfo = monthlyLevelInfo,
                 AllTimeIncome = allTimeIncome.Sum(x => x.AccuralAmount),
-                AvailableForWithdrawal = 0,
+                AvailableForWithdrawal = 12,
                 AwaitingAccrual = awaitin,
                 ReceivedPayoutPercentage = 0,
                 ReuqiredAction = "test comment",
