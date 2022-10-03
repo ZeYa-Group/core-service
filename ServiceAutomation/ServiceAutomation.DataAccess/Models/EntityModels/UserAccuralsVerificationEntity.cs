@@ -10,6 +10,8 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
     {
         public Guid UserId { get; set; }
         public ICollection<AccrualsEntity> Accurals { get; set; }
+        public bool IsVerified { get; set; }
         public virtual UserEntity User { get; set; }
+       
     }
 }

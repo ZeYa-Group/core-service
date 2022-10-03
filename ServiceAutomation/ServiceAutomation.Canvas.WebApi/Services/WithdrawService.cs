@@ -130,7 +130,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 UserId = userId,
                 Accurals = accuralList,
-                User = user
+                User = user,
+                IsVerified = false
             };
 
             await dbContext.UserAccuralsVerifications.AddAsync(accuralVerificationRequest);
