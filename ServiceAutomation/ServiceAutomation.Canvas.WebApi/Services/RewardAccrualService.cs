@@ -70,7 +70,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 UserId = userId,
                 BonusId = levelBonusId,
-                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward,
@@ -109,7 +109,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 UserId = whoSoldId,
                 BonusId = startBonusId,
-                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward,
@@ -137,7 +137,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 UserId = whoSoldId,
                 BonusId = startBonusId,
-                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward,
@@ -166,7 +166,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 UserId = userId,
                 BonusId = autoBonusId,
-                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward,
@@ -228,7 +228,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             {
                 UserId = userId,
                 BonusId = autoBonusId,
-                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw,
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward,
