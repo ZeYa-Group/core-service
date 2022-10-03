@@ -23,5 +23,9 @@ namespace ServiceAutomation.DataAccess.Models.EntityModels
         public decimal AccuralAmount { get; set; }
 
         public DateTime AccuralDate { get; set; }
+
+        public Guid? ForBsicLevelId { get; set; }
+
+        public BasicLevelEntity ForBsicLevel { get; set; }
     }
 }

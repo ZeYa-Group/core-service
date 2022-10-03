@@ -27,6 +27,12 @@ namespace ServiceAutomation.DataAccess.DbModelConfigurations
                 .WithMany()
                 .HasForeignKey(x => x.BonusId)
                 .IsRequired();
+
+            builder.HasOne(x => x.ForBsicLevel)
+                   .WithMany()
+                   .HasForeignKey(x => x.ForBsicLevelId)
+                   .OnDelete(DeleteBehavior.ClientSetNull)
+                   .IsRequired(false);
         }
     }
 

@@ -8,7 +8,7 @@ using System.Runtime.CompilerServices;
 
 namespace ServiceAutomation.DataAccess.DataSeeding
 {
-    public static class BasicLevelsEnitialData
+    public static class BasicLevelsInitialData
     {
         internal static IDictionary<Level, Guid> BasicLevelIdsByType = new Dictionary<Level, Guid>
         {

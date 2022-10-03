@@ -35,6 +35,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<StartBonusRewardEntity> StartBonusRewards { get; set; }
         public virtual DbSet<DynamicBonusRewardEntity> DynamicBonusRewards { get; set; }
         public virtual DbSet<UserAccuralsVerificationEntity> UserAccuralsVerifications { get; set; }
+        public virtual DbSet<AutoBonusRewardEntity> AutoBonusRewards { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {
@@ -65,6 +66,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
             modelBuilder.ApplyConfiguration(new AccrualsEntityConfiguration());
             modelBuilder.ApplyConfiguration(new StartBonusRewardEntityConfiguration());
             modelBuilder.ApplyConfiguration(new DynamicBonusRewardEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new AutoBonusRewardEntityConfiguration());
         }
     }
 }

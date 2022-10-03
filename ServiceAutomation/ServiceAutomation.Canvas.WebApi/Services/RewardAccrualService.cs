@@ -16,18 +16,24 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly IPackagesService _packagesService;
         private readonly ISaleBonusCalculationService _saleBonusCalculationService;
         private readonly ISalesService _salesService;
+        private readonly ILevelStatisticService _levelStatisticService;
+        private readonly IAutoBonusCalculatorService _autoBonusCalculatorService;
 
         public RewardAccrualService(AppDbContext dbContext,
                                             ILevelBonusCalculatorService levelBonusCalculatorService,
                                             ISaleBonusCalculationService saleBonusCalculationService,
                                             IPackagesService packagesService,
-                                            ISalesService salesService)
+                                            ISalesService salesService,
+                                            ILevelStatisticService levelStatisticService,
+                                            IAutoBonusCalculatorService autoBonusCalculatorService)
         {
             _dbContext = dbContext;
             _levelBonusCalculatorService = levelBonusCalculatorService;
             _packagesService = packagesService;
             _saleBonusCalculationService = saleBonusCalculationService;
             _salesService = salesService;
+            _levelStatisticService = levelStatisticService;
+            _autoBonusCalculatorService = autoBonusCalculatorService;
         }
 
         public async Task AccrueRewardForBasicLevelAsync(Guid userId)
@@ -41,7 +47,13 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             if (userBasicLevelId == null)
                 return;
 
-            var rewardInfo = await _levelBonusCalculatorService.CalculateLevelBonusRewardAsync(userBasicLevelId.Value, userPackage.Id);
+            await AccrueLevelBonusRewardAsync(userId, userBasicLevelId.Value, userPackage);
+            await AccrueAutoBonusRewardAsync(userId, userBasicLevelId.Value, userPackage);
+        }
+
+        private async Task AccrueLevelBonusRewardAsync(Guid userId, Guid userBasicLevelId, UserPackageModel userPackage)
+        {
+            var rewardInfo = await _levelBonusCalculatorService.CalculateLevelBonusRewardAsync(userBasicLevelId, userPackage.Id);
 
             if (rewardInfo.Reward == 0)
                 return;
@@ -59,7 +71,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 AccuralPercent = rewardInfo.Percent,
                 InitialAmount = rewardInfo.InitialReward,
                 AccuralAmount = rewardInfo.Reward,
-                AccuralDate = DateTime.Now                
+                AccuralDate = DateTime.Now
             };
 
             await _dbContext.Accruals.AddAsync(accrual);
@@ -130,5 +142,36 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await _dbContext.Accruals.AddAsync(accrual);
             await _dbContext.SaveChangesAsync();
         }
+    
+        private async Task AccrueAutoBonusRewardAsync(Guid userId, Guid userBasicLevelId, UserPackageModel userPackage)
+        {
+            var monthlyLevelInfo = await _levelStatisticService.GetMonthlyLevelInfoByUserIdAsync(userId);
+
+            var rewardInfo = await _autoBonusCalculatorService.CalculateAutoBonusRewardAsync(userBasicLevelId, userPackage.Id, monthlyLevelInfo.CurrentTurnover);
+
+            if (rewardInfo.Reward == 0)
+                return;
+
+            var autoBonusId = await _dbContext.Bonuses.AsNoTracking()
+                                                      .Where(b => b.Type == DataAccess.Schemas.Enums.BonusType.AutoBonus)
+                                                      .Select(b => b.Id)
+                                                      .FirstAsync();
+            var accrual = new AccrualsEntity
+            {
+                UserId = userId,
+                BonusId = autoBonusId,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
+                AccuralPercent = rewardInfo.Percent,
+                InitialAmount = rewardInfo.InitialReward,
+                AccuralAmount = rewardInfo.Reward,
+                AccuralDate = DateTime.Now,
+                ForBsicLevelId = userBasicLevelId
+            };
+
+            await _dbContext.Accruals.AddAsync(accrual);
+            await _dbContext.SaveChangesAsync();
+        }
+
+
     }
 }

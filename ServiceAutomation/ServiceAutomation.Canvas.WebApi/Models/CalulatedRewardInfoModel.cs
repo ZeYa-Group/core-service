@@ -7,6 +7,6 @@ namespace ServiceAutomation.Canvas.WebApi.Models
 
         public decimal Reward { get; init; } = 0;
 
-        public int Percent { get; init; } = 0;
+        public int? Percent { get; init; }
     }
 }

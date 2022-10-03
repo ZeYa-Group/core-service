@@ -62,6 +62,7 @@ namespace ServiceAutomation.Canvas.WebApi.DependencyInjection
             services.AddScoped<IRewardAccrualService, RewardAccrualService>();
             services.AddScoped<ISaleBonusCalculationService, SaleBonusCalculationService>();
             services.AddScoped<ISalesService, SalesService>();
+            services.AddScoped<IAutoBonusCalculatorService, AutoBonusCalculatorService>();
         }
     }
 
