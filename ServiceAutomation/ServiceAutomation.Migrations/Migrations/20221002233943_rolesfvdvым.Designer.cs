@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceAutomation.DataAccess.DbContexts;
@@ -9,9 +10,10 @@ using ServiceAutomation.DataAccess.DbContexts;
 namespace ServiceAutomation.DataAccess.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221002233943_rolesfvdvым")]
+    partial class rolesfvdvым
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -171,35 +173,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .IsUnique();
 
                     b.ToTable("Credentials");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.DynamicBonusRewardEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("Id");
-
-                    b.Property<int?>("DurationOfDays")
-                        .HasColumnType("integer");
-
-                    b.Property<bool>("HasRestriction")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("PackageId")
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Percent")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("SalesNumber")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PackageId");
-
-                    b.ToTable("DynamicBonusRewards");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.IndividualEntrepreneurUserOrganizationDataEntity", b =>
@@ -1005,17 +978,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                         .IsRequired();
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.DynamicBonusRewardEntity", b =>
-                {
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.PackageEntity", "Package")
-                        .WithMany()
-                        .HasForeignKey("PackageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Package");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.LevelBonusRewardEntity", b =>

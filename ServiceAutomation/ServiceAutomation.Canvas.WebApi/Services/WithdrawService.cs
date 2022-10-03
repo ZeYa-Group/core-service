@@ -106,8 +106,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     case BonusType.TeamBonus:
                         return accruals.Select(x => mapper.Map<AccuralResponseModel>(x));
 
-                }
-            }
+            //    }
+            //}
 
             if (transactionStatus != 0)
             {
@@ -118,12 +118,23 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task MakeWithdraw(Guid userId, ICollection<Guid> accuralsId)
         {
             var accuralList = new List<AccrualsEntity>();
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
 
             foreach(var accural in accuralsId)
             {
                 var result = await dbContext.Accruals.FirstOrDefaultAsync(x => x.Id == accural);
                 accuralList.Add(result);
             }
+
+            var accuralVerificationRequest = new UserAccuralsVerificationEntity()
+            {
+                UserId = userId,
+                Accurals = accuralList,
+                User = user
+            };
+
+            await dbContext.UserAccuralsVerifications.AddAsync(accuralVerificationRequest);
+            await dbContext.SaveChangesAsync();
         }
     }
 }
