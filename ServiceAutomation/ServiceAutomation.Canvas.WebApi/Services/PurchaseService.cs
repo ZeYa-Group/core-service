@@ -82,7 +82,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                                        .Select(u => u.Id)
                                                        .FirstOrDefaultAsync();
 
-            await _rewardAccrualService.AccrueRewardForSaleAsync(referralUserId, purchasePrice);
+            await _rewardAccrualService.AccrueRewardForSaleAsync(referralUserId, userId, purchasePrice);
         }
     }
 }

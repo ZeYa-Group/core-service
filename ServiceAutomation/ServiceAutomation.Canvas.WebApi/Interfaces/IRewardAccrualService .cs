@@ -7,6 +7,6 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
     {
         Task AccrueRewardForBasicLevelAsync(Guid userId);
 
-        Task AccrueRewardForSaleAsync(Guid userId, decimal sellingPrice);
+        Task AccrueRewardForSaleAsync(Guid whoSoldId, Guid whoBoughtId, decimal sellingPrice);
     }
 }
