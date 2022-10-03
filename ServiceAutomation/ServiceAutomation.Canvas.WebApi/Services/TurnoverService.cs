@@ -77,11 +77,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                             + "tenantGroup2.\"ParentId\"\n"
                                             + "FROM public.\"TenantGroups\" as tenantGroup2\n"
                                             + "inner join resultGroup t2 on tenantGroup2.\"ParentId\" = t2.\"Id\")\n"
-                                            + "SELECT putchases.\"UserId\" as UserId,\n"
+                                            + "SELECT purchases.\"UserId\" as UserId,\n"
                                             + "Max(\"Price\") as PurchasePrice\n"
-                                            + "FROM public.\"Purchases\" putchases\n"
-                                            + "inner join resultGroup on resultGroup.\"OwnerUserId\" = putchases.\"UserId\""
-                                            +  (startDate.HasValue ? $"where putchases.\"PurchaseDate\" >= '{ startDate }'" : "") 
+                                            + "FROM public.\"Purchases\" purchases\n"
+                                            + "inner join resultGroup on resultGroup.\"OwnerUserId\" = purchases.\"UserId\"\n"
+                                            +  (startDate.HasValue ? $"where purchases.\"PurchaseDate\" >= '{ startDate }' and " : "where")
+                                            + $" purchases.\"UserId\" != '{userId}' "
                                             + "group by \"UserId\"";
 
             return getPartnersPurchasesQuery;
