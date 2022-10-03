@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ServiceAutomation.DataAccess.DbContexts;
@@ -9,9 +10,10 @@ using ServiceAutomation.DataAccess.DbContexts;
 namespace ServiceAutomation.DataAccess.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221002234643_AddDynamicBonusRewards")]
+    partial class AddDynamicBonusRewards
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,9 +49,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Property<int>("TransactionStatus")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("UserAccuralsVerificationEntityId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid?>("UserEntityId")
                         .HasColumnType("uuid");
 
@@ -61,8 +60,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.HasIndex("BonusId");
 
                     b.HasIndex("ForWhomId");
-
-                    b.HasIndex("UserAccuralsVerificationEntityId");
 
                     b.HasIndex("UserEntityId");
 
@@ -752,25 +749,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.ToTable("UserAccountOrganizations");
                 });
 
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserAccuralsVerificationEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<bool>("IsVerified")
-                        .HasColumnType("boolean");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserAccuralsVerifications");
-                });
-
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserContactVerificationEntity", b =>
                 {
                     b.Property<Guid>("Id")
@@ -949,10 +927,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "ForWhom")
                         .WithMany()
                         .HasForeignKey("ForWhomId");
-
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserAccuralsVerificationEntity", null)
-                        .WithMany("Accurals")
-                        .HasForeignKey("UserAccuralsVerificationEntityId");
 
                     b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", null)
                         .WithMany("UserAccruals")
@@ -1150,17 +1124,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserAccuralsVerificationEntity", b =>
-                {
-                    b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserContactVerificationEntity", b =>
                 {
                     b.HasOne("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", "User")
@@ -1233,11 +1196,6 @@ namespace ServiceAutomation.DataAccess.Migrations.Migrations
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.TenantGroupEntity", b =>
                 {
                     b.Navigation("ChildGroups");
-                });
-
-            modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserAccuralsVerificationEntity", b =>
-                {
-                    b.Navigation("Accurals");
                 });
 
             modelBuilder.Entity("ServiceAutomation.DataAccess.Models.EntityModels.UserEntity", b =>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ServiceAutomation.Canvas.WebApi.Interfaces;
+using ServiceAutomation.Canvas.WebApi.Models;
 using ServiceAutomation.DataAccess.DbContexts;
 using ServiceAutomation.DataAccess.Models.EntityModels;
 using System;
@@ -71,6 +72,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             if (userPackage == null)
                 return;
 
+            await AccrueRewardForStartBonusAsync(userId, sellingPrice, userPackage);
+            await AccrueRewardForDynamicBonusAsync(userId, sellingPrice, userPackage);
+        }
+
+        private async Task AccrueRewardForStartBonusAsync(Guid userId, decimal sellingPrice, UserPackageModel userPackage)
+        {
             var userSalesCount = await _salesService.GetUserSalesCountAsync(userId);
 
             var rewardInfo = await _saleBonusCalculationService.CalculateStartBonusRewardAsync(sellingPrice, userPackage, userSalesCount);
@@ -80,6 +87,33 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var startBonusId = await _dbContext.Bonuses.AsNoTracking()
                                                        .Where(b => b.Type == DataAccess.Schemas.Enums.BonusType.StartBonus)
+                                                       .Select(b => b.Id)
+                                                       .FirstAsync();
+            var accrual = new AccrualsEntity
+            {
+                UserId = userId,
+                BonusId = startBonusId,
+                TransactionStatus = DataAccess.Schemas.Enums.TransactionStatus.Pending,
+                AccuralPercent = rewardInfo.Percent,
+                InitialAmount = rewardInfo.InitialReward,
+                AccuralAmount = rewardInfo.Reward,
+                AccuralDate = DateTime.Now
+            };
+
+            await _dbContext.Accruals.AddAsync(accrual);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        private async Task AccrueRewardForDynamicBonusAsync(Guid userId, decimal sellingPrice, UserPackageModel userPackage)
+        {
+            var userSalesCount = await _salesService.GerSalesCountInMonthAsync(userId);
+            var rewardInfo = await _saleBonusCalculationService.CalculateDynamicBonusRewardAsync(sellingPrice, userPackage, userSalesCount);
+
+            if (rewardInfo.Reward == 0)
+                return;
+
+            var startBonusId = await _dbContext.Bonuses.AsNoTracking()
+                                                       .Where(b => b.Type == DataAccess.Schemas.Enums.BonusType.DynamicBonus)
                                                        .Select(b => b.Id)
                                                        .FirstAsync();
             var accrual = new AccrualsEntity
