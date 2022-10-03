@@ -67,6 +67,9 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     break;     
             }
 
+            var user = await dbContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
+            user.IsVerifiedUser = true;
+
             await dbContext.SaveChangesAsync();
         }
 
