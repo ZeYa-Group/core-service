@@ -15,18 +15,21 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         private readonly ITurnoverService _turnoverService;
         private readonly ILevelStatisticService _levelStatisticService;
         private readonly IRewardAccrualService _rewardAccrualForLevelService;
+        private readonly ITenantGroupService _tenantGroupService;
 
         public LevelCalculationService(AppDbContext dbContext,
                                        ITurnoverService turnoverService,
                                        ILevelsService levelsService,
                                        ILevelStatisticService levelStatisticService,
-                                       IRewardAccrualService rewardAccrualForLevelService)
+                                       IRewardAccrualService rewardAccrualForLevelService,
+                                       ITenantGroupService tenantGroupService)
         {
             _dbContext = dbContext;
             _turnoverService = turnoverService;
             _levelsService = levelsService;
             _levelStatisticService = levelStatisticService;
             _rewardAccrualForLevelService = rewardAccrualForLevelService;
+            _tenantGroupService = tenantGroupService;
         }
 
         public async Task СalculateParentPartnersLevelsAsync(Guid userId)
@@ -70,11 +73,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         {
             var turnover = await _turnoverService.GetTurnoverByUserIdAsync(user.Id);
 
-            var getLevelsInBranchInfosString = GetLevelsInfoSqlQueryString(user);
-            var levelsInfo = await _dbContext.UserLevelsInfos
-                                              .FromSqlRaw(getLevelsInBranchInfosString)
-                                              .Include(x => x.BasicLevel)
-                                              .ToDictionaryAsync(x => x.BasicLevel.Level, x => x.BranchCount);
+            var levelsInfo = await _tenantGroupService.GetLevelsInfoInReferralStructureByUserIdAsync(user.Id);
             var appropriateLevels = basicLevels.Where(l => l.Turnover == null || l.Turnover < turnover).OrderByDescending(l => (int)l.Level);
 
             BasicLevelEntity newLevel = null;
@@ -165,42 +164,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                     + "order by \"Level\"";
 
             return getUserParentsQuery;
-        }
-
-        private string GetLevelsInfoSqlQueryString(UserEntity user)
-        {
-            var getLevelsInBranchInfos = "with recursive resultGroup as (\n"
-                                         + "SELECT firstLine.\"Id\",\n"
-                                         + "firstLine.\"OwnerUserId\",\n"
-                                         + "firstLine.\"ParentId\",\n"
-                                         + "users.\"BasicLevelId\",\n"
-                                         + "users.\"Id\" as \"OwnerBranchId\",\n"
-                                         + "ROW_NUMBER() OVER(ORDER BY firstLine.\"Id\") as \"BranchNumber\"\n"
-                                         + "FROM public.\"TenantGroups\" as firstLine\n"
-                                         + "inner join public.\"Users\" as users on firstLine.\"OwnerUserId\" = users.\"Id\"\n"
-                                         + $"where firstLine.\"ParentId\" = '{user.Group.Id}'\n"
-                                         + "union all\n"
-                                         + "select childTenantGroup.\"Id\",\n"
-                                         + "childTenantGroup.\"OwnerUserId\",\n"
-                                         + "childTenantGroup.\"ParentId\",\n"
-                                         + "childUser.\"BasicLevelId\",\n"
-                                         + "res.\"OwnerBranchId\",\n"
-                                         + "res.\"BranchNumber\"\n"
-                                         + "FROM public.\"TenantGroups\" as childTenantGroup\n"
-                                         + "inner join public.\"Users\" as childUser on childTenantGroup.\"OwnerUserId\" = childUser.\"Id\"\n"
-                                         + "inner join resultGroup as res\n"
-                                         + "on childTenantGroup.\"ParentId\" = res.\"Id\"\n"
-                                         + ")\n"
-
-                                         + "select levelsInfos.\"BasicLevelId\", count(levelsInfos.\"BranchNumber\") as \"BranchCount\"\n"
-                                         + "from("
-                                         + "select \"BranchNumber\", \"OwnerBranchId\", \"BasicLevelId\", count(\"BasicLevelId\") as \"CountLevelInBranch\" from resultGroup\n"
-                                         + "group by \"BranchNumber\", \"BasicLevelId\", \"OwnerBranchId\"\n"
-                                         + ") as levelsInfos \n"
-                                         + "group by \"BasicLevelId\"";
-
-
-            return getLevelsInBranchInfos;
-        }
+        }       
     }
 }
