@@ -38,6 +38,7 @@ namespace ServiceAutomation.DataAccess.DbContexts
         public virtual DbSet<AutoBonusRewardEntity> AutoBonusRewards { get; set; }
         public virtual DbSet<TravelBonusRequirementEntity> TravelBonusRequirements { get; set; }
         public virtual DbSet<TeamBonusRewardEntity> TeamBonusRewards { get; set; }
+        public virtual DbSet<UserVerificationPhotoEntity> UserVerificationPhotos { get; set; }
 
         public ServiceDbContext(DbContextOptions options) : base(options)
         {

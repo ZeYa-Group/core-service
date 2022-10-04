@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static ServiceAutomation.Canvas.WebApi.Constants.Requests;
 
 namespace ServiceAutomation.Canvas.WebApi.Services
 {
@@ -164,12 +165,19 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     .Include(x => x.UserAccountOrganization)
                     .FirstOrDefaultAsync(x => x.Id == result2[i].UserId);
 
+                var individualUsersPhoto = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == result2[i].UserId);
+
                 if (itemExtraData != null)
                 {
                     result2[i].Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
                     result2[i].Email = itemExtraData?.Email;
                     result2[i].PhoneNumber = itemExtraData?.PhoneNumber;
                     result2[i].TypeOfEmployment = itemExtraData?.UserAccountOrganization.TypeOfEmployment.ToString();
+                }
+
+                if(individualUsersPhoto != null)
+                {
+                    result2[i].VerivicationPhoto = individualUsersPhoto.FullPath;
                 }
             }
 
@@ -179,12 +187,19 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     .Include(x => x.UserAccountOrganization)
                     .FirstOrDefaultAsync(x => x.Id == result3[i].UserId);
 
+                var individualUsersPhoto = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == result3[i].UserId);
+
                 if (itemExtraData != null)
                 {
                     result3[i].Name = itemExtraData.FirstName + " " + itemExtraData.LastName;
                     result3[i].Email = itemExtraData?.Email;
                     result3[i].PhoneNumber = itemExtraData?.PhoneNumber;
                     result3[i].TypeOfEmployment = itemExtraData?.UserAccountOrganization.TypeOfEmployment.ToString();
+                }
+
+                if (individualUsersPhoto != null)
+                {
+                    result3[i].VerivicationPhoto = individualUsersPhoto.FullPath;
                 }
             }
 
@@ -250,6 +265,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task RejectVerificationRequest(Guid requestId, Guid userId)
         {
             var userOrganizationType = await dbContext.UserAccountOrganizations.FirstOrDefaultAsync(x => x.UserId == userId);
+            var photoPath = await dbContext.UserVerificationPhotos.FirstOrDefaultAsync(x => x.UserId == userId);
             
             switch (userOrganizationType.TypeOfEmployment)
             {
@@ -260,12 +276,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 case TypeOfEmployment.IndividualEntity:
                     var individualEntityRequest = await dbContext.IndividualUserOrganizationsData.FirstOrDefaultAsync(x => x.Id == requestId && x.IsVerivied == false);
                     dbContext.IndividualUserOrganizationsData.Remove(individualEntityRequest);
-                    System.IO.File.Delete(hostEnvironment.WebRootPath + individualEntityRequest.VerificationPhotoPath);
+                    System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath.FullPath);
                     break;
                 case TypeOfEmployment.IndividualEntrepreneur:
                     var individualEntrepreneurEntityRequest = await dbContext.IndividualEntrepreneurUserOrganizationsData.FirstOrDefaultAsync(x => x.Id == requestId && x.IsVerivied == false);
                     dbContext.IndividualEntrepreneurUserOrganizationsData.Remove(individualEntrepreneurEntityRequest);
-                    System.IO.File.Delete(hostEnvironment.WebRootPath + individualEntrepreneurEntityRequest.VerificationPhotoPath);
+                    System.IO.File.Delete(hostEnvironment.WebRootPath + photoPath.FullPath);
                     break;
             }
 

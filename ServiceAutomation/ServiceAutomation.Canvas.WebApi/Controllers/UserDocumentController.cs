@@ -39,9 +39,9 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         }
 
         [HttpPost(Constants.Requests.UserDocument.SendPhotoForVerification)]
-        public async Task<IActionResult> SendPhotoForVerification([FromForm] IFormFile photo, Guid userId)
+        public async Task<IActionResult> SendPhotoForVerification([FromForm] UploadProfilePhotoRequestModel requestModel)
         {
-            var response = await verificationService.SendUserVerificationPhoto(photo, userId);
+            var response = await verificationService.SendUserVerificationPhoto(requestModel.ProfilePhoto, requestModel.UserId);
 
             if (!response.Success)
             {
