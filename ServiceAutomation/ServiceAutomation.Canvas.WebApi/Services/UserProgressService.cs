@@ -41,7 +41,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var referralLevelsInfos = await tenantGroupService.GetLevelsInfoInReferralStructureByUserIdAsync(userId);
             var allTimeIncome = await dbContext.Accruals.Where(x => x.UserId == userId).ToListAsync();
             var availableForWithdraw = await dbContext.Accruals.Where(x => x.UserId == userId && x.TransactionStatus == DataAccess.Schemas.Enums.TransactionStatus.ReadyForWithdraw).ToListAsync();
-            var awaitingAccural = await dbContext.UserAccuralsVerifications.Where(x => x.UserId == userId).ToListAsync();
+            var awaitingAccural = await dbContext.UserAccuralsVerifications.Include(x => x.Accurals).Where(x => x.UserId == userId).ToListAsync();
 
             decimal awaitin = 0;
             foreach (var accural in awaitingAccural)
