@@ -61,13 +61,13 @@ namespace ServiceAutomation.Canvas.WebApi.Controllers
         }
 
         [HttpPost(Constants.Requests.Administrator.AcceptUserWithdraw)]
-        public async Task AcceptUserWithdraw([FromBody ]Guid requestId)
+        public async Task AcceptUserWithdraw(Guid requestId)
         {
             await administratorService.AccepWitdrawRequest(requestId);
         }
 
         [HttpPost(Constants.Requests.Administrator.RejectUserWithdraw)]
-        public async Task RejectUserWithdraw([FromBody] Guid requestId)
+        public async Task RejectUserWithdraw(Guid requestId)
         {
             await administratorService.RejectWitdrawRequest(requestId);
         }
