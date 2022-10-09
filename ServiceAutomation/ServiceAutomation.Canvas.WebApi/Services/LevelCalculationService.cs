@@ -37,8 +37,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var user = await _dbContext.Users.AsNoTracking().Include(u => u.BasicLevel).FirstAsync(u => u.Id == userId);
             var basicLevels = await _dbContext.BasicLevels.Include(x => x.PartnersLevel).ToArrayAsync();
 
+            await СalculateUserBasicLevelsAsync(user, basicLevels);
             await CalculateUserMonthlyLevelAsync(user);
-            await СalculatePartnersBasicLevelsAsync(user, basicLevels);
         }
 
         public async Task СalculateParentPartnersLevelsAsync(Guid userId)
@@ -54,15 +54,15 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             foreach (var user in parentUsers)
             {
+                await СalculateUserBasicLevelsAsync(user, basicLevels);
                 await CalculateUserMonthlyLevelAsync(user);
-                await СalculatePartnersBasicLevelsAsync(user, basicLevels);
             }
         }
 
         private async Task CalculateUserMonthlyLevelAsync(UserEntity user)
         {
             var monthlyTurnover = await _turnoverService.GetMonthlyTurnoverByUserIdAsync(user.Id);
-            var earnedMonthlyLevel = await _levelsService.GetCurrentMonthlyLevelByTurnoverAsync(monthlyTurnover);
+            var earnedMonthlyLevel = await _levelsService.GetCurrentMonthlyLevelByTurnoverAsync(monthlyTurnover, user.BasicLevel.Level);
 
             var currentLevel = await _levelStatisticService.GetMonthlyLevelByUserIdAsync(user.Id);
 
@@ -78,7 +78,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task СalculatePartnersBasicLevelsAsync(UserEntity user, BasicLevelEntity[] basicLevels)
+        private async Task СalculateUserBasicLevelsAsync(UserEntity user, BasicLevelEntity[] basicLevels)
         {
             var turnover = await _turnoverService.GetTurnoverByUserIdAsync(user.Id);
 
@@ -121,9 +121,6 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     await _levelStatisticService.UpdateBasicLevelInfoAsync(user.Id, user.BasicLevelId.Value, turnover);
                 }
             }
-
-
-
         }
 
         private async Task<UserEntity[]> GetParentUsersAsync(Guid userId)
