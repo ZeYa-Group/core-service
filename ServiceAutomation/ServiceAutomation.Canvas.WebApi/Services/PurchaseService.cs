@@ -68,6 +68,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             await _dbContext.UsersPurchases.AddAsync(purchase);
             await _dbContext.SaveChangesAsync();
 
+            await _levelCalculationService.СalculateUserLevelsAsync(userId);
             await _levelCalculationService.СalculateParentPartnersLevelsAsync(userId);
 
             var inviteReferral = await _dbContext.Users.AsNoTracking()
