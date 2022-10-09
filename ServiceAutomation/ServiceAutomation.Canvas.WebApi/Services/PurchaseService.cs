@@ -31,7 +31,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
         public async Task BuyPackageAsync(PackageModel package, Guid userId)
         {
             var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
-            if (currentUserPackage != null && currentUserPackage.Price > package.Price)
+            if (currentUserPackage != null && currentUserPackage.Price >= package.Price)
             {
                 throw new Exception("The purchased package must be larger than the current one!");
             }
@@ -44,7 +44,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var purchasedPackage = await _packagesService.GetPackageByTypeAsync(packageType);
             var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
 
-            if (currentUserPackage != null && currentUserPackage.Price > purchasedPackage.Price)
+            if (currentUserPackage != null && currentUserPackage.Price >= purchasedPackage.Price)
             {
                 throw new Exception("The purchased package must be larger than the current one!");
             }
