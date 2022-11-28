@@ -12,25 +12,25 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class PurchaseService: IPurchaseService
     {
-        private readonly AppDbContext _dbContext;
-        private readonly IPackagesService _packagesService;
-        private readonly ILevelCalculationService _levelCalculationService;
-        private readonly IRewardAccrualService _rewardAccrualService;
+        private readonly AppDbContext dbContext;
+        private readonly IPackagesService packagesService;
+        private readonly ILevelCalculationService levelCalculationService;
+        private readonly IRewardAccrualService rewardAccrualService;
 
         public PurchaseService(AppDbContext dbContext,
                               IPackagesService packagesService,
                               ILevelCalculationService levelCalculationService,
                               IRewardAccrualService rewardAccrualService)
         {
-            _dbContext = dbContext;
-            _packagesService = packagesService;
-            _levelCalculationService = levelCalculationService;
-            _rewardAccrualService = rewardAccrualService;
+            this.dbContext = dbContext;
+            this.packagesService = packagesService;
+            this.levelCalculationService = levelCalculationService;
+            this.rewardAccrualService = rewardAccrualService;
         }
 
         public async Task BuyPackageAsync(PackageModel package, Guid userId)
         {
-            var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
+            var currentUserPackage = await packagesService.GetUserPackageByIdAsync(userId);
             if (currentUserPackage != null && currentUserPackage.Price >= package.Price)
             {
                 throw new Exception("The purchased package must be larger than the current one!");
@@ -41,8 +41,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task BuyPackageByPackageTypeAsync(PackageType packageType, Guid userId)
         {
-            var purchasedPackage = await _packagesService.GetPackageByTypeAsync(packageType);
-            var currentUserPackage = await _packagesService.GetUserPackageByIdAsync(userId);
+            var purchasedPackage = await packagesService.GetPackageByTypeAsync(packageType);
+            var currentUserPackage = await packagesService.GetUserPackageByIdAsync(userId);
 
             if (currentUserPackage != null && currentUserPackage.Price >= purchasedPackage.Price)
             {
@@ -65,25 +65,25 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 PurchaseDate = DateTime.Now
             };
 
-            await _dbContext.UsersPurchases.AddAsync(purchase);
-            await _dbContext.SaveChangesAsync();
+            await dbContext.UsersPurchases.AddAsync(purchase);
+            await dbContext.SaveChangesAsync();
 
-            await _levelCalculationService.СalculateUserLevelsAsync(userId);
-            await _levelCalculationService.СalculateParentPartnersLevelsAsync(userId);
+            await levelCalculationService.СalculateUserLevelsAsync(userId);
+            await levelCalculationService.СalculateParentPartnersLevelsAsync(userId);
 
-            var inviteReferral = await _dbContext.Users.AsNoTracking()
+            var inviteReferral = await dbContext.Users.AsNoTracking()
                                            .Where(u => u.Id == userId)
                                            .Select(u => u.InviteReferral)
                                            .FirstOrDefaultAsync();
             if (inviteReferral == null)
                 return;
 
-            var referralUserId = await _dbContext.Users.AsNoTracking()
+            var referralUserId = await dbContext.Users.AsNoTracking()
                                                        .Where(u => u.PersonalReferral == inviteReferral)
                                                        .Select(u => u.Id)
                                                        .FirstOrDefaultAsync();
 
-            await _rewardAccrualService.AccrueRewardForSaleAsync(referralUserId, userId, purchasePrice);
+            await rewardAccrualService.AccrueRewardForSaleAsync(referralUserId, userId, purchasePrice);
         }
     }
 }

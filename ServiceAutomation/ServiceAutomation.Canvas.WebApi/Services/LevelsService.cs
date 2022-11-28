@@ -11,39 +11,39 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class LevelsService : ILevelsService
     {
-        private readonly AppDbContext _dbContext;
-        private readonly IMapper _mapper;
+        private readonly AppDbContext dbContext;
+        private readonly IMapper mapper;
 
         public LevelsService(AppDbContext dbContext, IMapper mapper)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
+            this.dbContext = dbContext;
+            this.mapper = mapper;
         }
 
         public async Task<LevelModel> GetCurrentMonthlyLevelByTurnoverAsync(decimal monthlyTurnover, Level basicLevel)
         {
-            var monthlyLevel = await _dbContext.MonthlyLevels.Where(l => l.Level == _dbContext.MonthlyLevels
+            var monthlyLevel = await dbContext.MonthlyLevels.Where(l => l.Level == dbContext.MonthlyLevels
                                                              .Where(x => (!x.Turnover.HasValue || x.Turnover.Value < monthlyTurnover)
                                                                           && x.Level <= basicLevel)
                                                              .Max(x => x.Level))
                                                              .SingleOrDefaultAsync();
 
-            return _mapper.Map<LevelModel>(monthlyLevel);
+            return mapper.Map<LevelModel>(monthlyLevel);
         }
 
         public async Task<LevelModel> GetNextMonthlyLevelAsync(int level)
         {
-            var monthlyLevel = await _dbContext.MonthlyLevels.Where(l => ((int)l.Level) == level + 1)
+            var monthlyLevel = await dbContext.MonthlyLevels.Where(l => ((int)l.Level) == level + 1)
                                                              .SingleOrDefaultAsync();
 
-            return _mapper.Map<LevelModel>(monthlyLevel);
+            return mapper.Map<LevelModel>(monthlyLevel);
         }
 
         public async Task<NextBasicLevelRequirementsModel> GetNextBasicLevelRequirementsAsync(Level currentUserBasicLevel)
         {
             var nextBasicLevel = currentUserBasicLevel + 1;
 
-            var nextBasicLevelEntity = await _dbContext.BasicLevels.AsNoTracking()
+            var nextBasicLevelEntity = await dbContext.BasicLevels.AsNoTracking()
                                                                    .Include(b => b.PartnersLevel)
                                                                    .FirstAsync(l => l.Level == nextBasicLevel);
 

@@ -10,12 +10,12 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class LevelCalculationService : ILevelCalculationService
     {
-        private readonly AppDbContext _dbContext;
-        private readonly ILevelsService _levelsService;
-        private readonly ITurnoverService _turnoverService;
-        private readonly ILevelStatisticService _levelStatisticService;
-        private readonly IRewardAccrualService _rewardAccrualForLevelService;
-        private readonly ITenantGroupService _tenantGroupService;
+        private readonly AppDbContext dbContext;
+        private readonly ILevelsService levelsService;
+        private readonly ITurnoverService turnoverService;
+        private readonly ILevelStatisticService levelStatisticService;
+        private readonly IRewardAccrualService rewardAccrualForLevelService;
+        private readonly ITenantGroupService tenantGroupService;
 
         public LevelCalculationService(AppDbContext dbContext,
                                        ITurnoverService turnoverService,
@@ -24,18 +24,18 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                                        IRewardAccrualService rewardAccrualForLevelService,
                                        ITenantGroupService tenantGroupService)
         {
-            _dbContext = dbContext;
-            _turnoverService = turnoverService;
-            _levelsService = levelsService;
-            _levelStatisticService = levelStatisticService;
-            _rewardAccrualForLevelService = rewardAccrualForLevelService;
-            _tenantGroupService = tenantGroupService;
+            this.dbContext = dbContext;
+            this.turnoverService = turnoverService;
+            this.levelsService = levelsService;
+            this.levelStatisticService = levelStatisticService;
+            this.rewardAccrualForLevelService = rewardAccrualForLevelService;
+            this.tenantGroupService = tenantGroupService;
         }
 
         public async Task СalculateUserLevelsAsync(Guid userId)
         {
-            var user = await _dbContext.Users.AsNoTracking().Include(u => u.BasicLevel).FirstAsync(u => u.Id == userId);
-            var basicLevels = await _dbContext.BasicLevels.Include(x => x.PartnersLevel).ToArrayAsync();
+            var user = await dbContext.Users.AsNoTracking().Include(u => u.BasicLevel).FirstAsync(u => u.Id == userId);
+            var basicLevels = await dbContext.BasicLevels.Include(x => x.PartnersLevel).ToArrayAsync();
 
             await СalculateUserBasicLevelsAsync(user, basicLevels);
             await CalculateUserMonthlyLevelAsync(user);
@@ -50,7 +50,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 return;
             }
 
-            var basicLevels = await _dbContext.BasicLevels.Include(x => x.PartnersLevel).ToArrayAsync();
+            var basicLevels = await dbContext.BasicLevels.Include(x => x.PartnersLevel).ToArrayAsync();
 
             foreach (var user in parentUsers)
             {
@@ -61,28 +61,28 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         private async Task CalculateUserMonthlyLevelAsync(UserEntity user)
         {
-            var monthlyTurnover = await _turnoverService.GetMonthlyTurnoverByUserIdAsync(user.Id);
-            var earnedMonthlyLevel = await _levelsService.GetCurrentMonthlyLevelByTurnoverAsync(monthlyTurnover, user.BasicLevel.Level);
+            var monthlyTurnover = await turnoverService.GetMonthlyTurnoverByUserIdAsync(user.Id);
+            var earnedMonthlyLevel = await levelsService.GetCurrentMonthlyLevelByTurnoverAsync(monthlyTurnover, user.BasicLevel.Level);
 
-            var currentLevel = await _levelStatisticService.GetMonthlyLevelByUserIdAsync(user.Id);
+            var currentLevel = await levelStatisticService.GetMonthlyLevelByUserIdAsync(user.Id);
 
             if (earnedMonthlyLevel.Id != currentLevel.Id)
             {
-                await _levelStatisticService.AddMonthlyLevelInfoAsync(user.Id, earnedMonthlyLevel.Id, monthlyTurnover);
+                await levelStatisticService.AddMonthlyLevelInfoAsync(user.Id, earnedMonthlyLevel.Id, monthlyTurnover);
             }
             else
             {
-                await _levelStatisticService.UpdateMonthlyLevelInfoAsync(user.Id, currentLevel.Id, monthlyTurnover);
+                await levelStatisticService.UpdateMonthlyLevelInfoAsync(user.Id, currentLevel.Id, monthlyTurnover);
             }
 
-            await _dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
 
         private async Task СalculateUserBasicLevelsAsync(UserEntity user, BasicLevelEntity[] basicLevels)
         {
-            var turnover = await _turnoverService.GetTurnoverByUserIdAsync(user.Id);
+            var turnover = await turnoverService.GetTurnoverByUserIdAsync(user.Id);
 
-            var levelsInfo = await _tenantGroupService.GetLevelsInfoInReferralStructureByUserIdAsync(user.Id);
+            var levelsInfo = await tenantGroupService.GetLevelsInfoInReferralStructureByUserIdAsync(user.Id);
             var appropriateLevels = basicLevels.Where(l => l.Turnover == null || l.Turnover < turnover).OrderByDescending(l => (int)l.Level);
 
             BasicLevelEntity newLevel = null;
@@ -112,20 +112,20 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 {
                     user.BasicLevel = newLevel;
 
-                    await _levelStatisticService.AddBasicLevelInfoAsync(user.Id, newLevel.Id, turnover);
-                    await _dbContext.SaveChangesAsync();
-                    await _rewardAccrualForLevelService.AccrueRewardForBasicLevelAsync(user.Id);
+                    await levelStatisticService.AddBasicLevelInfoAsync(user.Id, newLevel.Id, turnover);
+                    await dbContext.SaveChangesAsync();
+                    await rewardAccrualForLevelService.AccrueRewardForBasicLevelAsync(user.Id);
                 }
                 else
                 {
-                    await _levelStatisticService.UpdateBasicLevelInfoAsync(user.Id, user.BasicLevelId.Value, turnover);
+                    await levelStatisticService.UpdateBasicLevelInfoAsync(user.Id, user.BasicLevelId.Value, turnover);
                 }
             }
         }
 
         private async Task<UserEntity[]> GetParentUsersAsync(Guid userId)
         {
-            var tenantGroup = await _dbContext.Users
+            var tenantGroup = await dbContext.Users
                                               .Where(u => u.Id == userId)
                                               .Select(x => x.Group)
                                               .FirstOrDefaultAsync();
@@ -136,7 +136,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var getParentUsersQuery = GetParenUsersSqlQueryString(tenantGroup);
 
-            var parentUsers = await _dbContext.Users
+            var parentUsers = await dbContext.Users
                                               .FromSqlRaw(getParentUsersQuery)
                                               .Include(x => x.Group)
                                               .ToArrayAsync();

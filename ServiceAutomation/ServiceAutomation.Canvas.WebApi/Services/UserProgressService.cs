@@ -44,10 +44,16 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             var awaitingAccural = await dbContext.UserAccuralsVerifications.Include(x => x.Accurals).Where(x => x.UserId == userId).ToListAsync();
 
             decimal awaitin = 0;
-            foreach (var accural in awaitingAccural)
+
+            awaitingAccural.ForEach(accural =>
             {
                 awaitin += accural.Accurals.Sum(x => x.AccuralAmount);
-            }
+            });
+                      
+            //foreach (var accural in awaitingAccural)
+            //{
+            //    awaitin += accural.Accurals.Sum(x => x.AccuralAmount);
+            //}
 
             var structuralLevelProgress = new StructuralLevelProgressInfoModel
             {

@@ -1,4 +1,6 @@
-﻿namespace ServiceAutomation.Canvas.WebApi.Models
+﻿using System;
+
+namespace ServiceAutomation.Canvas.WebApi.Models
 {
     public class LevelInfoModel
     {

@@ -12,6 +12,8 @@ namespace ServiceAutomation.Canvas.WebApi.Interfaces
 
         Task<LevelInfoModel> GetBasicLevelInfoByUserIdAsync(Guid userId);
 
+        Task<double> GetPayoutPercentageAsync(LevelInfoModel monthlyLevelInfo);
+
         Task AddMonthlyLevelInfoAsync(Guid userId, Guid newLevelId, decimal currentMonthlyTurnover);
 
         Task UpdateMonthlyLevelInfoAsync(Guid userId, Guid levelId, decimal newMonthTurnover);

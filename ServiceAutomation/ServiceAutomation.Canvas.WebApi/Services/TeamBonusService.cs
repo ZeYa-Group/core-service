@@ -10,16 +10,16 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class TeamBonusService: ITeamBonusService
     {
-        private readonly AppDbContext _dbContext;
+        private readonly AppDbContext dbContext;
 
         public TeamBonusService(AppDbContext dbContext)
         {
-            _dbContext = dbContext;
+            this.dbContext = dbContext;
         }
 
         public async Task<CalulatedRewardInfoModel> CalculateTeamBonusRewardAsync(decimal initialReward, LevelModel monthlyLevel, decimal commonTurnover)
         {
-            var appropriateBonusRewars = await _dbContext.TeamBonusRewards.AsNoTracking()
+            var appropriateBonusRewars = await dbContext.TeamBonusRewards.AsNoTracking()
                                                                           .Where(t => t.MonthlyLevel.Level <= (Level)monthlyLevel.Level && t.CommonTurnover <= commonTurnover)
                                                                           .OrderByDescending(t => t.MonthlyLevel.Level)
                                                                           .FirstOrDefaultAsync();
@@ -41,7 +41,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<CalulatedRewardInfoModel> CalculateTeamBonusRewardAsync(decimal initialReward, LevelModel userMonthlyLevel, LevelModel partnerMonthlyLevel, decimal commonTurnover)
         {
-            var appropriateBonusRewars = await _dbContext.TeamBonusRewards.AsNoTracking()
+            var appropriateBonusRewars = await dbContext.TeamBonusRewards.AsNoTracking()
                                                               .Where(t => t.MonthlyLevel.Level <= (Level)userMonthlyLevel.Level && t.CommonTurnover <= commonTurnover)
                                                               .OrderByDescending(t => t.MonthlyLevel.Level)
                                                               .FirstOrDefaultAsync();
@@ -50,7 +50,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
             if (appropriateBonusRewars == null)
                 return new CalulatedRewardInfoModel();
 
-            var partnerBonusReward = await _dbContext.TeamBonusRewards.AsNoTracking()
+            var partnerBonusReward = await dbContext.TeamBonusRewards.AsNoTracking()
                                                               .Where(t => t.MonthlyLevel.Level == (Level)partnerMonthlyLevel.Level )
                                                               .FirstOrDefaultAsync();
 

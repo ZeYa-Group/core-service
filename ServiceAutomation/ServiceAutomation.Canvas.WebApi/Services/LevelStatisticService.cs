@@ -13,28 +13,28 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 {
     public class LevelStatisticService : ILevelStatisticService
     {
-        private readonly AppDbContext _dbContext;
-        private readonly IMapper _mapper;
+        private readonly AppDbContext dbContext;
+        private readonly IMapper mapper;
 
         public LevelStatisticService(AppDbContext dbContext, IMapper mapper)
         {
-            _dbContext = dbContext;
-            _mapper = mapper;
+            this.dbContext = dbContext;
+            this.mapper = mapper;
         }
 
         public async Task<LevelModel> GetMonthlyLevelByUserIdAsync(Guid userId)
         {
-            var monthlyLevel = await _dbContext.MonthlyLevelStatistics.AsNoTracking()
+            var monthlyLevel = await dbContext.MonthlyLevelStatistics.AsNoTracking()
                                                                   .Where(m => m.UserId == userId)
                                                                   .OrderByDescending(s => s.ReachingLevelDate)
                                                                   .Select(m => m.Level)
                                                                   .FirstAsync();
-            return _mapper.Map<LevelModel>(monthlyLevel);
+            return mapper.Map<LevelModel>(monthlyLevel);
         }
 
         public async Task<LevelInfoModel> GetMonthlyLevelInfoByUserIdAsync(Guid userId)
         {
-            var monthlyLevelStatistic = await _dbContext.MonthlyLevelStatistics.AsNoTracking()
+            var monthlyLevelStatistic = await dbContext.MonthlyLevelStatistics.AsNoTracking()
                                                                                .Where(m => m.UserId == userId)
                                                                                .Include(m => m.Level)
                                                                                .OrderByDescending(s => s.ReachingLevelDate)
@@ -47,7 +47,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             if (monthlyLevelStatistic.ReachingLevelDate < firstDayOfMonth)
             {
-                var secondLevel = await _dbContext.MonthlyLevels.FirstAsync(l => l.Level == Level.SecondLevel);
+                var secondLevel = await dbContext.MonthlyLevels.FirstAsync(l => l.Level == Level.SecondLevel);
                 var statistic = new MonthlyLevelStatisticEntity
                 {
                     UserId = userId,
@@ -55,8 +55,8 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                     ReachingLevelDate = firstDayOfMonth
                 };
 
-                var monthlyLevelStatisticEntity = await _dbContext.MonthlyLevelStatistics.AddAsync(statistic);
-                await _dbContext.SaveChangesAsync();
+                var monthlyLevelStatisticEntity = await dbContext.MonthlyLevelStatistics.AddAsync(statistic);
+                await dbContext.SaveChangesAsync();
 
                 currentMonthlyLevel = secondLevel;
                 currentTurnover = 0;
@@ -69,7 +69,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var monthlyLevelInfo = new LevelInfoModel
             {
-                CurrentLevel = _mapper.Map<LevelModel>(currentMonthlyLevel),
+                CurrentLevel = mapper.Map<LevelModel>(currentMonthlyLevel),
                 CurrentTurnover = currentTurnover
             };
 
@@ -78,7 +78,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
         public async Task<LevelInfoModel> GetBasicLevelInfoByUserIdAsync(Guid userId)
         {
-            var basicLevelStatistic = await _dbContext.BasicLevelStatistics
+            var basicLevelStatistic = await dbContext.BasicLevelStatistics
                                                       .AsNoTracking()
                                                       .Where(u => u.UserId == userId)
                                                       .Include(b => b.Level)
@@ -87,7 +87,7 @@ namespace ServiceAutomation.Canvas.WebApi.Services
 
             var basicLevelInfo = new LevelInfoModel
             {
-                CurrentLevel = _mapper.Map<LevelModel>(basicLevelStatistic.Level),
+                CurrentLevel = mapper.Map<LevelModel>(basicLevelStatistic.Level),
                 CurrentTurnover = basicLevelStatistic.Turnover ?? 0
             };
 
@@ -104,15 +104,15 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 Turnover = currentMonthlyTurnover
             };
 
-            await _dbContext.MonthlyLevelStatistics.AddAsync(monthlyStatisticRecord);
-            await _dbContext.SaveChangesAsync();
+            await dbContext.MonthlyLevelStatistics.AddAsync(monthlyStatisticRecord);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateMonthlyLevelInfoAsync(Guid userId, Guid ForLevelId, decimal newMonthTurnover)
         {
-            var basicLevelStatistic = await _dbContext.MonthlyLevelStatistics.FirstAsync(s => s.UserId == userId && s.LevelId == ForLevelId);
+            var basicLevelStatistic = await dbContext.MonthlyLevelStatistics.FirstAsync(s => s.UserId == userId && s.LevelId == ForLevelId);
             basicLevelStatistic.Turnover = newMonthTurnover;
-            await _dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task AddBasicLevelInfoAsync(Guid userId, Guid newLevelId, decimal currentTurnover)
@@ -125,24 +125,36 @@ namespace ServiceAutomation.Canvas.WebApi.Services
                 Turnover = currentTurnover
             };
 
-            await _dbContext.BasicLevelStatistics.AddAsync(basicLevelStatistic);
-            await _dbContext.SaveChangesAsync();
+            await dbContext.BasicLevelStatistics.AddAsync(basicLevelStatistic);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task UpdateBasicLevelInfoAsync(Guid userId, Guid ForLevelId, decimal newTurnover)
         {
-            var basicLevelStatistic = await _dbContext.BasicLevelStatistics.FirstAsync(s => s.UserId == userId && s.LevelId == ForLevelId);
+            var basicLevelStatistic = await dbContext.BasicLevelStatistics.FirstAsync(s => s.UserId == userId && s.LevelId == ForLevelId);
             basicLevelStatistic.Turnover = newTurnover;
-            await _dbContext.SaveChangesAsync();
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task AddLevelsInfoForNewUserAsync(Guid userId)
         {
-            var secondMonthlyLevel = await _dbContext.MonthlyLevels.FirstAsync(l => l.Level == Level.FirstLevel);
+            var secondMonthlyLevel = await dbContext.MonthlyLevels.FirstAsync(l => l.Level == Level.FirstLevel);
             await AddMonthlyLevelInfoAsync(userId, secondMonthlyLevel.Id, 0);
 
-            var firstBasicLevel = await _dbContext.BasicLevels.FirstAsync(b => b.Level == Level.FirstLevel);
+            var firstBasicLevel = await dbContext.BasicLevels.FirstAsync(b => b.Level == Level.FirstLevel);
             await AddBasicLevelInfoAsync(userId, firstBasicLevel.Id, 0);
+        }
+
+        public async Task<double> GetPayoutPercentageAsync(LevelInfoModel monthlyLevelInfo)
+        {
+            var userLevel = monthlyLevelInfo.CurrentLevel.Id;
+
+            var payoutPercentage = await dbContext.TeamBonusRewards
+                                                      .AsNoTracking()
+                                                      .Where(u => u.MonthlyLevelId == userLevel)
+                                                      .FirstAsync();
+
+            return payoutPercentage.Percent;
         }
     }
 }
